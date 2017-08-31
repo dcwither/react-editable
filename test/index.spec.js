@@ -30,4 +30,12 @@ describe('withCrud', () => {
   it('should hoist MockComponent props', () => {
     expect(CrudMockComponent.propTypes).to.have.property('testProp');
   });
+
+  it('should pass through props to MockComponent', () => {
+    expect(
+      shallow(<CrudMockComponent testProp={1} />)
+        .find(MockComponent)
+        .props()
+    ).to.have.property('testProp');
+  });
 });

@@ -9,7 +9,7 @@ describe('StateMachine', () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
       actionStatePairs.forEach(([action, nextState]) =>
-        it(`${state} should change to ${nextState} for ${action}`, () => {
+        it(`should change to ${nextState} for ${action}`, () => {
           expect(transition(state, action)).to.equal(nextState);
         })
       );
