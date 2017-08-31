@@ -8,25 +8,26 @@ function getNextState(state, action, nextValue) {
   const {value, status} = state;
   const nextStatus = transition(status, action);
   switch (nextStatus) {
-    case [actions.PRESENTING]:
+    case states.PRESENTING:
       return {
-        status: nextStatus
+        status: nextStatus,
+        value: undefined
       };
 
-    case [actions.EDITING]:
+    case states.EDITING:
       return {
         status: nextStatus,
         value: nextValue
       };
 
-    case [actions.COMMITING]:
+    case states.COMMITING:
       return {
         status: nextStatus,
         value
       };
 
     default:
-      return state;
+      throw new Error('Invalid State');
   }
 }
 
@@ -45,7 +46,8 @@ export default function withCrud(WrappedComponent) {
     };
 
     state = {
-      status: states.PRESENTING
+      status: states.PRESENTING,
+      value: undefined
     };
 
     handleStart = () => {
@@ -53,11 +55,11 @@ export default function withCrud(WrappedComponent) {
     }
 
     handleChange = (nextValue) => {
-      this.replaceState((state) => getNextState(state, actions.CHANGE, nextValue));
+      this.setState((state) => getNextState(state, actions.CHANGE, nextValue));
     }
 
     handleCancel = () => {
-      this.replaceState((state) => getNextState(state, actions.CANCEL));
+      this.setState((state) => getNextState(state, actions.CANCEL));
     }
 
     handleCommit = (commitFunc) => {
@@ -65,10 +67,10 @@ export default function withCrud(WrappedComponent) {
         const maybeCommitPromise = commitFunc(this.state.value);
         if (maybeCommitPromise && maybeCommitPromise.then) {
           maybeCommitPromise
-            .then(() => this.replaceState((state) => getNextState(state, actions.SUCCESS)))
-            .catch(() => this.replaceState((state) => getNextState(state, actions.FAIL)));
+            .then(() => this.setState((state) => getNextState(state, actions.SUCCESS)))
+            .catch(() => this.setState((state) => getNextState(state, actions.FAIL)));
         } else {
-          this.replaceState((state) => getNextState(state, actions.SUCCESS));
+          this.setState((state) => getNextState(state, actions.SUCCESS));
         }
       }
     }

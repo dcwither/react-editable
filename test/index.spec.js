@@ -45,4 +45,15 @@ describe('withCrud', () => {
       'onStart', 'onCancel', 'onChange', 'onSubmit', 'onUpdate', 'onDelete', 'testProp'
     ]);
   });
+
+  it('switch to editing when onChange is called', () => {
+    const wrapper = shallow(<CrudMockComponent />);
+    wrapper.find(MockComponent).prop('onChange')('newValue');
+    expect(
+      wrapper.find(MockComponent).props()
+    ).to.include({
+      status: states.EDITING,
+      value: 'newValue'
+    });
+  });
 });
