@@ -3,11 +3,13 @@
     "env": {
         "browser": true,
         "node": true,
-        "es6": true
+        "es6": true,
+        "mocha": true
     },
     "ecmaFeatures": {
         "modules": true
     },
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "rules": {
         "array-bracket-spacing": [2, "never"],
         "brace-style": [2, "1tbs"],

@@ -17,12 +17,12 @@
     "react"
   ],
   "options": {
-    "mocha": "--require scripts/mocha_runner tests/**/*.spec.js"
+    "mocha": "--require scripts/mocha_runner test/**/*.spec.js"
   },
   "scripts": {
     "prepublish": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
-    "lint": "eslint ./src",
-    "lintfix": "eslint ./src --fix",
+    "lint": "eslint ./src ./test",
+    "lintfix": "eslint ./src ./test --fix",
     "testonly": "mocha $npm_package_options_mocha",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js"

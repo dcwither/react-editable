@@ -1,7 +1,6 @@
 import transition, {actions, states} from '../src/state-machine';
 
 import {expect} from 'chai';
-import sinon from 'sinon';
 
 const FAKE_ACTION = 'FAKE_ACTION';
 const FAKE_STATE = 'FAKE_STATE';
