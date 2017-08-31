@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
+import {states} from '../src/state-machine';
 import withCrud from '../src/index';
 
 class MockComponent extends React.PureComponent {
@@ -36,6 +37,12 @@ describe('withCrud', () => {
       shallow(<CrudMockComponent testProp={1} />)
         .find(MockComponent)
         .props()
-    ).to.have.property('testProp');
+    ).to.include({
+      testProp: 1,
+      value: undefined,
+      status: states.PRESENTING
+    }).and.to.have.all.keys([
+      'onStart', 'onCancel', 'onChange', 'onSubmit', 'onUpdate', 'onDelete', 'testProp'
+    ]);
   });
 });
