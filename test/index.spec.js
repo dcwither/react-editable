@@ -46,14 +46,52 @@ describe('withCrud', () => {
     ]);
   });
 
-  it('switch to editing when onChange is called', () => {
-    const wrapper = shallow(<CrudMockComponent />);
-    wrapper.find(MockComponent).prop('onChange')('newValue');
-    expect(
-      wrapper.find(MockComponent).props()
-    ).to.include({
-      status: states.EDITING,
-      value: 'newValue'
+  describe(`when status is ${states.PRESENTING}`, () => {
+    it(`should transition to ${states.EDITING} when onChange is called`, () => {
+      const wrapper = shallow(<CrudMockComponent />);
+      wrapper.find(MockComponent).prop('onChange')('newValue');
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.EDITING,
+        value: 'newValue'
+      });
+    });
+  });
+
+  describe(`when status is ${states.EDITING}`, () => {
+    it('should update value when onChange is called', () => {
+      const wrapper = shallow(<CrudMockComponent />);
+      wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'value'
+        })
+        .find(MockComponent)
+        .prop('onChange')('newValue');
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.EDITING,
+        value: 'newValue'
+      });
+    });
+
+    it(`should transition to ${states.COMMITING} when onSubmit is called`, () => {
+      const wrapper = shallow(<CrudMockComponent onSubmit={() => Promise.resolve()} />);
+      wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'value'
+        })
+        .find(MockComponent)
+        .prop('onSubmit')();
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.COMMITING,
+        value: 'value'
+      });
     });
   });
 });

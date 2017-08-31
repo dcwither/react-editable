@@ -63,6 +63,7 @@ export default function withCrud(WrappedComponent) {
     }
 
     handleCommit = (commitFunc) => {
+      this.setState((state) => getNextState(state, actions.COMMIT));
       if (typeof commitFunc === 'function') {
         const maybeCommitPromise = commitFunc(this.state.value);
         if (maybeCommitPromise && maybeCommitPromise.then) {
@@ -89,8 +90,8 @@ export default function withCrud(WrappedComponent) {
 
     render() {
       const {
-        props: {value: propsValue},
-        state: {value: stateValue, status, onSubmit, onUpdate, onDelete}
+        props: {value: propsValue, onSubmit, onUpdate, onDelete},
+        state: {value: stateValue, status}
       } = this;
 
       return (
