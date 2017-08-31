@@ -2,6 +2,7 @@ import transition, {actions, states} from './state-machine';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import omit from './omit';
 
 function getNextState(state, action, nextValue) {
   const {value, status} = state;
@@ -30,25 +31,22 @@ function getNextState(state, action, nextValue) {
 }
 
 export default function withCrud(WrappedComponent) {
-  return class ComponentWithCrud extends React.CreateComponent {
+  return class ComponentWithCrud extends React.Component {
     static propTypes = {
       onDelete: PropTypes.func,
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
       value: PropTypes.any,
-      ..._.omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status']),
+      ...omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status'])
     };
 
     static defaultProps = {
       valueComparitor: (a, b) => a === b
     };
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        status: states.PRESENTING
-      };
-    }
+    state = {
+      status: states.PRESENTING
+    };
 
     handleStart = () => {
       this.handleChange(this.props.value);
@@ -95,7 +93,7 @@ export default function withCrud(WrappedComponent) {
 
       return (
         <WrappedComponent
-          {..._.omit(this.props, ['value'])}
+          {...omit(this.props, ['value'])}
           status={status}
           value={status === states.PRESENTING ? propsValue : stateValue}
           onStart={this.handleStart}

@@ -14,6 +14,8 @@ const CrudMockComponent = withCrud(MockComponent);
 
 describe('withCrud', () => {
   describe('smoke tests', () => {
-    expect(() => <CrudMockComponent />).not.to.throw;
+    it('shouldn\'t fatal', () => {
+      expect(() => <CrudMockComponent />).not.to.throw;
+    })
   })
 });
