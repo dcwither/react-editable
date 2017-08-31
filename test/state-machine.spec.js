@@ -13,11 +13,11 @@ describe('StateMachine', () => {
           expect(transition(state, action)).to.equal(nextState);
         })
       );
-    })
+    });
   }
 
   it('should fail when passed invalid state', () => {
-    expect(() => transition(FAKE_STATE, FAKE_STATE)).to.throw
+    expect(() => transition(FAKE_STATE, FAKE_STATE)).to.throw;
   });
 
   stateWillTransitionTo(states.PRESENTING, [

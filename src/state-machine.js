@@ -10,7 +10,7 @@ export const actions = {
   COMMIT: 'COMMIT',
   FAIL: 'FAIL',
   SUCCESS: 'SUCCESS'
-}
+};
 
 export const transitions = {
   [states.PRESENTING]: {
@@ -29,5 +29,5 @@ export const transitions = {
 };
 
 export default function transition(state, transition) {
-  return transitions[state][transition] || state
+  return transitions[state][transition] || state;
 }

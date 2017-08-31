@@ -57,7 +57,7 @@ export default function withCrud(WrappedComponent) {
     }
 
     handleCancel = () => {
-      this.replaceState((state) => getNextState(state, actions.CANCEL))
+      this.replaceState((state) => getNextState(state, actions.CANCEL));
     }
 
     handleCommit = (commitFunc) => {
@@ -66,7 +66,7 @@ export default function withCrud(WrappedComponent) {
         if (maybeCommitPromise && maybeCommitPromise.then) {
           maybeCommitPromise
             .then(() => this.replaceState((state) => getNextState(state, actions.SUCCESS)))
-            .catch(() => this.replaceState((state) => getNextState(state, actions.FAIL)))
+            .catch(() => this.replaceState((state) => getNextState(state, actions.FAIL)));
         } else {
           this.replaceState((state) => getNextState(state, actions.SUCCESS));
         }
@@ -105,5 +105,5 @@ export default function withCrud(WrappedComponent) {
         />
       );
     }
-  }
+  };
 }
