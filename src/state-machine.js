@@ -17,14 +17,13 @@ export const transitions = {
     [actions.CHANGE]: states.EDITING
   },
   [states.EDITING]: {
-    // internal state for has changed
     [actions.CANCEL]: states.PRESENTING,
     [actions.CHANGE]: states.EDITING,
     [actions.COMMIT]: states.COMMITING
   },
   [states.COMMITING]: {
     [actions.FAIL]: states.EDITING,
-    [actions.SUCCESS]: states.PRESENTING // should never get here since it will have deleted
+    [actions.SUCCESS]: states.PRESENTING
   }
 };
 
