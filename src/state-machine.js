@@ -13,17 +13,17 @@ export const actions = {
 };
 
 export const transitions = {
-  [states.PRESENTING]: {
-    [actions.CHANGE]: states.EDITING
+  PRESENTING: {
+    CHANGE: states.EDITING
   },
-  [states.EDITING]: {
-    [actions.CANCEL]: states.PRESENTING,
-    [actions.CHANGE]: states.EDITING,
-    [actions.COMMIT]: states.COMMITING
+  EDITING: {
+    CANCEL: states.PRESENTING,
+    CHANGE: states.EDITING,
+    COMMIT: states.COMMITING
   },
-  [states.COMMITING]: {
-    [actions.FAIL]: states.EDITING,
-    [actions.SUCCESS]: states.PRESENTING
+  COMMITING: {
+    FAIL: states.EDITING,
+    SUCCESS: states.PRESENTING
   }
 };
 
