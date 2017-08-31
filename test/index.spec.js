@@ -1,9 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import withCrud from '../src/index';
 
 class MockComponent extends React.PureComponent {
+  static propTypes = {
+    testProp: PropTypes.number
+  }
+
   render() {
     return <div />;
   }
@@ -20,5 +25,9 @@ describe('withCrud', () => {
     it('should render MockComponent', () => {
       expect(shallow(<CrudMockComponent />).is(MockComponent)).to.be.true;
     });
+  });
+
+  it('should hoist MockComponent props', () => {
+    expect(CrudMockComponent.propTypes).to.have.property('testProp');
   });
 });
