@@ -35,7 +35,6 @@ function transition(state, transition) {
   return transitions[state][transition] || state
 }
 
-
 function getNextState(state, action, nextValue) {
   const {value, status} = state;
   const nextStatus = transition(status, action);
@@ -77,6 +76,7 @@ function withCrud(WrappedComponent) {
     };
 
     constructor(props) {
+      super(props);
       this.state = {
         status: states.PRESENTING
       };
