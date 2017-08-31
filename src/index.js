@@ -68,7 +68,7 @@ function withCrud(WrappedComponent) {
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
       value: PropTypes.any,
-      ..._.omit(WrappedComponent.propTypes, ['onChange', 'onSubmit', 'onCancel']),
+      ..._.omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status']),
     };
 
     static defaultProps = {
