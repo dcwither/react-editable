@@ -29,7 +29,7 @@ function getNextState(state, action, nextValue) {
   }
 }
 
-function withCrud(WrappedComponent) {
+export default function withCrud(WrappedComponent) {
   return class ComponentWithCrud extends React.CreateComponent {
     static propTypes = {
       onDelete: PropTypes.func,
