@@ -1,39 +1,7 @@
+import transition, {actions, states} from './state-machine';
+
 import PropTypes from 'prop-types';
 import React from 'react';
-
-const states = {
-  PRESENTING: 'PRESENTING',
-  EDITING: 'EDITING',
-  COMMITING: 'COMMITING'
-};
-
-const actions = {
-  CANCEL: 'CANCEL',
-  CHANGE: 'CHANGE',
-  COMMIT: 'COMMIT',
-  FAIL: 'FAIL',
-  SUCCESS: 'SUCCESS'
-}
-
-const transitions = {
-  [states.PRESENTING]: {
-    [actions.CHANGE]: states.EDITING
-  },
-  [states.EDITING]: {
-    // internal state for has changed
-    [actions.CANCEL]: states.PRESENTING,
-    [actions.CHANGE]: state.EDITING,
-    [actions.COMMIT]: state.COMMITING
-  },
-  [states.COMMITING]: {
-    [actions.FAIL]: states.EDITING,
-    [actions.SUCCESS]: states.PRESENTING // should never get here since it will have deleted
-  }
-};
-
-function transition(state, transition) {
-  return transitions[state][transition] || state
-}
 
 function getNextState(state, action, nextValue) {
   const {value, status} = state;
