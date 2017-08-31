@@ -67,7 +67,7 @@ export default function withCrud(WrappedComponent) {
       if (typeof commitFunc === 'function') {
         const maybeCommitPromise = commitFunc(this.state.value);
         if (maybeCommitPromise && maybeCommitPromise.then) {
-          maybeCommitPromise
+          return maybeCommitPromise
             .then(() => this.setState((state) => getNextState(state, actions.SUCCESS)))
             .catch(() => this.setState((state) => getNextState(state, actions.FAIL)));
         } else {

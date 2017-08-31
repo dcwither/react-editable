@@ -48,7 +48,7 @@ describe('withCrud', () => {
 
   describe(`when status is ${states.PRESENTING}`, () => {
     it(`should transition to ${states.EDITING} when onChange is called`, () => {
-      const wrapper = shallow(<CrudMockComponent />);
+      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
       wrapper.find(MockComponent).prop('onChange')('newValue');
       expect(
         wrapper.find(MockComponent).props()
@@ -61,11 +61,11 @@ describe('withCrud', () => {
 
   describe(`when status is ${states.EDITING}`, () => {
     it('should update value when onChange is called', () => {
-      const wrapper = shallow(<CrudMockComponent />);
+      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'value'
+          value: 'stateValue'
         })
         .find(MockComponent)
         .prop('onChange')('newValue');
@@ -77,12 +77,29 @@ describe('withCrud', () => {
       });
     });
 
-    it(`should transition to ${states.COMMITING} when onSubmit is called`, () => {
-      const wrapper = shallow(<CrudMockComponent onSubmit={() => Promise.resolve()} />);
+    it(`should transition to ${states.PRESENTING} when onSubmit is called without promise`, () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => {}} />);
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'value'
+          value: 'stateValue'
+        })
+        .find(MockComponent)
+        .prop('onSubmit')();
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.PRESENTING,
+        value: 'propsValue'
+      });
+    });
+
+    it(`should transition to ${states.COMMITING} when onSubmit is called with promise`, () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
         })
         .find(MockComponent)
         .prop('onSubmit')();
@@ -90,7 +107,7 @@ describe('withCrud', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.COMMITING,
-        value: 'value'
+        value: 'stateValue'
       });
     });
   });
