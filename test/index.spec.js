@@ -111,4 +111,44 @@ describe('withCrud', () => {
       });
     });
   });
+
+  describe(`when status is ${states.COMMITING}`, () => {
+    it(`should transition to ${states.PRESENTING} when promise resolves`, () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      return wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
+        })
+        .find(MockComponent)
+        .prop('onSubmit')()
+        .then(() =>
+          expect(
+            wrapper.update().find(MockComponent).props()
+          ).to.include({
+            status: states.PRESENTING,
+            value: 'propsValue'
+          })
+        );
+    });
+
+    it(`should transition to ${states.PRESENTING} when promise rejects`, () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
+      return wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
+        })
+        .find(MockComponent)
+        .prop('onSubmit')()
+        .then(() =>
+          expect(
+            wrapper.update().find(MockComponent).props()
+          ).to.include({
+            status: states.EDITING,
+            value: 'stateValue'
+          })
+        );
+    });
+  });
 });
