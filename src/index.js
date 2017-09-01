@@ -41,10 +41,6 @@ export default function withCrud(WrappedComponent) {
       ...omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status'])
     };
 
-    static defaultProps = {
-      valueComparitor: (a, b) => a === b
-    };
-
     state = {
       status: states.PRESENTING,
       value: undefined

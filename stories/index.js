@@ -1,13 +1,32 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-
-import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import { storiesOf } from '@storybook/react';
+import withCrud from '../src';
 
-import { Button, Welcome } from '@storybook/react/demo';
+class Input extends React.Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    value: React.PropTypes.string.isRequired
+  }
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+  changeAction = action('Change');
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+  handleChange = (evt) => {
+    this.changeAction(evt);
+    this.props.onChange(evt.target.value);
+  }
+
+  render() {
+    return <input
+      value={this.props.value}
+      onChange={this.handleChange}
+    />;
+  }
+}
+
+const WrappedInput = withCrud(Input);
+storiesOf('React CRUD Wrapper', module)
+  .add('to Storybook', () =>
+    <WrappedInput value='startValue' />
+  );
