@@ -1,32 +1,12 @@
-import PropTypes from 'prop-types';
+import Input from '../examples/input';
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
 import withCrud from '../src';
-
-class Input extends React.Component {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired,
-    value: React.PropTypes.string.isRequired
-  }
-
-  changeAction = action('Change');
-
-  handleChange = (evt) => {
-    this.changeAction(evt);
-    this.props.onChange(evt.target.value);
-  }
-
-  render() {
-    return <input
-      value={this.props.value}
-      onChange={this.handleChange}
-    />;
-  }
-}
+import { withInfo } from '@storybook/addon-info';
 
 const WrappedInput = withCrud(Input);
+
 storiesOf('React CRUD Wrapper', module)
-  .add('to Storybook', () =>
-    <WrappedInput value='startValue' />
-  );
+  .add('Simple Input', withInfo('Input wrapped in the CRUD decorator')(() => {
+    return <WrappedInput value='startValue' />;
+  }));

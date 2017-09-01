@@ -30,6 +30,10 @@
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.6",
+    "@storybook/addon-info": "^3.2.9",
+    "@storybook/addon-links": "^3.2.6",
+    "@storybook/react": "^3.2.8",
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
     "babel-eslint": "^6.0.2",
@@ -49,10 +53,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
-    "sinon": "^1.17.3",
-    "@storybook/react": "^3.2.8",
-    "@storybook/addon-actions": "^3.2.6",
-    "@storybook/addon-links": "^3.2.6"
+    "sinon": "^1.17.3"
   },
   "peerDependencies": {
     "react": "~0.14.8 || ^15.0.0",
