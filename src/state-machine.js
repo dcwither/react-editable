@@ -9,24 +9,40 @@ export const actions = {
   CHANGE: 'CHANGE',
   COMMIT: 'COMMIT',
   FAIL: 'FAIL',
+  START: 'START',
   SUCCESS: 'SUCCESS'
 };
 
+function edit(value) {
+  return {
+    status: states.EDITING,
+    value
+  };
+}
+
+function reset() {
+  return {
+    status: states.PRESENTING,
+    value: undefined
+  };
+}
+
 export const transitions = {
   PRESENTING: {
-    CHANGE: states.EDITING
+    START: edit,
+    CHANGE: edit
   },
   EDITING: {
-    CANCEL: states.PRESENTING,
-    CHANGE: states.EDITING,
-    COMMIT: states.COMMITING
+    CANCEL: reset,
+    CHANGE: edit,
+    COMMIT: () => ({status: states.COMMITING})
   },
   COMMITING: {
-    FAIL: states.EDITING,
-    SUCCESS: states.PRESENTING
+    FAIL: () => ({status: states.EDITING}),
+    SUCCESS: reset
   }
 };
 
-export default function transition(state, transition) {
-  return transitions[state][transition] || state;
+export default function transition(status, action, value) {
+  return transitions[status][action] ? transitions[status][action](value) : {status};
 }

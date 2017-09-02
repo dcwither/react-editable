@@ -4,33 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import omit from './omit';
 
-function getNextState(state, action, nextValue) {
-  const {value, status} = state;
-  const nextStatus = transition(status, action);
-  switch (nextStatus) {
-    case states.PRESENTING:
-      return {
-        status: nextStatus,
-        value: undefined
-      };
-
-    case states.EDITING:
-      return {
-        status: nextStatus,
-        value: nextValue
-      };
-
-    case states.COMMITING:
-      return {
-        status: nextStatus,
-        value
-      };
-
-    default:
-      throw new Error('Invalid State');
-  }
-}
-
 export default function withCrud(WrappedComponent) {
   return class ComponentWithCrud extends React.Component {
     static propTypes = {
@@ -47,27 +20,27 @@ export default function withCrud(WrappedComponent) {
     };
 
     handleStart = () => {
-      this.handleChange(this.props.value);
+      this.setState((state) => transition(state.status, actions.START, this.props.value));
     }
 
     handleChange = (nextValue) => {
-      this.setState((state) => getNextState(state, actions.CHANGE, nextValue));
+      this.setState((state) => transition(state.status, actions.CHANGE, nextValue));
     }
 
     handleCancel = () => {
-      this.setState((state) => getNextState(state, actions.CANCEL));
+      this.setState((state) => transition(state.status, actions.CANCEL));
     }
 
     handleCommit = (commitFunc) => {
-      this.setState((state) => getNextState(state, actions.COMMIT));
+      this.setState((state) => transition(state.status, actions.COMMIT));
       if (typeof commitFunc === 'function') {
         const maybeCommitPromise = commitFunc(this.state.value);
         if (maybeCommitPromise && maybeCommitPromise.then) {
           return maybeCommitPromise
-            .then(() => this.setState((state) => getNextState(state, actions.SUCCESS)))
-            .catch(() => this.setState((state) => getNextState(state, actions.FAIL, state.value)));
+            .then(() => this.setState((state) => transition(state.status, actions.SUCCESS)))
+            .catch(() => this.setState((state) => transition(state.status, actions.FAIL, state.value)));
         } else {
-          this.setState((state) => getNextState(state, actions.SUCCESS));
+          this.setState((state) => transition(state.status, actions.SUCCESS));
         }
       }
     }
