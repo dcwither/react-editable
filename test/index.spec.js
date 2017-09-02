@@ -83,7 +83,7 @@ describe('withCrud', () => {
         .props()
         .onDelete();
 
-      expect(deleteSpy.calledWith('propsValue')).to.be.true;
+      expect(deleteSpy).to.have.been.calledWith('propsValue');
     });
   });
 
@@ -206,17 +206,40 @@ describe('withCrud', () => {
         );
     });
 
-    it('promise should cancel when unmount', () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onDelete={() => Promise.reject()} />);
+    it('rejected promise shouldn\'t reach setState when unmounted', () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
       const instance = wrapper.instance();
-      sinon.spy(instance, 'setState');
       const promise = wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
+        })
         .find(MockComponent)
         .props()
-        .onDelete()
-        // isn't called a third time with a failure
-        .then(() => expect(instance.setState.callCount).to.equal(2));
+        .onSubmit()
+        // setState shouldn't be called after this point
+        .then(() => expect(instance.setState).to.not.have.been.called);
 
+      sinon.spy(instance, 'setState');
+      wrapper.unmount();
+      return promise;
+    });
+
+    it('resolved promise shouldn\'t reach setState when unmounted', () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      const instance = wrapper.instance();
+      const promise = wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
+        })
+        .find(MockComponent)
+        .props()
+        .onSubmit()
+        // setState shouldn't be called after this point
+        .then(() => expect(instance.setState).to.not.have.been.called);
+
+      sinon.spy(instance, 'setState');
       wrapper.unmount();
       return promise;
     });

@@ -56,7 +56,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
-    "sinon": "^1.17.3"
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.13.0"
   },
   "peerDependencies": {
     "react": "~0.14.8 || ^15.0.0",
