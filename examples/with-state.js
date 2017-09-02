@@ -16,7 +16,7 @@ function withState(WrappedComponent, usePromises) {
     maybeDelayThenSetState(nextState) {
       if (usePromises) {
         return Promise
-          .delay(2000)
+          .delay(500)
           .then(() => this.setState(nextState));
       } else {
         this.setState(nextState);
@@ -37,7 +37,7 @@ function withState(WrappedComponent, usePromises) {
         isDeleted: true
       });
     }
-    
+
     handleReset = () => {
       this.setState({
         value: this.props.initialValue,
