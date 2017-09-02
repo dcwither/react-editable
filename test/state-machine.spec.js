@@ -8,7 +8,7 @@ const FAKE_STATE = 'FAKE_STATE';
 describe('StateMachine', () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
-      it('should check all actions', () => {
+      it('META: should check all actions', () => {
         expect(actionStatePairs.map(([action]) => action)).to.include.members(Object.keys(actions));
       });
 
