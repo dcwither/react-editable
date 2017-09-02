@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
+import sinon from 'sinon';
 import {states} from '../src/state-machine';
 import withCrud from '../src/index';
 
@@ -42,14 +43,19 @@ describe('withCrud', () => {
       value: undefined,
       status: states.PRESENTING
     }).and.to.have.all.keys([
-      'onStart', 'onCancel', 'onChange', 'onSubmit', 'onUpdate', 'onDelete', 'testProp'
+      'onStart',
+      'onCancel',
+      'onChange',
+      'onSubmit',
+      'onUpdate',
+      'onDelete'
     ]);
   });
 
   describe(`when status is ${states.PRESENTING}`, () => {
     it(`should transition to ${states.EDITING} when onStart is called`, () => {
       const wrapper = shallow(<CrudMockComponent value='propsValue' />);
-      wrapper.find(MockComponent).prop('onStart')();
+      wrapper.find(MockComponent).props().onStart();
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
@@ -60,13 +66,24 @@ describe('withCrud', () => {
 
     it(`should transition to ${states.EDITING} when onChange is called`, () => {
       const wrapper = shallow(<CrudMockComponent value='propsValue' />);
-      wrapper.find(MockComponent).prop('onChange')('newValue');
+      wrapper.find(MockComponent).props().onChange('newValue');
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.EDITING,
         value: 'newValue'
       });
+    });
+
+    it('should be able to delete', () => {
+      const deleteSpy = sinon.spy();
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onDelete={deleteSpy} />);
+      wrapper
+        .find(MockComponent)
+        .props()
+        .onDelete();
+
+      expect(deleteSpy.calledWith('propsValue')).to.be.true;
     });
   });
 
@@ -79,7 +96,9 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onChange')('newValue');
+        .props()
+        .onChange('newValue');
+
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
@@ -96,7 +115,9 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onStart')();
+        .props()
+        .onStart();
+
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
@@ -113,7 +134,9 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onSubmit')();
+        .props()
+        .onSubmit();
+
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
@@ -130,7 +153,9 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onSubmit')();
+        .props()
+        .onSubmit();
+
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
@@ -149,7 +174,8 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onSubmit')()
+        .props()
+        .onSubmit()
         .then(() =>
           expect(
             wrapper.update().find(MockComponent).props()
@@ -168,7 +194,8 @@ describe('withCrud', () => {
           value: 'stateValue'
         })
         .find(MockComponent)
-        .prop('onSubmit')()
+        .props()
+        .onSubmit()
         .then(() =>
           expect(
             wrapper.update().find(MockComponent).props()
