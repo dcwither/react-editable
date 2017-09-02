@@ -37,6 +37,13 @@ function withState(WrappedComponent, usePromises) {
         isDeleted: true
       });
     }
+    
+    handleReset = () => {
+      this.setState({
+        value: this.props.initialValue,
+        isDeleted: false
+      });
+    }
 
     render() {
       const {
@@ -44,7 +51,10 @@ function withState(WrappedComponent, usePromises) {
       } = this;
 
       if (isDeleted) {
-        return <div>Item Deleted</div>;
+        return <div>
+          Item Deleted
+          <button onClick={this.handleReset}>Reset</button>
+        </div>;
       } else {
         return <WrappedComponent
           onDelete={this.handleDelete}

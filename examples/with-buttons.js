@@ -28,7 +28,7 @@ const buttonDescriptions = [
     eventName: 'onDelete',
     title: 'Delete',
     id: 'delete',
-    visibleStates: [states.EDITING, states.COMMITING]
+    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITING]
   },
   {
     eventName: 'onSubmit',

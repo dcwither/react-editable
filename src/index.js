@@ -38,7 +38,7 @@ export default function withCrud(WrappedComponent) {
         if (maybeCommitPromise && maybeCommitPromise.then) {
           return maybeCommitPromise
             .then(() => this.setState((state) => transition(state.status, actions.SUCCESS)))
-            .catch(() => this.setState((state) => transition(state.status, actions.FAIL, state.value)));
+            .catch(() => this.setState((state) => transition(state.status, actions.FAIL)));
         } else {
           this.setState((state) => transition(state.status, actions.SUCCESS));
         }
@@ -54,6 +54,7 @@ export default function withCrud(WrappedComponent) {
     }
 
     handleDelete = () => {
+      this.handleStart(); // Delete while status === PRESENTING
       return this.handleCommit(this.props.onDelete);
     }
 
