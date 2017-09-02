@@ -44,8 +44,8 @@ const buttonDescriptions = [
   }
 ];
 
-export default function withCrudButtons(WrappedComponent, ...buttons) {
-  return class ComponentWithCrudButtons extends React.Component {
+function withButtons(WrappedComponent, buttons) {
+  return class ComponentWithButtons extends React.Component {
     static propTypes = {
       ...flow(
         keyBy('eventName'),
@@ -64,7 +64,13 @@ export default function withCrudButtons(WrappedComponent, ...buttons) {
         filter(({eventName}) => Boolean(this.props[eventName])),
         filter(({visibleStates}) => includes(status)(visibleStates)),
         map(({eventName, title, identifier}) =>
-          <button key={identifier} onClick={this.props[eventName]}>{title}</button>
+          <button
+            disabled={status === states.COMMITING}
+            key={identifier}
+            onClick={this.props[eventName]}
+          >
+            {title}
+          </button>
         )
       )(buttonDescriptions);
     }
@@ -80,3 +86,6 @@ export default function withCrudButtons(WrappedComponent, ...buttons) {
 
   };
 }
+
+export default (...buttons) =>
+  (WrappedComponent) => withButtons(WrappedComponent, buttons);

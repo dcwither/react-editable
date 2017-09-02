@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {states} from '../src/state-machine';
 
 export default class Input extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    value: React.PropTypes.string.isRequired
+    status: PropTypes.oneOf(Object.keys(states)).isRequired,
+    value: PropTypes.string.isRequired
   }
 
   handleChange = (evt) => {
@@ -12,9 +14,11 @@ export default class Input extends React.Component {
   }
 
   render() {
+    const {status, value} = this.props;
     return <input
-      value={this.props.value}
+      disabled={status === states.COMMITING}
       onChange={this.handleChange}
+      value={value}
     />;
   }
 }
