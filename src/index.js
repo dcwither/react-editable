@@ -2,6 +2,7 @@ import transition, {actions, states} from './state-machine';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import makeCancelable from './make-cancelable';
 import omit from './omit';
 
 export default function withCrud(WrappedComponent) {
@@ -19,6 +20,12 @@ export default function withCrud(WrappedComponent) {
       value: undefined
     };
 
+    commitPromise = null;
+
+    componentWillUnmount() {
+      this.commitPromise && this.commitPromise.cancel();
+    }
+
     handleStart = () => {
       this.setState((state) => transition(state.status, actions.START, this.props.value));
     }
@@ -33,12 +40,21 @@ export default function withCrud(WrappedComponent) {
 
     handleCommit = (commitFunc) => {
       this.setState((state) => transition(state.status, actions.COMMIT));
+
       if (typeof commitFunc === 'function') {
         const maybeCommitPromise = commitFunc(this.state.value);
         if (maybeCommitPromise && maybeCommitPromise.then) {
-          return maybeCommitPromise
+          this.commitPromise = makeCancelable(maybeCommitPromise);
+          return this.commitPromise
+            .promise
             .then(() => this.setState((state) => transition(state.status, actions.SUCCESS)))
-            .catch(() => this.setState((state) => transition(state.status, actions.FAIL)));
+            .catch((response) => {
+              if (!response || !response.isCanceled) {
+                this.setState((state) => transition(state.status, actions.FAIL));
+              }
+            })
+            .then(() => this.commitPromise = null);
+
         } else {
           this.setState((state) => transition(state.status, actions.SUCCESS));
         }

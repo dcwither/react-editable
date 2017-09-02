@@ -178,7 +178,7 @@ describe('withCrud', () => {
         .onSubmit()
         .then(() =>
           expect(
-            wrapper.update().find(MockComponent).props()
+            wrapper.find(MockComponent).props()
           ).to.include({
             status: states.PRESENTING,
             value: 'propsValue'
@@ -198,12 +198,27 @@ describe('withCrud', () => {
         .onSubmit()
         .then(() =>
           expect(
-            wrapper.update().find(MockComponent).props()
+            wrapper.find(MockComponent).props()
           ).to.include({
             status: states.EDITING,
             value: 'stateValue'
           })
         );
+    });
+
+    it('promise should cancel when unmount', () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' onDelete={() => Promise.reject()} />);
+      const instance = wrapper.instance();
+      sinon.spy(instance, 'setState');
+      const promise = wrapper
+        .find(MockComponent)
+        .props()
+        .onDelete()
+        // isn't called a third time with a failure
+        .then(() => expect(instance.setState.callCount).to.equal(2));
+
+      wrapper.unmount();
+      return promise;
     });
   });
 });
