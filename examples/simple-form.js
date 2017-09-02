@@ -24,7 +24,7 @@ export default class SimpleForm extends React.Component {
   renderInputs() {
     const {status, value} = this.props;
     return value.map(({title, value: inputValue}, idx) =>
-      <li>
+      <li key={title} className='form-item'>
         <span>{title}: </span>
         <Input
           onChange={(nextValue) => this.handleChange(nextValue, idx)}

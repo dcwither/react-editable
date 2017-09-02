@@ -16,6 +16,7 @@ export default class Input extends React.Component {
   render() {
     const {status, value} = this.props;
     return <input
+      className='input'
       disabled={status === states.COMMITING}
       onChange={this.handleChange}
       value={value}

@@ -5,7 +5,7 @@ import React from 'react';
 function withState(WrappedComponent, usePromises) {
   return class ComponentWithState extends React.Component {
     static propTypes = {
-      initialValue: PropTypes.any
+      initialValue: WrappedComponent.propTypes.value || PropTypes.any
     };
 
     state = {
