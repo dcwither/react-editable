@@ -53,10 +53,12 @@
     "jsdom": "^8.1.0",
     "lodash": "^4.17.4",
     "mocha": "^2.4.5",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.9.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
+    "sass-loader": "^6.0.6",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.13.0"
   },
