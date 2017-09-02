@@ -78,7 +78,7 @@ function withButtons(WrappedComponent, buttons) {
     render() {
       return <div>
         <WrappedComponent {...this.props} />
-        <div>
+        <div className='buttons'>
           {this.renderButtons()}
         </div>
       </div>;

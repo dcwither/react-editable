@@ -24,8 +24,8 @@ export default class SimpleForm extends React.Component {
   renderInputs() {
     const {status, value} = this.props;
     return value.map(({title, value: inputValue}, idx) =>
-      <li key={title} className='form-item'>
-        <span>{title}: </span>
+      <li key={idx} className='form-item'>
+        <label title={title}>{title}:</label>
         <Input
           onChange={(nextValue) => this.handleChange(nextValue, idx)}
           value={inputValue}
@@ -36,7 +36,7 @@ export default class SimpleForm extends React.Component {
   }
 
   render() {
-    return <ul>
+    return <ul className='form'>
       {this.renderInputs()}
     </ul>;
   }

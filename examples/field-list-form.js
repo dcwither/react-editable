@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import SimpleForm from './simple-form';
+import {isEmpty} from 'lodash/fp';
 import {states} from '../src/state-machine';
 import update from 'immutability-helper';
 
@@ -38,11 +39,12 @@ export default class FieldListForm extends React.Component {
   }
 
   render() {
+    const {fieldName} = this.state;
     return <div>
       <SimpleForm {...this.props} />
       <input onChange={this.handleChangeFieldName} value={this.state.fieldName} />
       {' '}
-      <button onClick={this.handleAddField}>Add Field</button>
+      <button disabled={isEmpty(fieldName)} onClick={this.handleAddField}>Add Field</button>
     </div>;
   }
 }
