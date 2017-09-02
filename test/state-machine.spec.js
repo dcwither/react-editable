@@ -39,17 +39,17 @@ describe('StateMachine', () => {
     [actions.START, states.EDITING],
     [actions.CANCEL, states.PRESENTING],
     [actions.CHANGE, states.EDITING],
-    [actions.COMMIT, states.COMMITING],
+    [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.EDITING],
     [actions.SUCCESS, states.EDITING]
   ]);
 
-  stateWillTransitionTo(states.COMMITING, [
-    [FAKE_ACTION, states.COMMITING],
-    [actions.START, states.COMMITING],
-    [actions.CANCEL, states.COMMITING],
-    [actions.CHANGE, states.COMMITING],
-    [actions.COMMIT, states.COMMITING],
+  stateWillTransitionTo(states.COMMITTING, [
+    [FAKE_ACTION, states.COMMITTING],
+    [actions.START, states.COMMITTING],
+    [actions.CANCEL, states.COMMITTING],
+    [actions.CHANGE, states.COMMITTING],
+    [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.EDITING],
     [actions.SUCCESS, states.PRESENTING]
   ]);

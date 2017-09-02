@@ -22,25 +22,25 @@ const buttonDescriptions = [
     eventName: 'onCancel',
     title: 'Cancel',
     id: 'cancel',
-    visibleStates: [states.EDITING, states.COMMITING]
+    visibleStates: [states.EDITING, states.COMMITTING]
   },
   {
     eventName: 'onDelete',
     title: 'Delete',
     id: 'delete',
-    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITING]
+    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITTING]
   },
   {
     eventName: 'onSubmit',
     title: 'Submit',
     id: 'submit',
-    visibleStates: [states.EDITING, states.COMMITING]
+    visibleStates: [states.EDITING, states.COMMITTING]
   },
   {
     eventName: 'onUpdate',
     title: 'Update',
     id: 'update',
-    visibleStates: [states.EDITING, states.COMMITING]
+    visibleStates: [states.EDITING, states.COMMITTING]
   }
 ];
 
@@ -65,7 +65,7 @@ function withButtons(WrappedComponent, buttons) {
         filter(({visibleStates}) => includes(status)(visibleStates)),
         map(({eventName, title, identifier}) =>
           <button
-            disabled={status === states.COMMITING}
+            disabled={status === states.COMMITTING}
             key={identifier}
             onClick={this.props[eventName]}
           >

@@ -1,7 +1,7 @@
 export const states = {
   PRESENTING: 'PRESENTING',
   EDITING: 'EDITING',
-  COMMITING: 'COMMITING'
+  COMMITTING: 'COMMITTING'
 };
 
 export const actions = {
@@ -35,9 +35,9 @@ export const transitions = {
   EDITING: {
     CANCEL: reset,
     CHANGE: edit,
-    COMMIT: () => ({status: states.COMMITING})
+    COMMIT: () => ({status: states.COMMITTING})
   },
-  COMMITING: {
+  COMMITTING: {
     FAIL: () => ({status: states.EDITING}),
     SUCCESS: reset
   }

@@ -145,7 +145,7 @@ describe('withCrud', () => {
       });
     });
 
-    it(`should transition to ${states.COMMITING} when onSubmit is called with promise`, () => {
+    it(`should transition to ${states.COMMITTING} when onSubmit is called with promise`, () => {
       const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       wrapper
         .setState({
@@ -159,13 +159,13 @@ describe('withCrud', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.COMMITING,
+        status: states.COMMITTING,
         value: 'stateValue'
       });
     });
   });
 
-  describe(`when status is ${states.COMMITING}`, () => {
+  describe(`when status is ${states.COMMITTING}`, () => {
     it(`should transition to ${states.PRESENTING} when promise resolves`, () => {
       const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       return wrapper
