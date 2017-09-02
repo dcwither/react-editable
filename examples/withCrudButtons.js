@@ -9,13 +9,39 @@ import {
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import {states} from '../src/state-machine';
 
 const buttonDescriptions = [
-  {eventName: 'onStart', title: 'Start', id: 'start'},
-  {eventName: 'onCancel', title: 'Cancel', id: 'cancel'},
-  {eventName: 'onDelete', title: 'Delete', id: 'delete'},
-  {eventName: 'onSubmit', title: 'Submit', id: 'submit'},
-  {eventName: 'onUpdate', title: 'Update', id: 'update'}
+  {
+    eventName: 'onStart',
+    title: 'Start',
+    id: 'start',
+    visibleStates: [states.PRESENTING]
+  },
+  {
+    eventName: 'onCancel',
+    title: 'Cancel',
+    id: 'cancel',
+    visibleStates: [states.EDITING, states.COMMITING]
+  },
+  {
+    eventName: 'onDelete',
+    title: 'Delete',
+    id: 'delete',
+    visibleStates: [states.EDITING, states.COMMITING]
+  },
+  {
+    eventName: 'onSubmit',
+    title: 'Submit',
+    id: 'submit',
+    visibleStates: [states.EDITING, states.COMMITING]
+  },
+  {
+    eventName: 'onUpdate',
+    title: 'Update',
+    id: 'update',
+    visibleStates: [states.EDITING, states.COMMITING]
+  }
 ];
 
 export default function withCrudButtons(WrappedComponent, ...buttons) {
@@ -26,13 +52,17 @@ export default function withCrudButtons(WrappedComponent, ...buttons) {
         mapValues(() => PropTypes.func)
       )(buttonDescriptions),
       value: PropTypes.any,
+      status: PropTypes.oneOf(states).isRequired,
       ...WrappedComponent.propTypes
     };
 
-    renderActions() {
+    renderButtons() {
+      const {status} = this.props;
+
       return flow(
         filter(({id}) => includes(id)(buttons)),
         filter(({eventName}) => Boolean(this.props[eventName])),
+        filter(({visibleStates}) => includes(status)(visibleStates)),
         map(({eventName, title, identifier}) =>
           <button key={identifier} onClick={this.props[eventName]}>{title}</button>
         )
@@ -43,7 +73,7 @@ export default function withCrudButtons(WrappedComponent, ...buttons) {
       return <div>
         <WrappedComponent {...this.props} />
         <div>
-          {this.renderActions()}
+          {this.renderButtons()}
         </div>
       </div>;
     }
