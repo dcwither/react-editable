@@ -47,6 +47,17 @@ describe('withCrud', () => {
   });
 
   describe(`when status is ${states.PRESENTING}`, () => {
+    it(`should transition to ${states.EDITING} when onStart is called`, () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      wrapper.find(MockComponent).prop('onStart')();
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.EDITING,
+        value: 'propsValue'
+      });
+    });
+
     it(`should transition to ${states.EDITING} when onChange is called`, () => {
       const wrapper = shallow(<CrudMockComponent value='propsValue' />);
       wrapper.find(MockComponent).prop('onChange')('newValue');
@@ -74,6 +85,23 @@ describe('withCrud', () => {
       ).to.include({
         status: states.EDITING,
         value: 'newValue'
+      });
+    });
+
+    it('should not change when onStart is called', () => {
+      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      wrapper
+        .setState({
+          status: states.EDITING,
+          value: 'stateValue'
+        })
+        .find(MockComponent)
+        .prop('onStart')();
+      expect(
+        wrapper.find(MockComponent).props()
+      ).to.include({
+        status: states.EDITING,
+        value: 'stateValue'
       });
     });
 
