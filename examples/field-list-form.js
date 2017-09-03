@@ -1,5 +1,5 @@
+import FlatButton from 'material-ui/FlatButton';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import SimpleForm from './simple-form';
 import TextField from 'material-ui/TextField';
@@ -51,7 +51,7 @@ export default class FieldListForm extends React.Component {
           value={this.state.fieldName}
         />
         {' '}
-        <RaisedButton
+        <FlatButton
           disabled={isEmpty(fieldName)}
           label='Add Field'
           onClick={this.handleAddField}

@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import PropTypes from 'prop-types';
+import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import {omit} from 'lodash/fp';
 
@@ -54,8 +55,7 @@ function withState(WrappedComponent, usePromises) {
 
       if (isDeleted) {
         return <div>
-          Item Deleted
-          <button onClick={this.handleReset}>Reset</button>
+          <RaisedButton onClick={this.handleReset} primary label='Item Deleted - Reset' style={{margin: '2em'}}/>
         </div>;
       } else {
         return <WrappedComponent

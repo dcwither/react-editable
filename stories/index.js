@@ -45,6 +45,6 @@ storiesOf('React CRUD Wrapper', module)
   .add('Form With Dynamic Fields', withInfo('Input wrapped in the CRUD decorator')(() => {
     const FieldListFormContainer = composeWithState(FieldListForm);
     return <MuiThemeProvider>
-      <FieldListFormContainer initialValue={[]} />
+      <FieldListFormContainer initialValue={[{title: 'Field 1', value: ''},]} />
     </MuiThemeProvider>;
   }));
