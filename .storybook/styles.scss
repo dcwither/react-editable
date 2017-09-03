@@ -6,26 +6,8 @@
 
 .form-item {
   list-style: none;
-  padding-bottom: 10px;
-
-  > label {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-    white-space: nowrap;
-    width: 6em;
-  }
-}
-
-.input {
-  width: 15em;
 }
 
 .buttons {
-  padding-top: 10px;
-
-  > button {
-    margin-right: 5px;
-  }
+  margin-top: 1em;
 }

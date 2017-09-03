@@ -8,6 +8,7 @@ import {
 } from 'lodash/fp';
 
 import PropTypes from 'prop-types';
+import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import {states} from '../src/state-machine';
 
@@ -16,31 +17,36 @@ const buttonDescriptions = [
     eventName: 'onStart',
     title: 'Start',
     id: 'start',
-    visibleStates: [states.PRESENTING]
+    visibleStates: [states.PRESENTING],
+    type: 'PRIMARY'
   },
   {
     eventName: 'onCancel',
     title: 'Cancel',
     id: 'cancel',
-    visibleStates: [states.EDITING, states.COMMITTING]
-  },
-  {
-    eventName: 'onDelete',
-    title: 'Delete',
-    id: 'delete',
-    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITTING]
+    visibleStates: [states.EDITING, states.COMMITTING],
+    type: 'DEFAULT'
   },
   {
     eventName: 'onSubmit',
     title: 'Submit',
     id: 'submit',
-    visibleStates: [states.EDITING, states.COMMITTING]
+    visibleStates: [states.EDITING, states.COMMITTING],
+    type: 'PRIMARY'
   },
   {
     eventName: 'onUpdate',
     title: 'Update',
     id: 'update',
-    visibleStates: [states.EDITING, states.COMMITTING]
+    visibleStates: [states.EDITING, states.COMMITTING],
+    type: 'PRIMARY'
+  },
+  {
+    eventName: 'onDelete',
+    title: 'Delete',
+    id: 'delete',
+    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITTING],
+    type: 'SECONDARY'
   }
 ];
 
@@ -52,7 +58,7 @@ function withButtons(WrappedComponent, buttons) {
         mapValues(() => PropTypes.func)
       )(buttonDescriptions),
       value: PropTypes.any,
-      status: PropTypes.oneOf(states).isRequired,
+      status: PropTypes.oneOf(Object.keys(states)).isRequired,
       ...WrappedComponent.propTypes
     };
 
@@ -63,14 +69,16 @@ function withButtons(WrappedComponent, buttons) {
         filter(({id}) => includes(id)(buttons)),
         filter(({eventName}) => Boolean(this.props[eventName])),
         filter(({visibleStates}) => includes(status)(visibleStates)),
-        map(({eventName, title, identifier}) =>
-          <button
+        map(({eventName, title, id, type}) =>
+          <RaisedButton
             disabled={status === states.COMMITTING}
-            key={identifier}
+            key={id}
+            label={title}
             onClick={this.props[eventName]}
-          >
-            {title}
-          </button>
+            primary={type === 'PRIMARY'}
+            secondary={type === 'SECONDARY'}
+            style={{marginRight: '1em'}}
+          />
         )
       )(buttonDescriptions);
     }

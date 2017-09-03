@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {omit} from 'lodash/fp';
 
 function withState(WrappedComponent, usePromises) {
   return class ComponentWithState extends React.Component {
@@ -47,7 +48,8 @@ function withState(WrappedComponent, usePromises) {
 
     render() {
       const {
-        state: {value, isDeleted}
+        state: {value, isDeleted},
+        props
       } = this;
 
       if (isDeleted) {
@@ -61,6 +63,7 @@ function withState(WrappedComponent, usePromises) {
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
           value={value}
+          {...omit('initialValue')(props)}
         />;
       }
     }

@@ -52,6 +52,7 @@
     "immutability-helper": "^2.3.1",
     "jsdom": "^8.1.0",
     "lodash": "^4.17.4",
+    "material-ui": "^0.19.1",
     "mocha": "^2.4.5",
     "node-sass": "^4.5.3",
     "nodemon": "^1.9.1",

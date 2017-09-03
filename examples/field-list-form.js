@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
+import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import SimpleForm from './simple-form';
+import TextField from 'material-ui/TextField';
 import {isEmpty} from 'lodash/fp';
 import {states} from '../src/state-machine';
 import update from 'immutability-helper';
@@ -42,9 +44,19 @@ export default class FieldListForm extends React.Component {
     const {fieldName} = this.state;
     return <div>
       <SimpleForm {...this.props} />
-      <input onChange={this.handleChangeFieldName} value={this.state.fieldName} />
-      {' '}
-      <button disabled={isEmpty(fieldName)} onClick={this.handleAddField}>Add Field</button>
+      <div>
+        <TextField
+          floatingLabelText='Field Name'
+          onChange={this.handleChangeFieldName}
+          value={this.state.fieldName}
+        />
+        {' '}
+        <RaisedButton
+          disabled={isEmpty(fieldName)}
+          label='Add Field'
+          onClick={this.handleAddField}
+        />
+      </div>
     </div>;
   }
 }
