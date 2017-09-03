@@ -4,7 +4,7 @@ import React from 'react';
 import {states} from '../src/state-machine';
 import update from 'immutability-helper';
 
-export default class SimpleForm extends React.Component {
+export default class Form extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     status: PropTypes.oneOf(Object.keys(states)).isRequired,

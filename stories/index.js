@@ -1,8 +1,9 @@
-import FieldListForm from '../examples/field-list-form';
+import Container from '../examples/container';
+import DynamicFieldForm from '../examples/dynamic-field-form';
+import Form from '../examples/form';
 import Input from '../examples/input';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
-import SimpleForm from '../examples/simple-form';
 import {compose} from 'lodash/fp';
 import {storiesOf} from '@storybook/react';
 import withButtons from '../examples/with-buttons';
@@ -17,34 +18,42 @@ const composeWithState = compose(
 );
 
 storiesOf('React CRUD Wrapper', module)
-  .add('Simple Input', withInfo('Input wrapped in the CRUD decorator')(() => {
+  .add('Input', withInfo('Input wrapped in the CRUD decorator')(() => {
     const InputWithCrud = withCrud(Input);
     return <MuiThemeProvider>
-      <InputWithCrud title='Input' value='' />
+      <Container>
+        <InputWithCrud title='Input' value='' />
+      </Container>
     </MuiThemeProvider>;
   }))
   .add('Input With Buttons', withInfo('Input wrapped in the CRUD decorator')(() => {
     const InputContainer = composeWithState(Input);
     return <MuiThemeProvider>
-      <InputContainer title='Input' initialValue='' />
+      <Container>
+        <InputContainer title='Input' initialValue='' />
+      </Container>
     </MuiThemeProvider>;
   }))
-  .add('Simple Form With Buttons', withInfo('Input wrapped in the CRUD decorator')(() => {
-    const FormContainer = composeWithState(SimpleForm);
+  .add('Form With Buttons', withInfo('Input wrapped in the CRUD decorator')(() => {
+    const FormContainer = composeWithState(Form);
     return <MuiThemeProvider>
-      <FormContainer
-        initialValue={[
-          {title: 'First Name', value: ''},
-          {title: 'Last Name', value: ''},
-          {title: 'Email', value: ''},
-          {title: 'Password', value: ''},
-        ]}
-      />
+      <Container>
+        <FormContainer
+          initialValue={[
+            {title: 'First Name', value: ''},
+            {title: 'Last Name', value: ''},
+            {title: 'Email', value: ''},
+            {title: 'Password', value: ''},
+          ]}
+        />
+    </Container>
     </MuiThemeProvider>;
   }))
   .add('Form With Dynamic Fields', withInfo('Input wrapped in the CRUD decorator')(() => {
-    const FieldListFormContainer = composeWithState(FieldListForm);
+    const DynamicFieldFormContainer = composeWithState(DynamicFieldForm);
     return <MuiThemeProvider>
-      <FieldListFormContainer initialValue={[{title: 'Field 1', value: ''},]} />
+      <Container>
+        <DynamicFieldFormContainer initialValue={[{title: 'Field 1', value: ''},]} />
+      </Container>
     </MuiThemeProvider>;
   }));

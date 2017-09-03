@@ -1,13 +1,13 @@
 import FlatButton from 'material-ui/FlatButton';
+import Form from './form';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SimpleForm from './simple-form';
 import TextField from 'material-ui/TextField';
 import {isEmpty} from 'lodash/fp';
 import {states} from '../src/state-machine';
 import update from 'immutability-helper';
 
-export default class FieldListForm extends React.Component {
+export default class DynamicFieldForm extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     status: PropTypes.oneOf(Object.keys(states)).isRequired,
@@ -43,14 +43,14 @@ export default class FieldListForm extends React.Component {
   render() {
     const {fieldName} = this.state;
     return <div>
-      <SimpleForm {...this.props} />
+      <Form {...this.props} />
       <div>
         <TextField
           floatingLabelText='Field Name'
           onChange={this.handleChangeFieldName}
+          style={{marginRight: '1em'}}
           value={this.state.fieldName}
         />
-        {' '}
         <FlatButton
           disabled={isEmpty(fieldName)}
           label='Add Field'
