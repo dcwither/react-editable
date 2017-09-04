@@ -56,8 +56,7 @@ export default function withEditable(WrappedComponent) {
       if (typeof commitFunc === 'function') {
         // TODO: find a way to test this async behavior (enzyme makes setState synchronous)
         // May have just started and not yet updated state
-        const toCommit = this.state.status === states.PRESENTING ? this.props.value : this.state.value;
-        const maybeCommitPromise = commitFunc(toCommit);
+        const maybeCommitPromise = commitFunc(this._getValue());
 
         if (maybeCommitPromise && maybeCommitPromise.then) {
           this.commitPromise = makeCancelable(maybeCommitPromise);
@@ -90,11 +89,12 @@ export default function withEditable(WrappedComponent) {
       return this.handleCommit(this.props.onDelete);
     }
 
+    _getValue() {
+      return this.state.status === states.PRESENTING ? this.props.value : this.state.value;
+    }
+
     render() {
-      const {
-        props: {value: propsValue},
-        state: {value: stateValue, status},
-      } = this;
+      const {status} = this.state;
 
       return (
         <WrappedComponent
@@ -106,7 +106,7 @@ export default function withEditable(WrappedComponent) {
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
           status={status}
-          value={status === states.PRESENTING ? propsValue : stateValue}
+          value={this._getValue()}
         />
       );
     }
