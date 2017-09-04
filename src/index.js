@@ -5,8 +5,8 @@ import React from 'react';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
 
-export default function withCrud(WrappedComponent) {
-  return class ComponentWithCrud extends React.Component {
+export default function withEditable(WrappedComponent) {
+  return class ComponentWithEditable extends React.Component {
     static propTypes = {
       onDelete: PropTypes.func,
       onSubmit: PropTypes.func,

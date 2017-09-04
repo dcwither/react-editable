@@ -7,26 +7,26 @@ import React from 'react';
 import {compose} from 'lodash/fp';
 import {storiesOf} from '@storybook/react';
 import withButtons from '../examples/with-buttons';
-import withCrud from '../src';
+import withEditable from '../src';
 import {withInfo} from '@storybook/addon-info';
 import withState from '../examples/with-state';
 
 const composeWithState = compose(
   withState(true),
-  withCrud,
+  withEditable,
   withButtons('start', 'cancel', 'submit', 'delete')
 );
 
-storiesOf('React CRUD Wrapper', module)
-  .add('Input', withInfo('Input wrapped in the CRUD decorator')(() => {
-    const InputWithCrud = withCrud(Input);
+storiesOf('React Editable Wrapper', module)
+  .add('Input', withInfo('Input wrapped in the Editable decorator')(() => {
+    const InputWithEditable = withEditable(Input);
     return <MuiThemeProvider>
       <Container>
-        <InputWithCrud title='Input' value='' />
+        <InputWithEditable title='Input' value='' />
       </Container>
     </MuiThemeProvider>;
   }))
-  .add('Input With Buttons', withInfo('Input wrapped in the CRUD decorator')(() => {
+  .add('Input With Buttons', withInfo('Input wrapped in the Editable decorator')(() => {
     const InputContainer = composeWithState(Input);
     return <MuiThemeProvider>
       <Container>
@@ -34,7 +34,7 @@ storiesOf('React CRUD Wrapper', module)
       </Container>
     </MuiThemeProvider>;
   }))
-  .add('Form With Buttons', withInfo('Input wrapped in the CRUD decorator')(() => {
+  .add('Form With Buttons', withInfo('Input wrapped in the Editable decorator')(() => {
     const FormContainer = composeWithState(Form);
     return <MuiThemeProvider>
       <Container>
@@ -49,7 +49,7 @@ storiesOf('React CRUD Wrapper', module)
     </Container>
     </MuiThemeProvider>;
   }))
-  .add('Form With Dynamic Fields', withInfo('Input wrapped in the CRUD decorator')(() => {
+  .add('Form With Dynamic Fields', withInfo('Input wrapped in the Editable decorator')(() => {
     const DynamicFieldFormContainer = composeWithState(DynamicFieldForm);
     return <MuiThemeProvider>
       <Container>

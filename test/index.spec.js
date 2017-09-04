@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import sinon from 'sinon';
 import {states} from '../src/state-machine';
-import withCrud from '../src/index';
+import withEditable from '../src/index';
 
 class MockComponent extends React.PureComponent {
   static propTypes = {
@@ -16,26 +16,26 @@ class MockComponent extends React.PureComponent {
   }
 }
 
-const CrudMockComponent = withCrud(MockComponent);
+const EditableMockComponent = withEditable(MockComponent);
 
-describe('withCrud', () => {
+describe('withEditable', () => {
   describe('smoke tests', () => {
     it('shouldn\'t fatal', () => {
-      expect(() => <CrudMockComponent />).not.to.throw;
+      expect(() => <EditableMockComponent />).not.to.throw;
     });
 
     it('should render MockComponent', () => {
-      expect(shallow(<CrudMockComponent />).is(MockComponent)).to.be.true;
+      expect(shallow(<EditableMockComponent />).is(MockComponent)).to.be.true;
     });
   });
 
   it('should hoist MockComponent props', () => {
-    expect(CrudMockComponent.propTypes).to.have.property('testProp');
+    expect(EditableMockComponent.propTypes).to.have.property('testProp');
   });
 
   it('should pass through props to MockComponent', () => {
     expect(
-      shallow(<CrudMockComponent testProp={1} />)
+      shallow(<EditableMockComponent testProp={1} />)
         .find(MockComponent)
         .props()
     ).to.include({
@@ -54,7 +54,7 @@ describe('withCrud', () => {
 
   describe(`when status is ${states.PRESENTING}`, () => {
     it(`should transition to ${states.EDITING} when onStart is called`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper.find(MockComponent).props().onStart();
       expect(
         wrapper.find(MockComponent).props()
@@ -65,7 +65,7 @@ describe('withCrud', () => {
     });
 
     it(`should transition to ${states.EDITING} when onChange is called`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper.find(MockComponent).props().onChange('newValue');
       expect(
         wrapper.find(MockComponent).props()
@@ -77,7 +77,7 @@ describe('withCrud', () => {
 
     it('should be able to delete', () => {
       const deleteSpy = sinon.spy();
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onDelete={deleteSpy} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onDelete={deleteSpy} />);
       wrapper
         .find(MockComponent)
         .props()
@@ -89,7 +89,7 @@ describe('withCrud', () => {
 
   describe(`when status is ${states.EDITING}`, () => {
     it('should update value when onChange is called', () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
           status: states.EDITING,
@@ -108,7 +108,7 @@ describe('withCrud', () => {
     });
 
     it('should not change when onStart is called', () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
           status: states.EDITING,
@@ -127,7 +127,7 @@ describe('withCrud', () => {
     });
 
     it(`should transition to ${states.PRESENTING} when onSubmit is called without promise`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => {}} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => {}} />);
       wrapper
         .setState({
           status: states.EDITING,
@@ -146,7 +146,7 @@ describe('withCrud', () => {
     });
 
     it(`should transition to ${states.COMMITTING} when onSubmit is called with promise`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       wrapper
         .setState({
           status: states.EDITING,
@@ -167,7 +167,7 @@ describe('withCrud', () => {
 
   describe(`when status is ${states.COMMITTING}`, () => {
     it(`should transition to ${states.PRESENTING} when promise resolves`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       return wrapper
         .setState({
           status: states.EDITING,
@@ -187,7 +187,7 @@ describe('withCrud', () => {
     });
 
     it(`should transition to ${states.PRESENTING} when promise rejects`, () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
       return wrapper
         .setState({
           status: states.EDITING,
@@ -207,7 +207,7 @@ describe('withCrud', () => {
     });
 
     it('rejected promise shouldn\'t reach setState when unmounted', () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
       const instance = wrapper.instance();
       const promise = wrapper
         .setState({
@@ -226,7 +226,7 @@ describe('withCrud', () => {
     });
 
     it('resolved promise shouldn\'t reach setState when unmounted', () => {
-      const wrapper = shallow(<CrudMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       const instance = wrapper.instance();
       const promise = wrapper
         .setState({

@@ -1,17 +1,17 @@
 {
-  "name": "react-crud",
+  "name": "react-editable",
   "version": "0.0.1",
-  "description": "CRUD Decorator for React",
+  "description": "Decorator for maintaining editing state of React components",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcwither/react-crud.git"
+    "url": "https://github.com/dcwither/react-editable.git"
   },
   "author": "Devin Witherspoon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dcwither/react-crud/issues"
+    "url": "https://github.com/dcwither/react-editable/issues"
   },
-  "homepage": "https://github.com/dcwither/react-crud",
+  "homepage": "https://github.com/dcwither/react-editable",
   "keywords": [
     "react-component",
     "react"
