@@ -51,11 +51,14 @@ export default function withEditable(WrappedComponent) {
 
     handleCommit = (commitFunc) => {
       invariant(this.state.status !== states.COMMITTING, 'React Editable cannot commit while commiting');
-
       this.setState((state) => transition(state.status, actions.COMMIT));
 
       if (typeof commitFunc === 'function') {
-        const maybeCommitPromise = commitFunc(this.state.value);
+        // TODO: find a way to test this async behavior (enzyme makes setState synchronous)
+        // May have just started and not yet updated state
+        const toCommit = this.state.status === states.PRESENTING ? this.props.value : this.state.value;
+        const maybeCommitPromise = commitFunc(toCommit);
+
         if (maybeCommitPromise && maybeCommitPromise.then) {
           this.commitPromise = makeCancelable(maybeCommitPromise);
           return this.commitPromise
