@@ -55,7 +55,7 @@ Property   | Type                                     | Description
 `status`   | 'PRESENTING', 'EDITING', or 'COMMITTING' | Current status of ReactEditable
 `value`    | any                                      | Value of ReactEditable
 
-## Event Handlers (`onSubmit`, `onUpdate`, `onDelete`)
+## Commit Event Handlers (`onSubmit`, `onUpdate`, `onDelete`)
 
 These will be called when the matching callbacks passed through to the child are called.
 
