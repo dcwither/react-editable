@@ -96,14 +96,14 @@ export default function withEditable(WrappedComponent) {
       return (
         <WrappedComponent
           {...omit(this.props, ['value', 'onCancel', 'onSubmit', 'onUpdate', 'onDelete'])}
-          status={status}
-          value={status === states.PRESENTING ? propsValue : stateValue}
-          onStart={this.handleStart}
           onCancel={this.handleCancel}
           onChange={this.handleChange}
+          onDelete={this.handleDelete}
+          onStart={this.handleStart}
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
-          onDelete={this.handleDelete}
+          status={status}
+          value={status === states.PRESENTING ? propsValue : stateValue}
         />
       );
     }
