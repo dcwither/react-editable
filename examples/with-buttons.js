@@ -4,7 +4,7 @@ import {
   includes,
   keyBy,
   map,
-  mapValues
+  mapValues,
 } from 'lodash/fp';
 
 import PropTypes from 'prop-types';
@@ -18,36 +18,36 @@ const buttonDescriptions = [
     title: 'Start',
     id: 'start',
     visibleStates: [states.PRESENTING],
-    type: 'PRIMARY'
+    type: 'PRIMARY',
   },
   {
     eventName: 'onCancel',
     title: 'Cancel',
     id: 'cancel',
     visibleStates: [states.EDITING, states.COMMITTING],
-    type: 'DEFAULT'
+    type: 'DEFAULT',
   },
   {
     eventName: 'onSubmit',
     title: 'Submit',
     id: 'submit',
     visibleStates: [states.EDITING, states.COMMITTING],
-    type: 'PRIMARY'
+    type: 'PRIMARY',
   },
   {
     eventName: 'onUpdate',
     title: 'Update',
     id: 'update',
     visibleStates: [states.EDITING, states.COMMITTING],
-    type: 'PRIMARY'
+    type: 'PRIMARY',
   },
   {
     eventName: 'onDelete',
     title: 'Delete',
     id: 'delete',
     visibleStates: [states.PRESENTING, states.EDITING, states.COMMITTING],
-    type: 'SECONDARY'
-  }
+    type: 'SECONDARY',
+  },
 ];
 
 function withButtons(WrappedComponent, buttons) {
@@ -59,7 +59,7 @@ function withButtons(WrappedComponent, buttons) {
       )(buttonDescriptions),
       value: PropTypes.any,
       status: PropTypes.oneOf(Object.keys(states)).isRequired,
-      ...WrappedComponent.propTypes
+      ...WrappedComponent.propTypes,
     };
 
     renderButtons() {

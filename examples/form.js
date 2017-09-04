@@ -10,14 +10,14 @@ export default class Form extends React.Component {
     status: PropTypes.oneOf(Object.keys(states)).isRequired,
     value: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    })).isRequired
+      value: PropTypes.string.isRequired,
+    })).isRequired,
   }
 
   handleChange = (inputValue, idx) => {
     const {onChange, value} = this.props;
     onChange(update(value, {
-      [idx]: {value: {$set: inputValue}}
+      [idx]: {value: {$set: inputValue}},
     }));
   }
 

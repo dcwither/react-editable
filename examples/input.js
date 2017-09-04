@@ -8,7 +8,7 @@ export default class Input extends React.Component {
     title: TextField.propTypes.floatingLabelText,
     onChange: PropTypes.func.isRequired,
     status: PropTypes.oneOf(Object.keys(states)).isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
   }
 
   handleChange = (evt) => {

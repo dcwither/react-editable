@@ -12,12 +12,12 @@ export default function withEditable(WrappedComponent) {
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
       value: PropTypes.any,
-      ...omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status'])
+      ...omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status']),
     };
 
     state = {
       status: states.PRESENTING,
-      value: undefined
+      value: undefined,
     };
 
     commitPromise = null;
@@ -77,7 +77,7 @@ export default function withEditable(WrappedComponent) {
     render() {
       const {
         props: {value: propsValue, onSubmit, onUpdate, onDelete},
-        state: {value: stateValue, status}
+        state: {value: stateValue, status},
       } = this;
 
       return (

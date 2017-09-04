@@ -53,7 +53,7 @@ storiesOf('React Editable Wrapper', module)
     const DynamicFieldFormContainer = composeWithState(DynamicFieldForm);
     return <MuiThemeProvider>
       <Container>
-        <DynamicFieldFormContainer initialValue={[{title: 'Field 1', value: ''},]} />
+        <DynamicFieldFormContainer initialValue={[{title: 'Field 1', value: ''}]} />
       </Container>
     </MuiThemeProvider>;
   }));

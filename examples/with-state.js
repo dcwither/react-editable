@@ -7,12 +7,12 @@ import {omit} from 'lodash/fp';
 function withState(WrappedComponent, usePromises) {
   return class ComponentWithState extends React.Component {
     static propTypes = {
-      initialValue: WrappedComponent.propTypes.value || PropTypes.any
+      initialValue: WrappedComponent.propTypes.value || PropTypes.any,
     };
 
     state = {
       value: this.props.initialValue,
-      isDeleted: false
+      isDeleted: false,
     };
 
     maybeDelayThenSetState(nextState) {
@@ -36,21 +36,21 @@ function withState(WrappedComponent, usePromises) {
     handleDelete = () => {
       return this.maybeDelayThenSetState({
         value: 'undefined',
-        isDeleted: true
+        isDeleted: true,
       });
     }
 
     handleReset = () => {
       this.setState({
         value: this.props.initialValue,
-        isDeleted: false
+        isDeleted: false,
       });
     }
 
     render() {
       const {
         state: {value, isDeleted},
-        props
+        props,
       } = this;
 
       if (isDeleted) {

@@ -8,7 +8,7 @@ import withEditable from '../src/index';
 
 class MockComponent extends React.PureComponent {
   static propTypes = {
-    testProp: PropTypes.number
+    testProp: PropTypes.number,
   }
 
   render() {
@@ -41,14 +41,14 @@ describe('withEditable', () => {
     ).to.include({
       testProp: 1,
       value: undefined,
-      status: states.PRESENTING
+      status: states.PRESENTING,
     }).and.to.have.all.keys([
       'onStart',
       'onCancel',
       'onChange',
       'onSubmit',
       'onUpdate',
-      'onDelete'
+      'onDelete',
     ]);
   });
 
@@ -60,7 +60,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.EDITING,
-        value: 'propsValue'
+        value: 'propsValue',
       });
     });
 
@@ -71,7 +71,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.EDITING,
-        value: 'newValue'
+        value: 'newValue',
       });
     });
 
@@ -93,7 +93,7 @@ describe('withEditable', () => {
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -103,7 +103,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.EDITING,
-        value: 'newValue'
+        value: 'newValue',
       });
     });
 
@@ -112,7 +112,7 @@ describe('withEditable', () => {
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -122,7 +122,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.EDITING,
-        value: 'stateValue'
+        value: 'stateValue',
       });
     });
 
@@ -131,7 +131,7 @@ describe('withEditable', () => {
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -141,7 +141,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.PRESENTING,
-        value: 'propsValue'
+        value: 'propsValue',
       });
     });
 
@@ -150,7 +150,7 @@ describe('withEditable', () => {
       wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -160,7 +160,7 @@ describe('withEditable', () => {
         wrapper.find(MockComponent).props()
       ).to.include({
         status: states.COMMITTING,
-        value: 'stateValue'
+        value: 'stateValue',
       });
     });
   });
@@ -171,7 +171,7 @@ describe('withEditable', () => {
       return wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -181,7 +181,7 @@ describe('withEditable', () => {
             wrapper.find(MockComponent).props()
           ).to.include({
             status: states.PRESENTING,
-            value: 'propsValue'
+            value: 'propsValue',
           })
         );
     });
@@ -191,7 +191,7 @@ describe('withEditable', () => {
       return wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -201,7 +201,7 @@ describe('withEditable', () => {
             wrapper.find(MockComponent).props()
           ).to.include({
             status: states.EDITING,
-            value: 'stateValue'
+            value: 'stateValue',
           })
         );
     });
@@ -212,7 +212,7 @@ describe('withEditable', () => {
       const promise = wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
@@ -231,7 +231,7 @@ describe('withEditable', () => {
       const promise = wrapper
         .setState({
           status: states.EDITING,
-          value: 'stateValue'
+          value: 'stateValue',
         })
         .find(MockComponent)
         .props()
