@@ -31,6 +31,7 @@ export const transitions = {
   PRESENTING: {
     START: edit,
     CHANGE: edit,
+    COMMIT: (value) => ({status: states.COMMITTING, value}),
   },
   EDITING: {
     CANCEL: reset,

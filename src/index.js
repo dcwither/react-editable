@@ -6,6 +6,10 @@ import invariant from 'invariant';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
 
+function getValue(props, state) {
+  return state.status === states.PRESENTING ? props.value : state.value;
+}
+
 export default function withEditable(WrappedComponent) {
   return class ComponentWithEditable extends React.Component {
     static propTypes = {
@@ -51,11 +55,13 @@ export default function withEditable(WrappedComponent) {
 
     handleCommit = (commitFunc) => {
       invariant(this.state.status !== states.COMMITTING, 'React Editable cannot commit while commiting');
-
-      this.setState((state) => transition(state.status, actions.COMMIT));
+      this.setState((state, props) => transition(state.status, actions.COMMIT, getValue(props, state)));
 
       if (typeof commitFunc === 'function') {
-        const maybeCommitPromise = commitFunc(this.state.value);
+        // TODO: find a way to test this async behavior (enzyme makes setState synchronous)
+        // May have just started and not yet updated state
+        const maybeCommitPromise = commitFunc(getValue(this.props, this.state));
+
         if (maybeCommitPromise && maybeCommitPromise.then) {
           this.commitPromise = makeCancelable(maybeCommitPromise);
           return this.commitPromise
@@ -83,15 +89,11 @@ export default function withEditable(WrappedComponent) {
     }
 
     handleDelete = () => {
-      this.handleStart(); // Delete while status === PRESENTING
       return this.handleCommit(this.props.onDelete);
     }
 
     render() {
-      const {
-        props: {value: propsValue},
-        state: {value: stateValue, status},
-      } = this;
+      const {status} = this.state;
 
       return (
         <WrappedComponent
@@ -103,7 +105,7 @@ export default function withEditable(WrappedComponent) {
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
           status={status}
-          value={status === states.PRESENTING ? propsValue : stateValue}
+          value={getValue(this.props, this.state)}
         />
       );
     }
