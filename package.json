@@ -56,15 +56,20 @@
     "mocha": "^2.4.5",
     "node-sass": "^4.5.3",
     "nodemon": "^1.9.1",
+    "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "sass-loader": "^6.0.6",
     "sinon": "^1.17.3",
-    "sinon-chai": "^2.13.0"
+    "sinon-chai": "^2.13.0",
+    "storybook-readme": "^3.0.6"
   },
   "peerDependencies": {
     "react": "~0.14.8 || ^15.0.0",
     "react-dom": "~0.14.8 || ^15.0.0"
+  },
+  "dependencies": {
+    "invariant": "^2.2.2"
   }
 }

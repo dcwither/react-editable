@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
+import {action} from '@storybook/addon-actions';
 import {omit} from 'lodash/fp';
 
 function withState(WrappedComponent, usePromises) {
@@ -26,14 +27,17 @@ function withState(WrappedComponent, usePromises) {
     }
 
     handleSubmit = (value) => {
+      action('Submit')(value);
       return this.maybeDelayThenSetState({value});
     }
 
     handleUpdate = (value) => {
+      action('Update')(value);
       return this.maybeDelayThenSetState({value});
     }
 
-    handleDelete = () => {
+    handleDelete = (value) => {
+      action('Delete')(value);
       return this.maybeDelayThenSetState({
         value: 'undefined',
         isDeleted: true,

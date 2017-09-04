@@ -10,6 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
+import {action} from '@storybook/addon-actions';
 import {states} from '../src/state-machine';
 
 const buttonDescriptions = [
@@ -57,8 +58,9 @@ function withButtons(WrappedComponent, buttons) {
         keyBy('eventName'),
         mapValues(() => PropTypes.func)
       )(buttonDescriptions),
-      value: PropTypes.any,
+      onChange: PropTypes.func.isRequired,
       status: PropTypes.oneOf(Object.keys(states)).isRequired,
+      value: PropTypes.any,
       ...WrappedComponent.propTypes,
     };
 
@@ -83,15 +85,19 @@ function withButtons(WrappedComponent, buttons) {
       )(buttonDescriptions);
     }
 
+    handleChange = (value) => {
+      action('Change')(value);
+      return this.props.onChange(value);
+    }
+
     render() {
       return <div>
-        <WrappedComponent {...this.props} />
+        <WrappedComponent {...this.props} onChange={this.handleChange}/>
         <div className='buttons'>
           {this.renderButtons()}
         </div>
       </div>;
     }
-
   };
 }
 

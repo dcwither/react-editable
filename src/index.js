@@ -2,17 +2,19 @@ import transition, {actions, states} from './state-machine';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import invariant from 'invariant';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
 
 export default function withEditable(WrappedComponent) {
   return class ComponentWithEditable extends React.Component {
     static propTypes = {
+      onCancel: PropTypes.func,
       onDelete: PropTypes.func,
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
       value: PropTypes.any,
-      ...omit(WrappedComponent.propTypes, ['onStart', 'onChange', 'onCancel', 'status']),
+      ...omit(WrappedComponent.propTypes, ['status', 'onStart', 'onCancel', 'onChange']),
     };
 
     state = {
@@ -35,10 +37,21 @@ export default function withEditable(WrappedComponent) {
     }
 
     handleCancel = () => {
+      const {
+        props: {onCancel},
+        state: {status, value},
+      } = this;
+
+      if (typeof onCancel === 'function' && status === states.EDITING) {
+        onCancel(value);
+      }
+
       this.setState((state) => transition(state.status, actions.CANCEL));
     }
 
     handleCommit = (commitFunc) => {
+      invariant(this.state.status !== states.COMMITTING, 'React Editable cannot commit while commiting');
+
       this.setState((state) => transition(state.status, actions.COMMIT));
 
       if (typeof commitFunc === 'function') {
@@ -76,21 +89,21 @@ export default function withEditable(WrappedComponent) {
 
     render() {
       const {
-        props: {value: propsValue, onSubmit, onUpdate, onDelete},
+        props: {value: propsValue},
         state: {value: stateValue, status},
       } = this;
 
       return (
         <WrappedComponent
-          {...omit(this.props, ['value'])}
-          status={status}
-          value={status === states.PRESENTING ? propsValue : stateValue}
-          onStart={this.handleStart}
+          {...omit(this.props, ['value', 'onCancel', 'onSubmit', 'onUpdate', 'onDelete'])}
           onCancel={this.handleCancel}
           onChange={this.handleChange}
-          onSubmit={onSubmit ? this.handleSubmit : undefined}
-          onUpdate={onUpdate ? this.handleUpdate : undefined}
-          onDelete={onDelete ? this.handleDelete : undefined}
+          onDelete={this.handleDelete}
+          onStart={this.handleStart}
+          onSubmit={this.handleSubmit}
+          onUpdate={this.handleUpdate}
+          status={status}
+          value={status === states.PRESENTING ? propsValue : stateValue}
         />
       );
     }
