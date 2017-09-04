@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function Container(storyFn) {
   return <MuiThemeProvider>
-    <Paper style={{display: 'table', margin: '3em auto', padding: '1em 5em'}}>
+    <Paper style={{width: '30em', margin: '3em auto', padding: '1em 3em'}}>
       {storyFn()}
     </Paper>
   </MuiThemeProvider>;
