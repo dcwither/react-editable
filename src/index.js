@@ -2,6 +2,7 @@ import transition, {actions, states} from './state-machine';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import invariant from 'invariant';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
 
@@ -49,9 +50,7 @@ export default function withEditable(WrappedComponent) {
     }
 
     handleCommit = (commitFunc) => {
-      if (this.state.status === states.COMMITTING) {
-        throw 'React Editable cannot commit while commiting';
-      }
+      invariant(this.state.status !== states.COMMITTING, 'React Editable cannot commit while commiting');
 
       this.setState((state) => transition(state.status, actions.COMMIT));
 
