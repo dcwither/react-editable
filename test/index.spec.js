@@ -219,6 +219,20 @@ describe('withEditable', () => {
   });
 
   describe(`when status is ${states.COMMITTING}`, () => {
+    it('should throw when handleCommit is called', () => {
+      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      return expect(
+        wrapper
+          .setState({
+            status: states.COMMITTING,
+            value: 'stateValue',
+          })
+          .find(MockComponent)
+          .props()
+          .onSubmit
+      ).to.throw('React Editable cannot commit while commiting');
+    });
+
     it(`should transition to ${states.PRESENTING} when promise resolves`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       return wrapper
