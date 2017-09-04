@@ -8,6 +8,7 @@ import omit from './omit';
 export default function withEditable(WrappedComponent) {
   return class ComponentWithEditable extends React.Component {
     static propTypes = {
+      onCancel: PropTypes.func,
       onDelete: PropTypes.func,
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
@@ -35,6 +36,15 @@ export default function withEditable(WrappedComponent) {
     }
 
     handleCancel = () => {
+      const {
+        props: {onCancel},
+        state: {status, value},
+      } = this;
+
+      if (typeof onCancel === 'function' && status === states.EDITING) {
+        onCancel(value);
+      }
+
       this.setState((state) => transition(state.status, actions.CANCEL));
     }
 
@@ -82,7 +92,7 @@ export default function withEditable(WrappedComponent) {
 
       return (
         <WrappedComponent
-          {...omit(this.props, ['value'])}
+          {...omit(this.props, ['value', 'onCancel', 'onSubmit', 'onUpdate', 'onDelete'])}
           status={status}
           value={status === states.PRESENTING ? propsValue : stateValue}
           onStart={this.handleStart}
