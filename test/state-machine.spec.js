@@ -29,7 +29,7 @@ describe('StateMachine', () => {
     [actions.START, states.EDITING],
     [actions.CANCEL, states.PRESENTING],
     [actions.CHANGE, states.EDITING],
-    [actions.COMMIT, states.PRESENTING],
+    [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.PRESENTING],
     [actions.SUCCESS, states.PRESENTING],
   ]);

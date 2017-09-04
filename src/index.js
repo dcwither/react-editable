@@ -6,6 +6,10 @@ import invariant from 'invariant';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
 
+function getValue(props, state) {
+  return state.status === states.PRESENTING ? props.value : state.value;
+}
+
 export default function withEditable(WrappedComponent) {
   return class ComponentWithEditable extends React.Component {
     static propTypes = {
@@ -51,12 +55,12 @@ export default function withEditable(WrappedComponent) {
 
     handleCommit = (commitFunc) => {
       invariant(this.state.status !== states.COMMITTING, 'React Editable cannot commit while commiting');
-      this.setState((state) => transition(state.status, actions.COMMIT));
+      this.setState((state, props) => transition(state.status, actions.COMMIT, getValue(props, state)));
 
       if (typeof commitFunc === 'function') {
         // TODO: find a way to test this async behavior (enzyme makes setState synchronous)
         // May have just started and not yet updated state
-        const maybeCommitPromise = commitFunc(this._getValue());
+        const maybeCommitPromise = commitFunc(getValue(this.props, this.state));
 
         if (maybeCommitPromise && maybeCommitPromise.then) {
           this.commitPromise = makeCancelable(maybeCommitPromise);
@@ -85,12 +89,7 @@ export default function withEditable(WrappedComponent) {
     }
 
     handleDelete = () => {
-      this.handleStart(); // Delete while status === PRESENTING
       return this.handleCommit(this.props.onDelete);
-    }
-
-    _getValue() {
-      return this.state.status === states.PRESENTING ? this.props.value : this.state.value;
     }
 
     render() {
@@ -106,7 +105,7 @@ export default function withEditable(WrappedComponent) {
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
           status={status}
-          value={this._getValue()}
+          value={getValue(this.props, this.state)}
         />
       );
     }
