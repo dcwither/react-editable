@@ -1,5 +1,6 @@
 import Container from './container';
 import DynamicFieldForm from '../examples/dynamic-field-form';
+import EditableReadme from '../README.md';
 import Form from '../examples/form';
 import Input from '../examples/input';
 import MultiForm from '../examples/multi-form';
@@ -8,6 +9,7 @@ import {compose} from 'lodash/fp';
 import {storiesOf} from '@storybook/react';
 import withButtons from '../examples/with-buttons';
 import withEditable from '../src';
+import withReadme from 'storybook-readme/with-readme';
 import withState from '../examples/with-state';
 
 const composeWithState = compose(
@@ -30,6 +32,7 @@ const billingInformaion = [
 ];
 
 storiesOf('ReactEditable', module)
+  .addDecorator(withReadme(EditableReadme))
   .addDecorator(Container)
   .add('Input', () => {
     const InputContainer = composeWithState(Input);
