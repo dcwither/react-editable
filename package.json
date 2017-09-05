@@ -1,5 +1,5 @@
 {
-  "name": "react-editable",
+  "name": "react-editable-hoc",
   "version": "0.0.1",
   "description": "Decorator for maintaining editing state of React components",
   "repository": {
@@ -19,6 +19,8 @@
   "options": {
     "mocha": "--require scripts/mocha_runner test/**/*.spec.js"
   },
+  "main": "dist/index.js",
+  "module": "src/index",
   "scripts": {
     "prepublish": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
     "lint": "eslint ./src ./test ./stories ./examples",
