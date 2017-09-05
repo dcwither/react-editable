@@ -51,8 +51,12 @@ const buttonDescriptions = [
   },
 ];
 
-function withButtons(WrappedComponent, buttons) {
-  return class ComponentWithButtons extends React.Component {
+function withButtons(Component, buttons) {
+  return class ComponentWithCRUDButtons extends React.Component {
+    static displayName = `WithCRUDButtons(${Component.displayName || Component.name || 'Component'})`;
+
+    static WrappedComponent = Component.WrappedComponent || Component;
+
     static propTypes = {
       ...flow(
         keyBy('eventName'),
@@ -61,7 +65,7 @@ function withButtons(WrappedComponent, buttons) {
       onChange: PropTypes.func.isRequired,
       status: PropTypes.oneOf(Object.keys(states)).isRequired,
       value: PropTypes.any,
-      ...WrappedComponent.propTypes,
+      ...Component.propTypes,
     };
 
     renderButtons() {
@@ -92,7 +96,7 @@ function withButtons(WrappedComponent, buttons) {
 
     render() {
       return <div>
-        <WrappedComponent {...this.props} onChange={this.handleChange}/>
+        <Component {...this.props} onChange={this.handleChange}/>
         <div className='buttons'>
           {this.renderButtons()}
         </div>
@@ -102,4 +106,4 @@ function withButtons(WrappedComponent, buttons) {
 }
 
 export default (...buttons) =>
-  (WrappedComponent) => withButtons(WrappedComponent, buttons);
+  (Component) => withButtons(Component, buttons);

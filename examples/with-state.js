@@ -5,10 +5,14 @@ import React from 'react';
 import {action} from '@storybook/addon-actions';
 import {omit} from 'lodash/fp';
 
-function withState(WrappedComponent, usePromises) {
+function withState(Component, usePromises) {
   return class ComponentWithState extends React.Component {
+    static displayName = `WithState(${Component.displayName || Component.name || 'Component'})`;
+
+    static WrappedComponent = Component.WrappedComponent || Component;
+    
     static propTypes = {
-      initialValue: WrappedComponent.propTypes.value || PropTypes.any,
+      initialValue: Component.propTypes.value || PropTypes.any,
     };
 
     state = {
@@ -62,7 +66,7 @@ function withState(WrappedComponent, usePromises) {
           <RaisedButton onClick={this.handleReset} primary label='Item Deleted - Reset' style={{margin: '2em'}}/>
         </div>;
       } else {
-        return <WrappedComponent
+        return <Component
           onDelete={this.handleDelete}
           onSubmit={this.handleSubmit}
           onUpdate={this.handleUpdate}
@@ -74,4 +78,4 @@ function withState(WrappedComponent, usePromises) {
   };
 }
 
-export default (usePromises) => (WrappedComponent) => withState(WrappedComponent, usePromises);
+export default (usePromises) => (Component) => withState(Component, usePromises);

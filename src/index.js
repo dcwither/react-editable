@@ -2,6 +2,7 @@ import transition, {actions, states} from './state-machine';
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import makeCancelable from './make-cancelable';
 import omit from './omit';
@@ -10,15 +11,19 @@ function getValue(props, state) {
   return state.status === states.PRESENTING ? props.value : state.value;
 }
 
-export default function withEditable(WrappedComponent) {
-  return class ComponentWithEditable extends React.Component {
+export default function withEditable(Component) {
+  class ComponentWithEditable extends React.Component {
+    static displayName = `WithEditable(${Component.displayName || Component.name || 'Component'})`;
+
+    static WrappedComponent = Component.WrappedComponent || Component;
+
     static propTypes = {
       onCancel: PropTypes.func,
       onDelete: PropTypes.func,
       onSubmit: PropTypes.func,
       onUpdate: PropTypes.func,
       value: PropTypes.any,
-      ...omit(WrappedComponent.propTypes, ['status', 'onStart', 'onCancel', 'onChange']),
+      ...omit(Component.propTypes, ['status', 'onStart', 'onCancel', 'onChange']),
     };
 
     state = {
@@ -96,7 +101,7 @@ export default function withEditable(WrappedComponent) {
       const {status} = this.state;
 
       return (
-        <WrappedComponent
+        <Component
           {...omit(this.props, ['value', 'onCancel', 'onSubmit', 'onUpdate', 'onDelete'])}
           onCancel={this.handleCancel}
           onChange={this.handleChange}
@@ -109,5 +114,8 @@ export default function withEditable(WrappedComponent) {
         />
       );
     }
-  };
+  }
+
+  hoistNonReactStatics(ComponentWithEditable, Component);
+  return ComponentWithEditable;
 }
