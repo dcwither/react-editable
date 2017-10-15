@@ -21,6 +21,10 @@
   },
   "main": "dist/index.js",
   "module": "src/index",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
     "lint": "eslint ./src ./test ./stories ./examples",
