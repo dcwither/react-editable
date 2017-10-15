@@ -1,17 +1,17 @@
 {
-  "name": "react-editable-hoc",
+  "name": "react-editable-decorator",
   "version": "0.0.1",
   "description": "Decorator for maintaining editing state of React components",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcwither/react-editable.git"
+    "url": "https://github.com/dcwither/react-editable-decorator.git"
   },
   "author": "Devin Witherspoon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dcwither/react-editable/issues"
+    "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
-  "homepage": "https://github.com/dcwither/react-editable",
+  "homepage": "https://github.com/dcwither/react-editable-decorator",
   "keywords": [
     "react-component",
     "react"
