@@ -22,7 +22,7 @@
   "main": "dist/index.js",
   "module": "src/index",
   "scripts": {
-    "prepublish": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
+    "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
     "lint": "eslint ./src ./test ./stories ./examples",
     "lintfix": "eslint ./src ./test ./stories ./examples --fix",
     "testonly": "mocha $npm_package_options_mocha",
