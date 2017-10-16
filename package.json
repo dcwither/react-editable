@@ -20,9 +20,7 @@
     "mocha": "--require scripts/mocha_runner test/**/*.spec.js"
   },
   "main": "dist/index.js",
-  "module": "src/index",
   "files": [
-    "src",
     "dist"
   ],
   "scripts": {
