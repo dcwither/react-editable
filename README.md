@@ -7,11 +7,13 @@ React Editable can accept anything as its value, making it a generic wrapper for
 ## Usage
 
 ```js
+import withEditable, {EditableState, EditableStateType} from 'react-editable-decorator';
+
 @withEditable
 class Input extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    status: PropTypes.oneOf(Object.keys(states)).isRequired,
+    status: EditableStateType.isRequired,
     value: PropTypes.string.isRequired
   }
 
@@ -23,7 +25,7 @@ class Input extends React.Component {
     const {status, value} = this.props;
     return <input
       className='input'
-      disabled={status === states.COMMITTING}
+      disabled={status === EditableState.COMMITTING}
       onChange={this.handleChange}
       value={value}
     />;

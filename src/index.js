@@ -11,6 +11,9 @@ function getValue(props, state) {
   return state.status === states.PRESENTING ? props.value : state.value;
 }
 
+export {states as EditableState};
+export const EditableStateType = PropTypes.oneOf(Object.keys(states));
+
 export default function withEditable(Component) {
   class ComponentWithEditable extends React.Component {
     static displayName = `WithEditable(${Component.displayName || Component.name || 'Component'})`;
