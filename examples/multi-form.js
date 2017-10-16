@@ -1,13 +1,13 @@
+import {EditableStateType} from '../src';
 import Form from './form';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {states} from '../src/state-machine';
 import update from 'immutability-helper';
 
 export default class MultiForm extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    status: PropTypes.oneOf(Object.keys(states)).isRequired,
+    status: EditableStateType.isRequired,
     title: PropTypes.string.isRequired,
     value: PropTypes.arrayOf(PropTypes.shape({
       title: Form.propTypes.title,

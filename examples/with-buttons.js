@@ -1,3 +1,4 @@
+import {EditableState, EditableStateType} from '../src';
 import {
   filter,
   flow,
@@ -11,42 +12,41 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import {action} from '@storybook/addon-actions';
-import {states} from '../src/state-machine';
 
 const buttonDescriptions = [
   {
     eventName: 'onStart',
     title: 'Start',
     id: 'start',
-    visibleStates: [states.PRESENTING],
+    visiableStates: [EditableState.PRESENTING],
     type: 'PRIMARY',
   },
   {
     eventName: 'onCancel',
     title: 'Cancel',
     id: 'cancel',
-    visibleStates: [states.EDITING, states.COMMITTING],
+    visiableStates: [EditableState.EDITING, EditableState.COMMITTING],
     type: 'DEFAULT',
   },
   {
     eventName: 'onSubmit',
     title: 'Submit',
     id: 'submit',
-    visibleStates: [states.EDITING, states.COMMITTING],
+    visiableStates: [EditableState.EDITING, EditableState.COMMITTING],
     type: 'PRIMARY',
   },
   {
     eventName: 'onUpdate',
     title: 'Update',
     id: 'update',
-    visibleStates: [states.EDITING, states.COMMITTING],
+    visiableStates: [EditableState.EDITING, EditableState.COMMITTING],
     type: 'PRIMARY',
   },
   {
     eventName: 'onDelete',
     title: 'Delete',
     id: 'delete',
-    visibleStates: [states.PRESENTING, states.EDITING, states.COMMITTING],
+    visiableStates: [EditableState.PRESENTING, EditableState.EDITING, EditableState.COMMITTING],
     type: 'SECONDARY',
   },
 ];
@@ -63,7 +63,7 @@ function withButtons(Component, buttons) {
         mapValues(() => PropTypes.func)
       )(buttonDescriptions),
       onChange: PropTypes.func.isRequired,
-      status: PropTypes.oneOf(Object.keys(states)).isRequired,
+      status: EditableStateType.isRequired,
       value: PropTypes.any,
       ...Component.propTypes,
     };
@@ -74,10 +74,10 @@ function withButtons(Component, buttons) {
       return flow(
         filter(({id}) => includes(id)(buttons)),
         filter(({eventName}) => Boolean(this.props[eventName])),
-        filter(({visibleStates}) => includes(status)(visibleStates)),
+        filter(({visiableStates}) => includes(status)(visiableStates)),
         map(({eventName, title, id, type}) =>
           <RaisedButton
-            disabled={status === states.COMMITTING}
+            disabled={status === EditableState.COMMITTING}
             key={id}
             label={title}
             onClick={this.props[eventName]}

@@ -1,10 +1,10 @@
+import withEditable, {EditableState} from '../src/index';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import sinon from 'sinon';
-import {states} from '../src/state-machine';
-import withEditable from '../src/index';
 
 class MockComponent extends React.PureComponent {
   static propTypes = {
@@ -41,7 +41,7 @@ describe('withEditable', () => {
     ).to.include({
       testProp: 1,
       value: undefined,
-      status: states.PRESENTING,
+      status: EditableState.PRESENTING,
     }).and.to.have.all.keys([
       'onStart',
       'onCancel',
@@ -52,25 +52,25 @@ describe('withEditable', () => {
     ]);
   });
 
-  describe(`when status is ${states.PRESENTING}`, () => {
-    it(`should transition to ${states.EDITING} when onStart is called`, () => {
+  describe(`when status is ${EditableState.PRESENTING}`, () => {
+    it(`should transition to ${EditableState.EDITING} when onStart is called`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper.find(MockComponent).props().onStart();
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.EDITING,
+        status: EditableState.EDITING,
         value: 'propsValue',
       });
     });
 
-    it(`should transition to ${states.EDITING} when onChange is called`, () => {
+    it(`should transition to ${EditableState.EDITING} when onChange is called`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper.find(MockComponent).props().onChange('newValue');
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.EDITING,
+        status: EditableState.EDITING,
         value: 'newValue',
       });
     });
@@ -87,12 +87,12 @@ describe('withEditable', () => {
     });
   });
 
-  describe(`when status is ${states.EDITING}`, () => {
+  describe(`when status is ${EditableState.EDITING}`, () => {
     it('should not change when onStart is called', () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -102,7 +102,7 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.EDITING,
+        status: EditableState.EDITING,
         value: 'stateValue',
       });
     });
@@ -111,7 +111,7 @@ describe('withEditable', () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -121,16 +121,16 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.EDITING,
+        status: EditableState.EDITING,
         value: 'newValue',
       });
     });
 
-    it(`should transition to ${states.PRESENTING} when onCancel is called`, () => {
+    it(`should transition to ${EditableState.PRESENTING} when onCancel is called`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -140,7 +140,7 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.PRESENTING,
+        status: EditableState.PRESENTING,
         value: 'propsValue',
       });
     });
@@ -150,7 +150,7 @@ describe('withEditable', () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onCancel={cancelSpy} />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -160,11 +160,11 @@ describe('withEditable', () => {
       expect(cancelSpy).to.have.been.calledWith('stateValue');
     });
 
-    it(`should transition to ${states.PRESENTING} when onCancel is called`, () => {
+    it(`should transition to ${EditableState.PRESENTING} when onCancel is called`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -174,16 +174,16 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.PRESENTING,
+        status: EditableState.PRESENTING,
         value: 'propsValue',
       });
     });
 
-    it(`should transition to ${states.PRESENTING} when onSubmit is called without promise`, () => {
+    it(`should transition to ${EditableState.PRESENTING} when onSubmit is called without promise`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => {}} />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -193,16 +193,16 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.PRESENTING,
+        status: EditableState.PRESENTING,
         value: 'propsValue',
       });
     });
 
-    it(`should transition to ${states.COMMITTING} when onSubmit is called with promise`, () => {
+    it(`should transition to ${EditableState.COMMITTING} when onSubmit is called with promise`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -212,19 +212,19 @@ describe('withEditable', () => {
       expect(
         wrapper.find(MockComponent).props()
       ).to.include({
-        status: states.COMMITTING,
+        status: EditableState.COMMITTING,
         value: 'stateValue',
       });
     });
   });
 
-  describe(`when status is ${states.COMMITTING}`, () => {
+  describe(`when status is ${EditableState.COMMITTING}`, () => {
     it('should throw when handleCommit is called', () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' />);
       return expect(
         wrapper
           .setState({
-            status: states.COMMITTING,
+            status: EditableState.COMMITTING,
             value: 'stateValue',
           })
           .find(MockComponent)
@@ -233,11 +233,11 @@ describe('withEditable', () => {
       ).to.throw('React Editable cannot commit while commiting');
     });
 
-    it(`should transition to ${states.PRESENTING} when promise resolves`, () => {
+    it(`should transition to ${EditableState.PRESENTING} when promise resolves`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
       return wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -247,17 +247,17 @@ describe('withEditable', () => {
           expect(
             wrapper.find(MockComponent).props()
           ).to.include({
-            status: states.PRESENTING,
+            status: EditableState.PRESENTING,
             value: 'propsValue',
           })
         );
     });
 
-    it(`should transition to ${states.PRESENTING} when promise rejects`, () => {
+    it(`should transition to ${EditableState.PRESENTING} when promise rejects`, () => {
       const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
       return wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -267,7 +267,7 @@ describe('withEditable', () => {
           expect(
             wrapper.find(MockComponent).props()
           ).to.include({
-            status: states.EDITING,
+            status: EditableState.EDITING,
             value: 'stateValue',
           })
         );
@@ -278,7 +278,7 @@ describe('withEditable', () => {
       const instance = wrapper.instance();
       const promise = wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)
@@ -297,7 +297,7 @@ describe('withEditable', () => {
       const instance = wrapper.instance();
       const promise = wrapper
         .setState({
-          status: states.EDITING,
+          status: EditableState.EDITING,
           value: 'stateValue',
         })
         .find(MockComponent)

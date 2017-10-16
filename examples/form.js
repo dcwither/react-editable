@@ -1,13 +1,13 @@
 import Input from './input';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {states} from '../src/state-machine';
+import {EditableStateType} from '../src';
 import update from 'immutability-helper';
 
 export default class Form extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    status: PropTypes.oneOf(Object.keys(states)).isRequired,
+    status: EditableStateType.isRequired,
     title: PropTypes.string,
     value: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,

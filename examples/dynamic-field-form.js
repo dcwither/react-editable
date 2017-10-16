@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import {isEmpty} from 'lodash/fp';
-import {states} from '../src/state-machine';
+import {EditableStateType} from '../src';
 import update from 'immutability-helper';
 
 export default class DynamicFieldForm extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    status: PropTypes.oneOf(Object.keys(states)).isRequired,
+    status: EditableStateType.isRequired,
     value: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
