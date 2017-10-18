@@ -1,4 +1,4 @@
-# React Editable
+# React Editable [![Build Status](https://travis-ci.org/dcwither/react-editable-decorator.svg?branch=master)](https://travis-ci.org/dcwither/react-editable-decorator)
 
 An HOC that wraps around a form component to provide an editing state that it maintains. Works with promises returned by the Editable methods.
 
