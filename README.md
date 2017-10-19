@@ -4,6 +4,17 @@ An HOC that wraps around a form component to provide an editing state that it ma
 
 React Editable can accept anything as its value, making it a generic wrapper for any form that needs a temporary editing state.
 
+## Demo & Examples
+
+Live demo: https://dcwither.github.io/react-editable-decorator/
+
+```
+npm install
+npm run storybook
+```
+
+Then open [`localhost:6006`](http://localhost:6006) in a browser
+
 ## Usage
 
 ```js
