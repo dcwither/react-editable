@@ -1,9 +1,12 @@
 language: node_js
 node_js:
-  - "node"
-
+- node
+before_deploy:
+- npm run build-storybook
 deploy:
-  provider: script
-  script: npm run deploy-storybook
+  provider: pages
+  skip_cleanup: true
+  local_dir: storybook-static
+  github_token: $GITHUB_TOKEN
   on:
     branch: master
