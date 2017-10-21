@@ -1,4 +1,4 @@
-# React Editable [![Build Status](https://travis-ci.org/dcwither/react-editable-decorator.svg?branch=master)](https://travis-ci.org/dcwither/react-editable-decorator)
+# React Editable [![Build Status](https://travis-ci.org/dcwither/react-editable-decorator.svg?branch=master)](https://travis-ci.org/dcwither/react-editable-decorator) [![Coverage Status](https://coveralls.io/repos/github/dcwither/react-editable-decorator/badge.svg?branch=master)](https://coveralls.io/github/dcwither/react-editable-decorator?branch=master)
 
 An HOC that wraps around a form component to provide an editing state that it maintains. Works with promises returned by the Editable methods.
 
