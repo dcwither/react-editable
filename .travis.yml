@@ -1,8 +1,12 @@
 language: node_js
 node_js:
-- node
+  - node
+script:
+  - npm test
+after_success:
+  - npm run test:coverage
 before_deploy:
-- npm run build-storybook
+  - npm run build-storybook
 deploy:
   provider: pages
   skip_cleanup: true

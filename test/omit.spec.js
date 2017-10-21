@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import omit from '../src/omit';
 
 describe('omit', () => {
-  it('should omit keys passed in', () => {
+  test('should omit keys passed in', () => {
     expect(
       omit({a: 1, b: 2, c: 3}, ['c', 'b'])
     ).to.deep.equal({a: 1});
