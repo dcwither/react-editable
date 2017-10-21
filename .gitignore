@@ -9,3 +9,4 @@ node_modules
 dist
 react-editable-decorator*.tgz
 storybook-static
+coverage

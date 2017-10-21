@@ -28,6 +28,7 @@
     "test-only": "jest",
     "test": "npm run lint && npm run test-only",
     "test-watch": "npm run test-only -- --watch",
+    "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -48,6 +49,7 @@
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.0",
     "chai": "^3.5.0",
+    "coveralls": "^3.0.0",
     "enzyme": "^2.9.1",
     "eslint": "^2.7.0",
     "eslint-plugin-babel": "^3.1.0",
