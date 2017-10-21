@@ -15,6 +15,36 @@ class MockComponent extends React.PureComponent {
 }
 
 const EditableMockComponent = withEditable(MockComponent);
+const PROPS_VALUE = 'propsValue';
+const STATE_VALUE = 'stateValue';
+const NEW_VALUE = 'newValue';
+
+const EDITING_STATE = {
+  status: EditableState.EDITING,
+  value: STATE_VALUE,
+};
+
+function createComponentWithStateAndTriggerEvent({initialProps, initialState, event, eventArgs = []}) {
+  const props = {
+    value: PROPS_VALUE,
+    ...initialProps,
+  };
+  const wrapper = shallow(<EditableMockComponent {...props} />);
+  const maybePromise = wrapper
+    .setState(initialState)
+    .find(MockComponent)
+    .props()[event](...eventArgs);
+
+  if (maybePromise && maybePromise.then) {
+    maybePromise.then((result) => {
+      wrapper.update();
+      return result;
+    });
+  }
+  wrapper.update();
+
+  return {wrapper, promise: maybePromise};
+}
 
 describe('withEditable', () => {
   describe('smoke tests', () => {
@@ -53,12 +83,7 @@ describe('withEditable', () => {
     test(
       `should transition to ${EditableState.EDITING} when onStart is called`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper
-          .find(MockComponent)
-          .props()
-          .onStart();
-        wrapper.update();
+        const {wrapper} = createComponentWithStateAndTriggerEvent({event: 'onStart'});
 
         expect(
           wrapper.find(MockComponent).props()
@@ -72,46 +97,37 @@ describe('withEditable', () => {
     test(
       `should transition to ${EditableState.EDITING} when onChange is called`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper
-          .find(MockComponent)
-          .props()
-          .onChange('newValue');
-        wrapper.update();
+        const {wrapper} = createComponentWithStateAndTriggerEvent({
+          event: 'onChange',
+          eventArgs: [NEW_VALUE],
+        });
 
         expect(
           wrapper.find(MockComponent).props()
         ).toMatchObject({
           status: EditableState.EDITING,
-          value: 'newValue',
+          value: NEW_VALUE,
         });
       }
     );
 
     test('should be able to delete', () => {
       const deleteSpy = jest.fn();
-      const wrapper = shallow(<EditableMockComponent value='propsValue' onDelete={deleteSpy} />);
-      wrapper
-        .find(MockComponent)
-        .props()
-        .onDelete();
-      wrapper.update();
+      createComponentWithStateAndTriggerEvent({
+        initialProps: {onDelete: deleteSpy},
+        event: 'onDelete',
+      });
+
       expect(deleteSpy).toHaveBeenCalledWith('propsValue');
     });
   });
 
   describe(`when status is ${EditableState.EDITING}`, () => {
     test('should not change when onStart is called', () => {
-      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-      wrapper
-        .setState({
-          status: EditableState.EDITING,
-          value: 'stateValue',
-        })
-        .find(MockComponent)
-        .props()
-        .onStart();
-      wrapper.update();
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialState: EDITING_STATE,
+        event: 'onStart',
+      });
 
       expect(
         wrapper.find(MockComponent).props()
@@ -122,38 +138,27 @@ describe('withEditable', () => {
     });
 
     test('should update value when onChange is called', () => {
-      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-      wrapper
-        .setState({
-          status: EditableState.EDITING,
-          value: 'stateValue',
-        })
-        .find(MockComponent)
-        .props()
-        .onChange('newValue');
-      wrapper.update();
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialState: EDITING_STATE,
+        event: 'onChange',
+        eventArgs: [NEW_VALUE],
+      });
 
       expect(
         wrapper.find(MockComponent).props()
       ).toMatchObject({
         status: EditableState.EDITING,
-        value: 'newValue',
+        value: NEW_VALUE,
       });
     });
 
     test(
       `should transition to ${EditableState.PRESENTING} when onCancel is called`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper
-          .setState({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onCancel();
-        wrapper.update();
+        const {wrapper} = createComponentWithStateAndTriggerEvent({
+          initialState: EDITING_STATE,
+          event: 'onCancel',
+        });
 
         expect(
           wrapper.find(MockComponent).props()
@@ -166,55 +171,23 @@ describe('withEditable', () => {
 
     test('should call onCancel prop when cancelling', () => {
       const cancelSpy = jest.fn();
-      const wrapper = shallow(<EditableMockComponent value='propsValue' onCancel={cancelSpy} />);
-      wrapper
-        .setState({
-          status: EditableState.EDITING,
-          value: 'stateValue',
-        })
-        .find(MockComponent)
-        .props()
-        .onCancel();
+      createComponentWithStateAndTriggerEvent({
+        initialProps: {onCancel: cancelSpy},
+        initialState: EDITING_STATE,
+        event: 'onCancel',
+      });
 
       expect(cancelSpy).toHaveBeenCalledWith('stateValue');
     });
 
     test(
-      `should transition to ${EditableState.PRESENTING} when onCancel is called`,
-      () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper
-          .setState({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onCancel();
-        wrapper.update();
-
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.PRESENTING,
-          value: 'propsValue',
-        });
-      }
-    );
-
-    test(
       `should transition to ${EditableState.PRESENTING} when onSubmit is called without promise`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => {}} />);
-        wrapper
-          .setState({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onSubmit();
-        wrapper.update();
+        const {wrapper} = createComponentWithStateAndTriggerEvent({
+          initialProps: {onSubmit: () => {}},
+          initialState: EDITING_STATE,
+          event: 'onSubmit',
+        });
 
         expect(
           wrapper.find(MockComponent).props()
@@ -228,16 +201,11 @@ describe('withEditable', () => {
     test(
       `should transition to ${EditableState.COMMITTING} when onSubmit is called with promise`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
-        wrapper
-          .setState({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onSubmit();
-        wrapper.update();
+        const {wrapper} = createComponentWithStateAndTriggerEvent({
+          initialProps: {onSubmit: () => Promise.resolve()},
+          initialState: EDITING_STATE,
+          event: 'onSubmit',
+        });
 
         expect(
           wrapper.find(MockComponent).props()
@@ -251,102 +219,80 @@ describe('withEditable', () => {
 
   describe(`when status is ${EditableState.COMMITTING}`, () => {
     test('should throw when handleCommit is called', () => {
-      const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-      return expect(
-        wrapper
-          .setState({
+      expect(() =>
+        createComponentWithStateAndTriggerEvent({
+          initialState: {
             status: EditableState.COMMITTING,
             value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onSubmit
+          },
+          event: 'onSubmit',
+        })
       ).toThrow('React Editable cannot commit while commiting');
     });
 
     test(
       `should transition to ${EditableState.PRESENTING} when promise resolves`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
-        return wrapper
-          .setState({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onSubmit()
-          .then(() => {
-            wrapper.update();
-            expect(
-              wrapper.find(MockComponent).props()
-            ).toMatchObject({
-              status: EditableState.PRESENTING,
-              value: 'propsValue',
-            })
+        const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+          initialProps: {onSubmit: () => Promise.resolve()},
+          initialState: EDITING_STATE,
+          event: 'onSubmit',
+        });
+        promise.then(() => {
+          expect(
+            wrapper.find(MockComponent).props()
+          ).toMatchObject({
+            status: EditableState.PRESENTING,
+            value: 'propsValue',
           });
+        });
       }
     );
 
     test(
       `should transition to ${EditableState.PRESENTING} when promise rejects`,
       () => {
-        const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
-        return wrapper
-          .setState({
+        const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+          initialProps: {onSubmit: () => Promise.reject()},
+          initialState: EDITING_STATE,
+          event: 'onSubmit',
+        });
+        promise.then(() => {
+          expect(
+            wrapper.find(MockComponent).props()
+          ).toMatchObject({
             status: EditableState.EDITING,
             value: 'stateValue',
-          })
-          .find(MockComponent)
-          .props()
-          .onSubmit()
-          .then(() => {
-            wrapper.update();
-            expect(
-              wrapper.find(MockComponent).props()
-            ).toMatchObject({
-              status: EditableState.EDITING,
-              value: 'stateValue',
-            })
           });
+        });
       }
     );
 
     test('rejected promise shouldn\'t reach setState when unmounted', () => {
-      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.reject()} />);
+      const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onSubmit: () => Promise.reject()},
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
       const instance = wrapper.instance();
-      const promise = wrapper
-        .setState({
-          status: EditableState.EDITING,
-          value: 'stateValue',
-        })
-        .find(MockComponent)
-        .props()
-        .onSubmit()
-        // setState shouldn't be called after this point
-        .then(() => expect(instance.setState).not.toHaveBeenCalled());
-
       jest.spyOn(instance, 'setState');
       wrapper.unmount();
+
+      promise.then(() => expect(instance.setState).not.toHaveBeenCalled());
       return promise;
     });
 
     test('resolved promise shouldn\'t reach setState when unmounted', () => {
-      const wrapper = shallow(<EditableMockComponent value='propsValue' onSubmit={() => Promise.resolve()} />);
+      const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onSubmit: () => Promise.resolve()},
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
       const instance = wrapper.instance();
-      const promise = wrapper
-        .setState({
-          status: EditableState.EDITING,
-          value: 'stateValue',
-        })
-        .find(MockComponent)
-        .props()
-        .onSubmit()
-        // setState shouldn't be called after this point
-        .then(() => expect(instance.setState).not.toHaveBeenCalled());
-
       jest.spyOn(instance, 'setState');
       wrapper.unmount();
+
+      promise.then(() => expect(instance.setState).not.toHaveBeenCalled());
       return promise;
     });
   });
