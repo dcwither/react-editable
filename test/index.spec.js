@@ -54,7 +54,12 @@ describe('withEditable', () => {
       `should transition to ${EditableState.EDITING} when onStart is called`,
       () => {
         const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper.find(MockComponent).props().onStart();
+        wrapper
+          .find(MockComponent)
+          .props()
+          .onStart();
+        wrapper.update();
+
         expect(
           wrapper.find(MockComponent).props()
         ).toMatchObject({
@@ -68,7 +73,12 @@ describe('withEditable', () => {
       `should transition to ${EditableState.EDITING} when onChange is called`,
       () => {
         const wrapper = shallow(<EditableMockComponent value='propsValue' />);
-        wrapper.find(MockComponent).props().onChange('newValue');
+        wrapper
+          .find(MockComponent)
+          .props()
+          .onChange('newValue');
+        wrapper.update();
+
         expect(
           wrapper.find(MockComponent).props()
         ).toMatchObject({
@@ -85,7 +95,7 @@ describe('withEditable', () => {
         .find(MockComponent)
         .props()
         .onDelete();
-
+      wrapper.update();
       expect(deleteSpy).toHaveBeenCalledWith('propsValue');
     });
   });
@@ -101,6 +111,7 @@ describe('withEditable', () => {
         .find(MockComponent)
         .props()
         .onStart();
+      wrapper.update();
 
       expect(
         wrapper.find(MockComponent).props()
@@ -120,6 +131,7 @@ describe('withEditable', () => {
         .find(MockComponent)
         .props()
         .onChange('newValue');
+      wrapper.update();
 
       expect(
         wrapper.find(MockComponent).props()
@@ -141,6 +153,7 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onCancel();
+        wrapper.update();
 
         expect(
           wrapper.find(MockComponent).props()
@@ -178,6 +191,7 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onCancel();
+        wrapper.update();
 
         expect(
           wrapper.find(MockComponent).props()
@@ -200,6 +214,7 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onSubmit();
+        wrapper.update();
 
         expect(
           wrapper.find(MockComponent).props()
@@ -222,6 +237,7 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onSubmit();
+        wrapper.update();
 
         expect(
           wrapper.find(MockComponent).props()
@@ -260,14 +276,15 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onSubmit()
-          .then(() =>
+          .then(() => {
+            wrapper.update();
             expect(
               wrapper.find(MockComponent).props()
             ).toMatchObject({
               status: EditableState.PRESENTING,
               value: 'propsValue',
             })
-          );
+          });
       }
     );
 
@@ -283,14 +300,15 @@ describe('withEditable', () => {
           .find(MockComponent)
           .props()
           .onSubmit()
-          .then(() =>
+          .then(() => {
+            wrapper.update();
             expect(
               wrapper.find(MockComponent).props()
             ).toMatchObject({
               status: EditableState.EDITING,
               value: 'stateValue',
             })
-          );
+          });
       }
     );
 
