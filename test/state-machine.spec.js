@@ -8,19 +8,19 @@ const FAKE_STATE = 'FAKE_STATE';
 describe('StateMachine', () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
-      it('META: should check all actions', () => {
+      test('META: should check all actions', () => {
         expect(actionStatePairs.map(([action]) => action)).to.include.members(Object.keys(actions));
       });
 
       actionStatePairs.forEach(([action, nextState]) =>
-        it(`should change to ${nextState} for ${action}`, () => {
+        test(`should change to ${nextState} for ${action}`, () => {
           expect(transition(state, action).status).to.equal(nextState);
         })
       );
     });
   }
 
-  it('should fail when passed invalid state', () => {
+  test('should fail when passed invalid state', () => {
     expect(() => transition(FAKE_STATE, FAKE_ACTION)).to.throw;
   });
 
