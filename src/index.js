@@ -81,11 +81,9 @@ export default function withEditable(Component) {
               }
             })
             .then(() => this.commitPromise = null);
-
-        } else {
-          this.setState((state) => transition(state.status, actions.SUCCESS));
         }
       }
+      this.setState((state) => transition(state.status, actions.SUCCESS));
     }
 
     handleSubmit = () => {

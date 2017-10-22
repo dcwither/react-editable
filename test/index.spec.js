@@ -89,36 +89,30 @@ describe('withEditable', () => {
   });
 
   describe(`when status is ${EditableState.PRESENTING}`, () => {
-    test(
-      `should transition to ${EditableState.EDITING} when onStart is called`,
-      () => {
-        const {wrapper} = createComponentWithStateAndTriggerEvent({event: 'onStart'});
+    test(`should transition to ${EditableState.EDITING} when onStart is called`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({event: 'onStart'});
 
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.EDITING,
-          value: 'propsValue',
-        });
-      }
-    );
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.EDITING,
+        value: 'propsValue',
+      });
+    });
 
-    test(
-      `should transition to ${EditableState.EDITING} when onChange is called`,
-      () => {
-        const {wrapper} = createComponentWithStateAndTriggerEvent({
-          event: 'onChange',
-          eventArgs: [NEW_VALUE],
-        });
+    test(`should transition to ${EditableState.EDITING} when onChange is called`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        event: 'onChange',
+        eventArgs: [NEW_VALUE],
+      });
 
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.EDITING,
-          value: NEW_VALUE,
-        });
-      }
-    );
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.EDITING,
+        value: NEW_VALUE,
+      });
+    });
 
     test('should be able to delete', () => {
       const deleteSpy = jest.fn();
@@ -132,7 +126,7 @@ describe('withEditable', () => {
   });
 
   describe(`when status is ${EditableState.EDITING}`, () => {
-    test('should not change when onStart is called', () => {
+    test('should not change state when onStart is called', () => {
       const {wrapper} = createComponentWithStateAndTriggerEvent({
         initialState: EDITING_STATE,
         event: 'onStart',
@@ -161,22 +155,19 @@ describe('withEditable', () => {
       });
     });
 
-    test(
-      `should transition to ${EditableState.PRESENTING} when onCancel is called`,
-      () => {
-        const {wrapper} = createComponentWithStateAndTriggerEvent({
-          initialState: EDITING_STATE,
-          event: 'onCancel',
-        });
+    test(`should transition to ${EditableState.PRESENTING} when onCancel is called`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialState: EDITING_STATE,
+        event: 'onCancel',
+      });
 
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.PRESENTING,
-          value: 'propsValue',
-        });
-      }
-    );
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.PRESENTING,
+        value: 'propsValue',
+      });
+    });
 
     test('should call onCancel prop when cancelling', () => {
       const cancelSpy = jest.fn();
@@ -189,41 +180,48 @@ describe('withEditable', () => {
       expect(cancelSpy).toHaveBeenCalledWith('stateValue');
     });
 
-    test(
-      `should transition to ${EditableState.PRESENTING} when onSubmit is called without promise`,
-      () => {
-        const {wrapper} = createComponentWithStateAndTriggerEvent({
-          initialProps: {onSubmit: () => {}},
-          initialState: EDITING_STATE,
-          event: 'onSubmit',
-        });
+    test(`should transition to ${EditableState.PRESENTING} when onSubmit is called without an event handler`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.PRESENTING,
+        value: 'propsValue',
+      });
+    });
 
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.PRESENTING,
-          value: 'propsValue',
-        });
-      }
-    );
+    test(`should transition to ${EditableState.PRESENTING} when onSubmit is called without promise`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onSubmit: () => {}},
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
 
-    test(
-      `should transition to ${EditableState.COMMITTING} when onUpdate is called with promise`,
-      () => {
-        const {wrapper} = createComponentWithStateAndTriggerEvent({
-          initialProps: {onUpdate: () => Promise.resolve()},
-          initialState: EDITING_STATE,
-          event: 'onUpdate',
-        });
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.PRESENTING,
+        value: 'propsValue',
+      });
+    });
 
-        expect(
-          wrapper.find(MockComponent).props()
-        ).toMatchObject({
-          status: EditableState.COMMITTING,
-          value: 'stateValue',
-        });
-      }
-    );
+    test(`should transition to ${EditableState.COMMITTING} when onUpdate is called with promise`, () => {
+      const {wrapper} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onUpdate: () => Promise.resolve()},
+        initialState: EDITING_STATE,
+        event: 'onUpdate',
+      });
+
+      expect(
+        wrapper.find(MockComponent).props()
+      ).toMatchObject({
+        status: EditableState.COMMITTING,
+        value: 'stateValue',
+      });
+    });
   });
 
   describe(`when status is ${EditableState.COMMITTING}`, () => {
@@ -239,43 +237,37 @@ describe('withEditable', () => {
       ).toThrow('React Editable cannot commit while commiting');
     });
 
-    test(
-      `should transition to ${EditableState.PRESENTING} when promise resolves`,
-      () => {
-        const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
-          initialProps: {onSubmit: () => Promise.resolve()},
-          initialState: EDITING_STATE,
-          event: 'onSubmit',
+    test(`should transition to ${EditableState.PRESENTING} when promise resolves`, () => {
+      const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onSubmit: () => Promise.resolve()},
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
+      promise.then(() => {
+        expect(
+          wrapper.find(MockComponent).props()
+        ).toMatchObject({
+          status: EditableState.PRESENTING,
+          value: 'propsValue',
         });
-        promise.then(() => {
-          expect(
-            wrapper.find(MockComponent).props()
-          ).toMatchObject({
-            status: EditableState.PRESENTING,
-            value: 'propsValue',
-          });
-        });
-      }
-    );
+      });
+    });
 
-    test(
-      `should transition to ${EditableState.PRESENTING} when promise rejects`,
-      () => {
-        const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
-          initialProps: {onSubmit: () => Promise.reject()},
-          initialState: EDITING_STATE,
-          event: 'onSubmit',
+    test(`should transition to ${EditableState.PRESENTING} when promise rejects`, () => {
+      const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
+        initialProps: {onSubmit: () => Promise.reject()},
+        initialState: EDITING_STATE,
+        event: 'onSubmit',
+      });
+      promise.then(() => {
+        expect(
+          wrapper.find(MockComponent).props()
+        ).toMatchObject({
+          status: EditableState.EDITING,
+          value: 'stateValue',
         });
-        promise.then(() => {
-          expect(
-            wrapper.find(MockComponent).props()
-          ).toMatchObject({
-            status: EditableState.EDITING,
-            value: 'stateValue',
-          });
-        });
-      }
-    );
+      });
+    });
 
     test('rejected promise shouldn\'t reach setState when unmounted', () => {
       const {wrapper, promise} = createComponentWithStateAndTriggerEvent({
