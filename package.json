@@ -39,9 +39,9 @@
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.2.6",
-    "@storybook/addon-links": "^3.2.6",
-    "@storybook/react": "^3.2.8",
+    "@storybook/addon-actions": "^3.2.13",
+    "@storybook/addon-links": "^3.2.13",
+    "@storybook/react": "^3.2.13",
     "@storybook/storybook-deployer": "^2.0.0",
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
@@ -54,7 +54,6 @@
     "babel-preset-stage-2": "^6.5.0",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.0",
-    "chai": "^3.5.0",
     "coveralls": "^3.0.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
@@ -73,14 +72,13 @@
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "sass-loader": "^6.0.6",
-    "sinon": "^1.17.3",
-    "sinon-chai": "^2.13.0",
-    "storybook-readme": "^3.0.6",
+    "storybook-readme": "^3.1.0-beta2",
     "uninstall": "0.0.0"
   },
   "peerDependencies": {
-    "react": "~0.14.8 || ^15.0.0",
-    "react-dom": "~0.14.8 || ^15.0.0"
+    "prop-types": "^15.5.0",
+    "react": "^15.5.0 || ^16.0.0",
+    "react-dom": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
     "hoist-non-react-statics": "^2.3.1",

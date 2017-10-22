@@ -1,7 +1,5 @@
 import transition, {actions, states} from '../src/state-machine';
 
-import {expect} from 'chai';
-
 const FAKE_ACTION = 'FAKE_ACTION';
 const FAKE_STATE = 'FAKE_STATE';
 
@@ -9,19 +7,21 @@ describe('StateMachine', () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
       test('META: should check all actions', () => {
-        expect(actionStatePairs.map(([action]) => action)).to.include.members(Object.keys(actions));
+        expect(
+          actionStatePairs.map(([action]) => action)
+        ).toEqual(expect.arrayContaining(Object.keys(actions)));
       });
 
       actionStatePairs.forEach(([action, nextState]) =>
         test(`should change to ${nextState} for ${action}`, () => {
-          expect(transition(state, action).status).to.equal(nextState);
+          expect(transition(state, action).status).toEqual(nextState);
         })
       );
     });
   }
 
   test('should fail when passed invalid state', () => {
-    expect(() => transition(FAKE_STATE, FAKE_ACTION)).to.throw;
+    expect(() => transition(FAKE_STATE, FAKE_ACTION)).toThrow();
   });
 
   stateWillTransitionTo(states.PRESENTING, [
