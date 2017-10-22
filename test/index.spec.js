@@ -48,6 +48,15 @@ function createComponentWithStateAndTriggerEvent({initialProps, initialState, ev
 
 describe('withEditable', () => {
   describe('smoke tests', () => {
+    test('should create the correct displayName', () => {
+      expect(EditableMockComponent.displayName).toBe('WithEditable(MockComponent)');
+
+      let ComponentWithName = () => {};
+      expect(withEditable(ComponentWithName).displayName).toBe('WithEditable(ComponentWithName)');
+
+      expect(withEditable(() => {}).displayName).toBe('WithEditable(Component)');
+    });
+
     test('shouldn\'t fatal', () => {
       expect(() => <EditableMockComponent />).not.toThrow();
     });
@@ -55,27 +64,27 @@ describe('withEditable', () => {
     test('should render MockComponent', () => {
       expect(shallow(<EditableMockComponent />).is(MockComponent)).toBe(true);
     });
-  });
 
-  test('should hoist MockComponent props', () => {
-    expect(EditableMockComponent.propTypes).toHaveProperty('testProp');
-  });
+    test('should hoist MockComponent props', () => {
+      expect(EditableMockComponent.propTypes).toHaveProperty('testProp');
+    });
 
-  test('should pass through props to MockComponent', () => {
-    expect(
-      shallow(<EditableMockComponent testProp={1} />)
-        .find(MockComponent)
-        .props()
-    ).toMatchObject({
-      testProp: 1,
-      value: undefined,
-      status: EditableState.PRESENTING,
-      onStart: expect.any(Function),
-      onCancel: expect.any(Function),
-      onChange: expect.any(Function),
-      onSubmit: expect.any(Function),
-      onUpdate: expect.any(Function),
-      onDelete: expect.any(Function),
+    test('should pass through props to MockComponent', () => {
+      expect(
+        shallow(<EditableMockComponent testProp={1} />)
+          .find(MockComponent)
+          .props()
+      ).toMatchObject({
+        testProp: 1,
+        value: undefined,
+        status: EditableState.PRESENTING,
+        onStart: expect.any(Function),
+        onCancel: expect.any(Function),
+        onChange: expect.any(Function),
+        onSubmit: expect.any(Function),
+        onUpdate: expect.any(Function),
+        onDelete: expect.any(Function),
+      });
     });
   });
 
@@ -199,12 +208,12 @@ describe('withEditable', () => {
     );
 
     test(
-      `should transition to ${EditableState.COMMITTING} when onSubmit is called with promise`,
+      `should transition to ${EditableState.COMMITTING} when onUpdate is called with promise`,
       () => {
         const {wrapper} = createComponentWithStateAndTriggerEvent({
-          initialProps: {onSubmit: () => Promise.resolve()},
+          initialProps: {onUpdate: () => Promise.resolve()},
           initialState: EDITING_STATE,
-          event: 'onSubmit',
+          event: 'onUpdate',
         });
 
         expect(
