@@ -35,7 +35,7 @@
     "test": "npm run lint && npm run test-only",
     "test-watch": "npm run test-only -- --watch",
     "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
-    "storybook": "start-storybook -p 6006",
+    "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
