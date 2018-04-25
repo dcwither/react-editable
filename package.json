@@ -20,18 +20,12 @@
   "files": [
     "dist"
   ],
-  "jest": {
-    "setupFiles": [
-      "raf/polyfill",
-      "./test/_setup.js"
-    ]
-  },
   "scripts": {
     "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint ./src ./test ./stories ./examples",
     "lintfix": "eslint ./src ./test ./stories ./examples --fix",
-    "test-only": "jest",
+    "test-only": "jest --config jest.config.js",
     "test": "npm run lint && npm run test-only",
     "test-watch": "npm run test-only -- --watch",
     "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
@@ -43,10 +37,11 @@
     "@storybook/addon-links": "^3.2.13",
     "@storybook/react": "^3.2.13",
     "@storybook/storybook-deployer": "^2.0.0",
+    "@types/jest": "^22.2.3",
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.4",
     "babel-eslint": "^8.0.1",
-    "babel-jest": "^21.2.0",
+    "babel-jest": "^22.4.3",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
     "babel-polyfill": "^6.7.4",
     "babel-preset-env": "^1.6.1",
@@ -61,7 +56,7 @@
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.4.0",
     "immutability-helper": "^2.3.1",
-    "jest": "^21.2.1",
+    "jest": "^22.4.3",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",
     "node-sass": "^4.5.3",
@@ -73,6 +68,8 @@
     "react-test-renderer": "^16.0.0",
     "sass-loader": "^6.0.6",
     "storybook-readme": "^3.1.0-beta2",
+    "ts-jest": "^22.4.4",
+    "typescript": "^2.8.3",
     "uninstall": "0.0.0"
   },
   "peerDependencies": {

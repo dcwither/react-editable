@@ -1,15 +1,15 @@
-import transition, {actions, states} from '../src/state-machine';
+import transition, { actions, states } from "../state-machine";
 
-const FAKE_ACTION = 'FAKE_ACTION';
-const FAKE_STATE = 'FAKE_STATE';
+const FAKE_ACTION = "FAKE_ACTION";
+const FAKE_STATE = "FAKE_STATE";
 
-describe('StateMachine', () => {
+describe("StateMachine", () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
-      test('META: should check all actions', () => {
-        expect(
-          actionStatePairs.map(([action]) => action)
-        ).toEqual(expect.arrayContaining(Object.keys(actions)));
+      test("META: should check all actions", () => {
+        expect(actionStatePairs.map(([action]) => action)).toEqual(
+          expect.arrayContaining(Object.keys(actions))
+        );
       });
 
       actionStatePairs.forEach(([action, nextState]) =>
@@ -20,7 +20,7 @@ describe('StateMachine', () => {
     });
   }
 
-  test('should fail when passed invalid state', () => {
+  test("should fail when passed invalid state", () => {
     expect(() => transition(FAKE_STATE, FAKE_ACTION)).toThrow();
   });
 
@@ -31,7 +31,7 @@ describe('StateMachine', () => {
     [actions.CHANGE, states.EDITING],
     [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.PRESENTING],
-    [actions.SUCCESS, states.PRESENTING],
+    [actions.SUCCESS, states.PRESENTING]
   ]);
 
   stateWillTransitionTo(states.EDITING, [
@@ -41,7 +41,7 @@ describe('StateMachine', () => {
     [actions.CHANGE, states.EDITING],
     [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.EDITING],
-    [actions.SUCCESS, states.EDITING],
+    [actions.SUCCESS, states.EDITING]
   ]);
 
   stateWillTransitionTo(states.COMMITTING, [
@@ -51,6 +51,6 @@ describe('StateMachine', () => {
     [actions.CHANGE, states.COMMITTING],
     [actions.COMMIT, states.COMMITTING],
     [actions.FAIL, states.EDITING],
-    [actions.SUCCESS, states.PRESENTING],
+    [actions.SUCCESS, states.PRESENTING]
   ]);
 });
