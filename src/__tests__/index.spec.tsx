@@ -1,7 +1,7 @@
 import withEditable, { EditableState } from "../index";
 
 import PropTypes from "prop-types";
-import React from "react";
+import * as React from "react";
 import { shallow } from "enzyme";
 
 class MockComponent extends React.PureComponent {
@@ -29,6 +29,11 @@ function createComponentWithStateAndTriggerEvent({
   initialState,
   event,
   eventArgs = []
+}: {
+  initialProps?: object;
+  initialState?: object;
+  event: string;
+  eventArgs?: any[];
 }) {
   const props = {
     value: PROPS_VALUE,
