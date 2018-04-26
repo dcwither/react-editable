@@ -1,4 +1,4 @@
-import transition, { actions, states } from "./state-machine";
+import transition, { Action, Status } from "./state-machine";
 
 import * as PropTypes from "prop-types";
 import * as React from "react";
@@ -6,11 +6,11 @@ import invariant from "invariant";
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
 
 function getValue(props, state) {
-  return state.status === states.PRESENTING ? props.value : state.value;
+  return state.status === Status.PRESENTING ? props.value : state.value;
 }
 
-export { states as EditableState };
-export const EditableStateType = PropTypes.oneOf(Object.keys(states));
+export { Status as EditableState };
+export const EditableStateType = PropTypes.oneOf(Object.keys(Status));
 
 type EditablePropsWithoutChildren<TValue> = {
   onCancel: (value: TValue | undefined) => void;
@@ -25,7 +25,7 @@ type EditableChild<TValue> = (
     EditablePropsWithoutChildren<TValue> & {
       onChange: (value) => void;
       onStart: () => void;
-      status: string;
+      status: Status;
     }
   >
 ) => JSX.Element;
@@ -35,7 +35,7 @@ type EditableProps<TValue> = Partial<EditablePropsWithoutChildren<TValue>> & {
 };
 
 type EditableState<TValue> = {
-  status: string;
+  status: Status;
   value?: TValue;
 };
 
@@ -59,7 +59,7 @@ export default class Editable<TValue> extends React.Component<
   };
 
   state = {
-    status: states.PRESENTING,
+    status: Status.PRESENTING,
     value: undefined
   };
 
@@ -71,12 +71,12 @@ export default class Editable<TValue> extends React.Component<
 
   handleStart = () => {
     this.setState(state =>
-      transition(state.status, actions.START, this.props.value)
+      transition(state.status, Action.START, this.props.value)
     );
   };
 
   handleChange = nextValue => {
-    this.setState(state => transition(state.status, actions.CHANGE, nextValue));
+    this.setState(state => transition(state.status, Action.CHANGE, nextValue));
   };
 
   handleCancel = () => {
@@ -85,20 +85,20 @@ export default class Editable<TValue> extends React.Component<
       state: { status, value }
     } = this;
 
-    if (typeof onCancel === "function" && status === states.EDITING) {
+    if (typeof onCancel === "function" && status === Status.EDITING) {
       onCancel(value);
     }
 
-    this.setState(state => transition(state.status, actions.CANCEL));
+    this.setState(state => transition(state.status, Action.CANCEL));
   };
 
   handleCommit = commitFunc => {
     invariant(
-      this.state.status !== states.COMMITTING,
+      this.state.status !== Status.COMMITTING,
       "React Editable cannot commit while commiting"
     );
     this.setState((state, props) =>
-      transition(state.status, actions.COMMIT, getValue(props, state))
+      transition(state.status, Action.COMMIT, getValue(props, state))
     );
 
     if (typeof commitFunc === "function") {
@@ -110,17 +110,17 @@ export default class Editable<TValue> extends React.Component<
         this.commitPromise = makeCancelable(maybeCommitPromise);
         return this.commitPromise
           .then(() =>
-            this.setState(state => transition(state.status, actions.SUCCESS))
+            this.setState(state => transition(state.status, Action.SUCCESS))
           )
           .catch(response => {
             if (!response || !response.isCanceled) {
-              this.setState(state => transition(state.status, actions.FAIL));
+              this.setState(state => transition(state.status, Action.FAIL));
             }
           })
           .then(() => (this.commitPromise = undefined));
       }
     }
-    this.setState(state => transition(state.status, actions.SUCCESS));
+    this.setState(state => transition(state.status, Action.SUCCESS));
   };
 
   handleSubmit = () => {

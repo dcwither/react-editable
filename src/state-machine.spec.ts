@@ -1,14 +1,13 @@
-import transition, { actions, states } from "./state-machine";
+import transition, { Action, Status } from "./state-machine";
 
 const FAKE_ACTION = "FAKE_ACTION";
-const FAKE_STATE = "FAKE_STATE";
 
 describe("StateMachine", () => {
   function stateWillTransitionTo(state, actionStatePairs) {
     describe(`${state}`, () => {
       test("META: should check all actions", () => {
         expect(actionStatePairs.map(([action]) => action)).toEqual(
-          expect.arrayContaining(Object.keys(actions))
+          expect.arrayContaining(Object.keys(Action))
         );
       });
 
@@ -20,37 +19,33 @@ describe("StateMachine", () => {
     });
   }
 
-  test("should fail when passed invalid state", () => {
-    expect(() => transition(FAKE_STATE, FAKE_ACTION)).toThrow();
-  });
-
-  stateWillTransitionTo(states.PRESENTING, [
-    [FAKE_ACTION, states.PRESENTING],
-    [actions.START, states.EDITING],
-    [actions.CANCEL, states.PRESENTING],
-    [actions.CHANGE, states.EDITING],
-    [actions.COMMIT, states.COMMITTING],
-    [actions.FAIL, states.PRESENTING],
-    [actions.SUCCESS, states.PRESENTING]
+  stateWillTransitionTo(Status.PRESENTING, [
+    [FAKE_ACTION, Status.PRESENTING],
+    [Action.START, Status.EDITING],
+    [Action.CANCEL, Status.PRESENTING],
+    [Action.CHANGE, Status.EDITING],
+    [Action.COMMIT, Status.COMMITTING],
+    [Action.FAIL, Status.PRESENTING],
+    [Action.SUCCESS, Status.PRESENTING]
   ]);
 
-  stateWillTransitionTo(states.EDITING, [
-    [FAKE_ACTION, states.EDITING],
-    [actions.START, states.EDITING],
-    [actions.CANCEL, states.PRESENTING],
-    [actions.CHANGE, states.EDITING],
-    [actions.COMMIT, states.COMMITTING],
-    [actions.FAIL, states.EDITING],
-    [actions.SUCCESS, states.EDITING]
+  stateWillTransitionTo(Status.EDITING, [
+    [FAKE_ACTION, Status.EDITING],
+    [Action.START, Status.EDITING],
+    [Action.CANCEL, Status.PRESENTING],
+    [Action.CHANGE, Status.EDITING],
+    [Action.COMMIT, Status.COMMITTING],
+    [Action.FAIL, Status.EDITING],
+    [Action.SUCCESS, Status.EDITING]
   ]);
 
-  stateWillTransitionTo(states.COMMITTING, [
-    [FAKE_ACTION, states.COMMITTING],
-    [actions.START, states.COMMITTING],
-    [actions.CANCEL, states.COMMITTING],
-    [actions.CHANGE, states.COMMITTING],
-    [actions.COMMIT, states.COMMITTING],
-    [actions.FAIL, states.EDITING],
-    [actions.SUCCESS, states.PRESENTING]
+  stateWillTransitionTo(Status.COMMITTING, [
+    [FAKE_ACTION, Status.COMMITTING],
+    [Action.START, Status.COMMITTING],
+    [Action.CANCEL, Status.COMMITTING],
+    [Action.CHANGE, Status.COMMITTING],
+    [Action.COMMIT, Status.COMMITTING],
+    [Action.FAIL, Status.EDITING],
+    [Action.SUCCESS, Status.PRESENTING]
   ]);
 });
