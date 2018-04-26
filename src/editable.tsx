@@ -12,7 +12,7 @@ function getValue(props, state) {
 export { Status as EditableState };
 export const EditableStateType = PropTypes.oneOf(Object.keys(Status));
 
-type EditablePropsWithoutChildren<TValue> = {
+export type EditablePropsWithoutChildren<TValue> = {
   onCancel: (value: TValue | undefined) => void;
   onDelete: (value: TValue | undefined) => Promise<any> | undefined;
   onSubmit: (value: TValue | undefined) => Promise<any> | undefined;
@@ -20,17 +20,17 @@ type EditablePropsWithoutChildren<TValue> = {
   value?: TValue;
 };
 
-type EditableChild<TValue> = (
-  props: Partial<
-    EditablePropsWithoutChildren<TValue> & {
-      onChange: (value) => void;
-      onStart: () => void;
-      status: Status;
-    }
-  >
-) => JSX.Element;
+export type TInnerProps<TValue> = EditablePropsWithoutChildren<TValue> & {
+  onChange: (value?: TValue) => void;
+  onStart: () => void;
+  status: Status;
+};
 
-type EditableProps<TValue> = Partial<EditablePropsWithoutChildren<TValue>> & {
+type EditableChild<TValue> = (props: TInnerProps<TValue>) => JSX.Element;
+
+export type EditableProps<TValue> = Partial<
+  EditablePropsWithoutChildren<TValue>
+> & {
   children?: EditableChild<TValue>;
 };
 

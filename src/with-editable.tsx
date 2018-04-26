@@ -1,11 +1,18 @@
-import PropTypes from "prop-types";
-import React from "react";
+import * as PropTypes from "prop-types";
+import * as React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
-import Editable from "./editable";
+import Editable, {
+  TInnerProps,
+  EditablePropsWithoutChildren
+} from "./editable";
 import omit from "./omit";
 
-export default function withEditable(Component) {
-  const ComponentWithEditable: React.SFC<{ [x: string]: any }> = ({
+export type TOuterProps<TValue> = Partial<EditablePropsWithoutChildren<TValue>>;
+
+export default function withEditable<TValue>(
+  Component: React.ComponentType<TInnerProps<TValue>>
+) {
+  const ComponentWithEditable: React.SFC<TOuterProps<TValue>> = ({
     onCancel,
     onDelete,
     onSubmit,
@@ -29,7 +36,7 @@ export default function withEditable(Component) {
   };
 
   ComponentWithEditable.displayName = `WithEditable(${Component.displayName ||
-    Component.name ||
+    (Component as any).name ||
     "Component"})`;
 
   ComponentWithEditable.propTypes = {
@@ -48,6 +55,9 @@ export default function withEditable(Component) {
     ])
   };
 
-  hoistNonReactStatics(ComponentWithEditable, Component);
+  hoistNonReactStatics<TOuterProps<TValue>, TInnerProps<TValue>>(
+    ComponentWithEditable,
+    Component
+  );
   return ComponentWithEditable;
 }

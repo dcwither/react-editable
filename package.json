@@ -12,23 +12,21 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": [
-    "react-component",
-    "react"
-  ],
+  "keywords": ["react-component", "react"],
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
-    "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
+    "clean": "rm -r ./dist",
+    "build": "tsc ./src/index.ts -p .",
+    "prepare": "npm run clean && npm run build",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "tslint ./src ./stories ./examples",
     "lintfix": "eslint ./src ./stories ./examples --fix",
     "test-only": "jest --config jest.config.json --verbose",
     "test": "npm run lint && npm run test-only",
     "test-watch": "npm run test-only -- --watch",
-    "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:coverage":
+      "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
