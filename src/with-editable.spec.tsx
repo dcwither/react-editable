@@ -12,12 +12,14 @@ describe("withEditable", () => {
       "WithEditable(MockComponent)"
     );
 
-    let ComponentWithName = () => {};
+    let ComponentWithName: React.ComponentType<any> = () => null;
     expect(withEditable(ComponentWithName).displayName).toBe(
       "WithEditable(ComponentWithName)"
     );
 
-    expect(withEditable(() => {}).displayName).toBe("WithEditable(Component)");
+    expect(withEditable(() => null).displayName).toBe(
+      "WithEditable(Component)"
+    );
   });
 
   test("shouldn't fatal", () => {

@@ -7,9 +7,11 @@ import Editable, {
 } from "./editable";
 import omit from "./omit";
 
-export type TOuterProps<TValue> = Partial<EditablePropsWithoutChildren<TValue>>;
+export type TOuterProps<TValue> = Partial<
+  EditablePropsWithoutChildren<TValue>
+> & { [x: string]: any };
 
-export default function withEditable<TValue>(
+export default function withEditable<TValue extends Object>(
   Component: React.ComponentType<TInnerProps<TValue>>
 ) {
   const ComponentWithEditable: React.SFC<TOuterProps<TValue>> = ({
