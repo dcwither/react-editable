@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withEditable should match snapshot 1`] = `
+<WithEditable(MockComponent)
+  testProp={1}
+>
+  <editable>
+    <MockComponent
+      onCancel={[Function]}
+      onChange={[Function]}
+      onDelete={[Function]}
+      onStart={[Function]}
+      onSubmit={[Function]}
+      onUpdate={[Function]}
+      status="PRESENTING"
+      testProp={1}
+    />
+  </editable>
+</WithEditable(MockComponent)>
+`;

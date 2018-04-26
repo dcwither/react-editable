@@ -1,9 +1,8 @@
 module.exports = {
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   roots: ["<rootDir>/src"],
   setupFiles: ["raf/polyfill", "./jest.setup.ts"],
-  transform: {
-    "^.+\\.tsx?$": "ts-jest"
-  },
+  snapshotSerializers: ["enzyme-to-json/serializer"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
+  transform: { "^.+\\.tsx?$": "ts-jest" }
 };

@@ -12,23 +12,20 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": [
-    "react-component",
-    "react"
-  ],
+  "keywords": ["react-component", "react"],
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
-    "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
+    "prepare":
+      "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
     "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint ./src ./test ./stories ./examples",
     "lintfix": "eslint ./src ./test ./stories ./examples --fix",
-    "test-only": "jest --config jest.config.js",
+    "test-only": "jest --config jest.config.js --verbose",
     "test": "npm run lint && npm run test-only",
     "test-watch": "npm run test-only -- --watch",
-    "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:coverage":
+      "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -38,6 +35,7 @@
     "@storybook/react": "^3.2.13",
     "@storybook/storybook-deployer": "^2.0.0",
     "@types/enzyme": "^3.1.10",
+    "@types/invariant": "^2.2.29",
     "@types/jest": "^22.2.3",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.3.12",
@@ -56,6 +54,7 @@
     "coveralls": "^3.0.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-to-json": "^3.3.3",
     "eslint": "^4.9.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.4.0",

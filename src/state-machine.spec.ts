@@ -1,4 +1,4 @@
-import transition, { actions, states } from "../state-machine";
+import transition, { actions, states } from "./state-machine";
 
 const FAKE_ACTION = "FAKE_ACTION";
 const FAKE_STATE = "FAKE_STATE";

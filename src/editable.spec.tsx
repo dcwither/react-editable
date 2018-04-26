@@ -1,24 +1,12 @@
-import { withEditable, Editable, EditableState } from "../index";
+import Editable, { EditableState } from "./editable";
 
-import PropTypes from "prop-types";
 import * as React from "react";
-import { shallow, mount } from "enzyme";
-import { withProps } from "recompose";
-
-const MockComponent: React.SFC = function(props) {
-  return null;
-};
-
-MockComponent.displayName = "MockComponent";
-MockComponent.propTypes = {
-  testProp: PropTypes.number
-};
+import { shallow } from "enzyme";
+import MockComponent from "./__mocks__/mock-component";
 
 const MockComponentWrapper = editableProps => (
   <MockComponent {...editableProps} />
 );
-
-const MockComponentWithEditable = withEditable(MockComponent);
 
 const PROPS_VALUE = "propsValue";
 const STATE_VALUE = "stateValue";
@@ -64,55 +52,16 @@ function createComponentWithStateAndTriggerEvent({
   return { wrapper, promise: maybePromise };
 }
 
-describe("withEditable", () => {
+describe("Editable", () => {
   describe("smoke tests", () => {
-    test("should create the correct displayName", () => {
-      expect(MockComponentWithEditable.displayName).toBe(
-        "WithEditable(MockComponent)"
-      );
-
-      let ComponentWithName = () => {};
-      expect(withEditable(ComponentWithName).displayName).toBe(
-        "WithEditable(ComponentWithName)"
-      );
-
-      expect(withEditable(() => {}).displayName).toBe(
-        "WithEditable(Component)"
-      );
-    });
-
     test("shouldn't fatal", () => {
-      expect(() => <Editable children={MockComponentWrapper} />).not.toThrow();
+      expect(() => <Editable />).not.toThrow();
     });
 
     test("should render MockComponent", () => {
       expect(
-        shallow(<Editable children={MockComponentWrapper} />).is(MockComponent)
-      ).toBe(true);
-    });
-
-    test("should hoist MockComponent props", () => {
-      expect(MockComponentWithEditable.propTypes).toHaveProperty("testProp");
-    });
-
-    test("should pass through props to MockComponent", () => {
-      console.log(mount(<MockComponentWithEditable testProp={1} />).debug());
-
-      expect(
-        mount(<MockComponentWithEditable testProp={1} />)
-          .find(MockComponent)
-          .props()
-      ).toMatchObject({
-        testProp: 1,
-        value: undefined,
-        status: EditableState.PRESENTING,
-        onStart: expect.any(Function),
-        onCancel: expect.any(Function),
-        onChange: expect.any(Function),
-        onSubmit: expect.any(Function),
-        onUpdate: expect.any(Function),
-        onDelete: expect.any(Function)
-      });
+        shallow(<Editable children={MockComponentWrapper} />)
+      ).toMatchSnapshot();
     });
   });
 
@@ -283,7 +232,7 @@ describe("withEditable", () => {
       EditableState.PRESENTING
     } when promise rejects`, () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.reject() },
+        initialProps: { onSubmit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
         event: "onSubmit"
       });
@@ -297,7 +246,7 @@ describe("withEditable", () => {
 
     test("rejected promise shouldn't reach setState when unmounted", () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.reject() },
+        initialProps: { onSubmit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
         event: "onSubmit"
       });

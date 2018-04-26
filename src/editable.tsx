@@ -1,8 +1,7 @@
 import transition, { actions, states } from "./state-machine";
 
-import PropTypes from "prop-types";
-import React from "react";
-import hoistNonReactStatics from "hoist-non-react-statics";
+import * as PropTypes from "prop-types";
+import * as React from "react";
 import invariant from "invariant";
 import makeCancelable from "./make-cancelable";
 
@@ -13,10 +12,27 @@ function getValue(props, state) {
 export { states as EditableState };
 export const EditableStateType = PropTypes.oneOf(Object.keys(states));
 
-export default class Editable extends React.Component<{
-  [x: string]: any;
-  children: (props) => JSX.Element;
-}> {
+type EditablePropsWithoutChildren<TValue> = {
+  onCancel?: (value: TValue | undefined) => void;
+  onDelete?: (value: TValue | undefined) => Promise<any>;
+  onSubmit?: (value: TValue | undefined) => Promise<any>;
+  onUpdate?: (value: TValue | undefined) => Promise<any>;
+  value?: TValue;
+};
+
+type EditableProps<TValue> = EditablePropsWithoutChildren<TValue> & {
+  children?: (props: EditablePropsWithoutChildren<TValue>) => JSX.Element;
+};
+
+type EditableState<TValue> = {
+  status: string;
+  value?: TValue;
+};
+
+export default class Editable<TValue> extends React.Component<
+  EditableProps<TValue>,
+  EditableState<TValue>
+> {
   static displayName = "editable";
 
   static propTypes = {

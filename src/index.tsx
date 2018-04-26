@@ -1,6 +1,5 @@
 export {
   default as Editable,
-  states,
   EditableStateType,
   EditableState
 } from "./editable";
