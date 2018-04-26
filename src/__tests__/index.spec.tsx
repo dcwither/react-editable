@@ -1,20 +1,25 @@
-import withEditable, { EditableState } from "../index";
+import { withEditable, Editable, EditableState } from "../index";
 
 import PropTypes from "prop-types";
 import * as React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
+import { withProps } from "recompose";
 
-class MockComponent extends React.PureComponent {
-  static propTypes = {
-    testProp: PropTypes.number
-  };
+const MockComponent: React.SFC = function(props) {
+  return null;
+};
 
-  render() {
-    return <div />;
-  }
-}
+MockComponent.displayName = "MockComponent";
+MockComponent.propTypes = {
+  testProp: PropTypes.number
+};
 
-const EditableMockComponent = withEditable(MockComponent);
+const MockComponentWrapper = editableProps => (
+  <MockComponent {...editableProps} />
+);
+
+const MockComponentWithEditable = withEditable(MockComponent);
+
 const PROPS_VALUE = "propsValue";
 const STATE_VALUE = "stateValue";
 const NEW_VALUE = "newValue";
@@ -25,8 +30,8 @@ const EDITING_STATE = {
 };
 
 function createComponentWithStateAndTriggerEvent({
-  initialProps,
-  initialState,
+  initialProps = {},
+  initialState = {},
   event,
   eventArgs = []
 }: {
@@ -39,7 +44,9 @@ function createComponentWithStateAndTriggerEvent({
     value: PROPS_VALUE,
     ...initialProps
   };
-  const wrapper = shallow(<EditableMockComponent {...props} />);
+  const wrapper = shallow(
+    <Editable {...props} children={MockComponentWrapper} />
+  );
   const maybePromise = wrapper
     .setState(initialState)
     .find(MockComponent)
@@ -60,7 +67,7 @@ function createComponentWithStateAndTriggerEvent({
 describe("withEditable", () => {
   describe("smoke tests", () => {
     test("should create the correct displayName", () => {
-      expect(EditableMockComponent.displayName).toBe(
+      expect(MockComponentWithEditable.displayName).toBe(
         "WithEditable(MockComponent)"
       );
 
@@ -75,20 +82,24 @@ describe("withEditable", () => {
     });
 
     test("shouldn't fatal", () => {
-      expect(() => <EditableMockComponent />).not.toThrow();
+      expect(() => <Editable children={MockComponentWrapper} />).not.toThrow();
     });
 
     test("should render MockComponent", () => {
-      expect(shallow(<EditableMockComponent />).is(MockComponent)).toBe(true);
+      expect(
+        shallow(<Editable children={MockComponentWrapper} />).is(MockComponent)
+      ).toBe(true);
     });
 
     test("should hoist MockComponent props", () => {
-      expect(EditableMockComponent.propTypes).toHaveProperty("testProp");
+      expect(MockComponentWithEditable.propTypes).toHaveProperty("testProp");
     });
 
     test("should pass through props to MockComponent", () => {
+      console.log(mount(<MockComponentWithEditable testProp={1} />).debug());
+
       expect(
-        shallow(<EditableMockComponent testProp={1} />)
+        mount(<MockComponentWithEditable testProp={1} />)
           .find(MockComponent)
           .props()
       ).toMatchObject({
@@ -249,7 +260,7 @@ describe("withEditable", () => {
           },
           event: "onSubmit"
         })
-      ).toThrow("React Editable cannot commit while commiting");
+      ).toThrow();
     });
 
     test(`should transition to ${
