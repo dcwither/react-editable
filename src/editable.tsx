@@ -13,15 +13,25 @@ export { states as EditableState };
 export const EditableStateType = PropTypes.oneOf(Object.keys(states));
 
 type EditablePropsWithoutChildren<TValue> = {
-  onCancel?: (value: TValue | undefined) => void;
-  onDelete?: (value: TValue | undefined) => Promise<any>;
-  onSubmit?: (value: TValue | undefined) => Promise<any>;
-  onUpdate?: (value: TValue | undefined) => Promise<any>;
+  onCancel: (value: TValue | undefined) => void;
+  onDelete: (value: TValue | undefined) => Promise<any>;
+  onSubmit: (value: TValue | undefined) => Promise<any>;
+  onUpdate: (value: TValue | undefined) => Promise<any>;
   value?: TValue;
 };
 
-type EditableProps<TValue> = EditablePropsWithoutChildren<TValue> & {
-  children?: (props: EditablePropsWithoutChildren<TValue>) => JSX.Element;
+type EditableChild<TValue> = (
+  props: Partial<
+    EditablePropsWithoutChildren<TValue> & {
+      onChange: (value) => void;
+      onStart: () => void;
+      status: string;
+    }
+  >
+) => JSX.Element;
+
+type EditableProps<TValue> = Partial<EditablePropsWithoutChildren<TValue>> & {
+  children?: EditableChild<TValue>;
 };
 
 type EditableState<TValue> = {
@@ -53,7 +63,7 @@ export default class Editable<TValue> extends React.Component<
     value: undefined
   };
 
-  commitPromise = null;
+  commitPromise: any = null;
 
   componentWillUnmount() {
     this.commitPromise && this.commitPromise.cancel();
@@ -127,7 +137,7 @@ export default class Editable<TValue> extends React.Component<
 
   render() {
     const { status } = this.state;
-    const { children } = this.props;
+    const children = this.props.children as EditableChild<TValue>;
 
     return children({
       onCancel: this.handleCancel,
