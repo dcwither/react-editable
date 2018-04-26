@@ -3,7 +3,7 @@ import transition, { actions, states } from "./state-machine";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import invariant from "invariant";
-import makeCancelable from "./make-cancelable";
+import makeCancelable, { CancelablePromise } from "./make-cancelable";
 
 function getValue(props, state) {
   return state.status === states.PRESENTING ? props.value : state.value;
@@ -14,9 +14,9 @@ export const EditableStateType = PropTypes.oneOf(Object.keys(states));
 
 type EditablePropsWithoutChildren<TValue> = {
   onCancel: (value: TValue | undefined) => void;
-  onDelete: (value: TValue | undefined) => Promise<any>;
-  onSubmit: (value: TValue | undefined) => Promise<any>;
-  onUpdate: (value: TValue | undefined) => Promise<any>;
+  onDelete: (value: TValue | undefined) => Promise<any> | undefined;
+  onSubmit: (value: TValue | undefined) => Promise<any> | undefined;
+  onUpdate: (value: TValue | undefined) => Promise<any> | undefined;
   value?: TValue;
 };
 
@@ -63,7 +63,7 @@ export default class Editable<TValue> extends React.Component<
     value: undefined
   };
 
-  commitPromise: any = null;
+  commitPromise: CancelablePromise<any> | undefined;
 
   componentWillUnmount() {
     this.commitPromise && this.commitPromise.cancel();
@@ -108,7 +108,7 @@ export default class Editable<TValue> extends React.Component<
 
       if (maybeCommitPromise && maybeCommitPromise.then) {
         this.commitPromise = makeCancelable(maybeCommitPromise);
-        return this.commitPromise.promise
+        return this.commitPromise
           .then(() =>
             this.setState(state => transition(state.status, actions.SUCCESS))
           )
@@ -117,7 +117,7 @@ export default class Editable<TValue> extends React.Component<
               this.setState(state => transition(state.status, actions.FAIL));
             }
           })
-          .then(() => (this.commitPromise = null));
+          .then(() => (this.commitPromise = undefined));
       }
     }
     this.setState(state => transition(state.status, actions.SUCCESS));
