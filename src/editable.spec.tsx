@@ -66,48 +66,25 @@ describe("Editable", () => {
     });
   });
 
-  describe(`when status is ${EditableState.PRESENTING}`, () => {
-    test(`should transition to ${
-      EditableState.EDITING
-    } when onStart is called`, () => {
-      const wrapper = shallow(
-        <Editable value={PROPS_VALUE}>{MockComponentWrapper}</Editable>
-      );
+  describe(`when status is PRESENTING`, () => {
+    test(`should transition to EDITING when onStart is called`, () => {
+      const { wrapper } = createComponentWithStateAndTriggerEvent({
+        event: "onStart"
+      });
 
-      wrapper
-        .find(MockComponent)
-        .props()
-        .onStart();
-
-      expect(
-        wrapper
-          .update()
-          .find(MockComponent)
-          .props()
-      ).toMatchObject({
+      expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.EDITING,
-        value: "propsValue"
+        value: PROPS_VALUE
       });
     });
 
-    test(`should transition to ${
-      EditableState.EDITING
-    } when onChange is called`, () => {
-      const wrapper = shallow(
-        <Editable value={PROPS_VALUE}>{MockComponentWrapper}</Editable>
-      );
+    test(`should transition to EDITING when onChange is called`, () => {
+      const { wrapper } = createComponentWithStateAndTriggerEvent({
+        event: "onChange",
+        eventArgs: [NEW_VALUE]
+      });
 
-      wrapper
-        .find(MockComponent)
-        .props()
-        .onChange(NEW_VALUE);
-
-      expect(
-        wrapper
-          .update()
-          .find(MockComponent)
-          .props()
-      ).toMatchObject({
+      expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.EDITING,
         value: NEW_VALUE
       });
@@ -115,32 +92,25 @@ describe("Editable", () => {
 
     test("should be able to commit", () => {
       const commitSpy = jest.fn();
-      const wrapper = shallow(
-        <Editable value={PROPS_VALUE} onCommit={commitSpy}>
-          {MockComponentWrapper}
-        </Editable>
-      );
 
-      wrapper
-        .find(MockComponent)
-        .props()
-        .onCommit(COMMIT_PARAM);
+      const { wrapper } = createComponentWithStateAndTriggerEvent({
+        initialProps: {
+          onCommit: commitSpy
+        },
+        event: "onCommit",
+        eventArgs: [COMMIT_PARAM]
+      });
 
-      expect(commitSpy).toHaveBeenCalledWith(COMMIT_PARAM, PROPS_VALUE);
-
-      expect(
-        wrapper
-          .update()
-          .find(MockComponent)
-          .props()
-      ).toMatchObject({
+      expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.PRESENTING,
         value: PROPS_VALUE
       });
+
+      expect(commitSpy).toHaveBeenCalledWith(COMMIT_PARAM, PROPS_VALUE);
     });
   });
 
-  describe(`when status is ${EditableState.EDITING}`, () => {
+  describe(`when status is EDITING`, () => {
     test("should not change state when onStart is called", () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
         initialState: EDITING_STATE,
@@ -166,9 +136,7 @@ describe("Editable", () => {
       });
     });
 
-    test(`should transition to ${
-      EditableState.PRESENTING
-    } when onCancel is called`, () => {
+    test(`should transition to PRESENTING when onCancel is called`, () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
         initialState: EDITING_STATE,
         event: "onCancel"
@@ -176,7 +144,7 @@ describe("Editable", () => {
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.PRESENTING,
-        value: "propsValue"
+        value: PROPS_VALUE
       });
     });
 
@@ -191,9 +159,7 @@ describe("Editable", () => {
       expect(cancelSpy).toHaveBeenCalledWith("stateValue");
     });
 
-    test(`should transition to ${
-      EditableState.PRESENTING
-    } when onCommit is called without an event handler`, () => {
+    test(`should transition to PRESENTING when onCommit is called without an event handler`, () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
         initialState: EDITING_STATE,
         event: "onCommit",
@@ -201,13 +167,11 @@ describe("Editable", () => {
       });
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.PRESENTING,
-        value: "propsValue"
+        value: PROPS_VALUE
       });
     });
 
-    test(`should transition to ${
-      EditableState.PRESENTING
-    } when onCommit is called without promise`, () => {
+    test(`should transition to PRESENTING when onCommit is called without promise`, () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => {} },
         initialState: EDITING_STATE,
@@ -217,15 +181,14 @@ describe("Editable", () => {
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.PRESENTING,
-        value: "propsValue"
+        value: PROPS_VALUE
       });
     });
 
-    test(`should transition to ${
-      EditableState.COMMITTING
-    } when onCommit is called with promise`, () => {
+    test(`should transition to COMMITING when onCommit is called with promise`, () => {
+      const commitSpy = jest.fn().mockResolvedValue(null);
       const { wrapper } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onCommit: () => Promise.resolve() },
+        initialProps: { onCommit: commitSpy },
         initialState: EDITING_STATE,
         event: "onCommit",
         eventArgs: [COMMIT_PARAM]
@@ -235,10 +198,11 @@ describe("Editable", () => {
         status: EditableState.COMMITTING,
         value: STATE_VALUE
       });
+      expect(commitSpy).toHaveBeenCalledWith(COMMIT_PARAM, STATE_VALUE);
     });
   });
 
-  describe(`when status is ${EditableState.COMMITTING}`, () => {
+  describe(`when status is COMMITING`, () => {
     test("should throw when handleCommit is called", () => {
       expect(() =>
         createComponentWithStateAndTriggerEvent({
@@ -252,9 +216,7 @@ describe("Editable", () => {
       ).toThrow();
     });
 
-    test(`should transition to ${
-      EditableState.PRESENTING
-    } when promise resolves`, () => {
+    test(`should transition to PRESENTING when promise resolves`, () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.resolve() },
         initialState: EDITING_STATE,
@@ -264,14 +226,12 @@ describe("Editable", () => {
       promise.then(() => {
         expect(wrapper.find(MockComponent).props()).toMatchObject({
           status: EditableState.PRESENTING,
-          value: "propsValue"
+          value: PROPS_VALUE
         });
       });
     });
 
-    test(`should transition to ${
-      EditableState.PRESENTING
-    } when promise rejects`, () => {
+    test(`should transition to PRESENTING when promise rejects`, () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
