@@ -5,7 +5,7 @@ import * as React from "react";
 import invariant from "invariant";
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
 
-export { Status as EditableState };
+export { Status as EditableStatus };
 export const EditableStateType = PropTypes.oneOf(Object.keys(Status));
 
 export type EditablePropsWithoutChildren<TValue, TCommitType> = {
@@ -17,13 +17,13 @@ export type EditablePropsWithoutChildren<TValue, TCommitType> = {
 export type TInnerProps<TValue, TCommitType> = {
   onCancel: (value: TValue) => void;
   onChange: (value: TValue) => void;
-  onCommit?: (message: TCommitType, value: TValue) => Promise<any>;
+  onCommit: (message: TCommitType, value: TValue) => Promise<any>;
   onStart: () => void;
   status: Status;
   value: TValue;
 };
 
-type EditableChild<TValue, TCommitType> = (
+export type EditableChild<TValue, TCommitType> = (
   props: TInnerProps<TValue, TCommitType>
 ) => React.ReactNode;
 
@@ -34,7 +34,7 @@ export type EditableProps<TValue, TCommitType> = EditablePropsWithoutChildren<
   children?: EditableChild<TValue, TCommitType>;
 };
 
-type EditableState<TValue> = {
+export type EditableState<TValue> = {
   status: Status;
   value?: TValue;
 };
@@ -135,12 +135,7 @@ export default class Editable<
     }
 
     return new Promise(resolve => {
-      this.setState(
-        state => transition(state.status, Action.SUCCESS),
-        () => {
-          resolve();
-        }
-      );
+      this.setState(state => transition(state.status, Action.SUCCESS), resolve);
     });
   };
 

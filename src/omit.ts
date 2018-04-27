@@ -1,4 +1,4 @@
-type Record = { [x: string]: any };
+export type Record = { [x: string]: any };
 
 export default function omit(
   obj: Record | null | undefined,

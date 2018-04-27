@@ -7,6 +7,8 @@ import Editable, {
 } from "./editable";
 import omit from "./omit";
 
+export { TInnerProps };
+
 export type TOuterProps<TValue, TCommitType> = EditablePropsWithoutChildren<
   TValue,
   TCommitType
