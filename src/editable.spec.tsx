@@ -11,6 +11,7 @@ const MockComponentWrapper = editableProps => (
 const PROPS_VALUE = "propsValue";
 const STATE_VALUE = "stateValue";
 const NEW_VALUE = "newValue";
+const COMMIT_PARAM = "commit";
 
 const EDITING_STATE = {
   status: EditableState.EDITING,
@@ -69,11 +70,21 @@ describe("Editable", () => {
     test(`should transition to ${
       EditableState.EDITING
     } when onStart is called`, () => {
-      const { wrapper } = createComponentWithStateAndTriggerEvent({
-        event: "onStart"
-      });
+      const wrapper = shallow(
+        <Editable value={PROPS_VALUE}>{MockComponentWrapper}</Editable>
+      );
 
-      expect(wrapper.find(MockComponent).props()).toMatchObject({
+      wrapper
+        .find(MockComponent)
+        .props()
+        .onStart();
+
+      expect(
+        wrapper
+          .update()
+          .find(MockComponent)
+          .props()
+      ).toMatchObject({
         status: EditableState.EDITING,
         value: "propsValue"
       });
@@ -82,25 +93,50 @@ describe("Editable", () => {
     test(`should transition to ${
       EditableState.EDITING
     } when onChange is called`, () => {
-      const { wrapper } = createComponentWithStateAndTriggerEvent({
-        event: "onChange",
-        eventArgs: [NEW_VALUE]
-      });
+      const wrapper = shallow(
+        <Editable value={PROPS_VALUE}>{MockComponentWrapper}</Editable>
+      );
 
-      expect(wrapper.find(MockComponent).props()).toMatchObject({
+      wrapper
+        .find(MockComponent)
+        .props()
+        .onChange(NEW_VALUE);
+
+      expect(
+        wrapper
+          .update()
+          .find(MockComponent)
+          .props()
+      ).toMatchObject({
         status: EditableState.EDITING,
         value: NEW_VALUE
       });
     });
 
-    test("should be able to delete", () => {
-      const deleteSpy = jest.fn();
-      createComponentWithStateAndTriggerEvent({
-        initialProps: { onDelete: deleteSpy },
-        event: "onDelete"
-      });
+    test("should be able to commit", () => {
+      const commitSpy = jest.fn();
+      const wrapper = shallow(
+        <Editable value={PROPS_VALUE} onCommit={commitSpy}>
+          {MockComponentWrapper}
+        </Editable>
+      );
 
-      expect(deleteSpy).toHaveBeenCalledWith("propsValue");
+      wrapper
+        .find(MockComponent)
+        .props()
+        .onCommit(COMMIT_PARAM);
+
+      expect(commitSpy).toHaveBeenCalledWith(COMMIT_PARAM, PROPS_VALUE);
+
+      expect(
+        wrapper
+          .update()
+          .find(MockComponent)
+          .props()
+      ).toMatchObject({
+        status: EditableState.PRESENTING,
+        value: PROPS_VALUE
+      });
     });
   });
 
@@ -113,7 +149,7 @@ describe("Editable", () => {
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.EDITING,
-        value: "stateValue"
+        value: STATE_VALUE
       });
     });
 
@@ -157,10 +193,10 @@ describe("Editable", () => {
 
     test(`should transition to ${
       EditableState.PRESENTING
-    } when onSubmit is called without an event handler`, () => {
+    } when onCommit is called without an event handler`, () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.PRESENTING,
@@ -170,11 +206,11 @@ describe("Editable", () => {
 
     test(`should transition to ${
       EditableState.PRESENTING
-    } when onSubmit is called without promise`, () => {
+    } when onCommit is called without promise`, () => {
       const { wrapper } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => {} },
+        initialProps: { onCommit: () => {} },
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
@@ -194,7 +230,7 @@ describe("Editable", () => {
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
         status: EditableState.COMMITTING,
-        value: "stateValue"
+        value: STATE_VALUE
       });
     });
   });
@@ -205,9 +241,9 @@ describe("Editable", () => {
         createComponentWithStateAndTriggerEvent({
           initialState: {
             status: EditableState.COMMITTING,
-            value: "stateValue"
+            value: STATE_VALUE
           },
-          event: "onSubmit"
+          event: "Submit"
         })
       ).toThrow();
     });
@@ -216,9 +252,9 @@ describe("Editable", () => {
       EditableState.PRESENTING
     } when promise resolves`, () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.resolve() },
+        initialProps: { onCommit: () => Promise.resolve() },
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
       promise.then(() => {
         expect(wrapper.find(MockComponent).props()).toMatchObject({
@@ -232,23 +268,23 @@ describe("Editable", () => {
       EditableState.PRESENTING
     } when promise rejects`, () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.reject("failure reason") },
+        initialProps: { onCommit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
       promise.then(() => {
         expect(wrapper.find(MockComponent).props()).toMatchObject({
           status: EditableState.EDITING,
-          value: "stateValue"
+          value: STATE_VALUE
         });
       });
     });
 
     test("rejected promise shouldn't reach setState when unmounted", () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.reject("failure reason") },
+        initialProps: { onCommit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
       const instance = wrapper.instance();
       jest.spyOn(instance, "setState");
@@ -260,9 +296,9 @@ describe("Editable", () => {
 
     test("resolved promise shouldn't reach setState when unmounted", () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
-        initialProps: { onSubmit: () => Promise.resolve() },
+        initialProps: { onCommit: () => Promise.resolve() },
         initialState: EDITING_STATE,
-        event: "onSubmit"
+        event: "Submit"
       });
       const instance = wrapper.instance();
       jest.spyOn(instance, "setState");

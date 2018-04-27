@@ -58,10 +58,7 @@ export default class Editable<
   static displayName = "editable";
 
   static propTypes = {
-    onCancel: PropTypes.func,
-    onDelete: PropTypes.func,
-    onSubmit: PropTypes.func,
-    onUpdate: PropTypes.func,
+    onCommit: PropTypes.func,
     value: PropTypes.any,
     children: PropTypes.func
   };
