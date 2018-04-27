@@ -23,7 +23,9 @@ describe("withEditable", () => {
   });
 
   test("shouldn't fatal", () => {
-    expect(() => <MockComponentWithEditable testProp={1} />).not.toThrow();
+    expect(() => (
+      <MockComponentWithEditable value={undefined} testProp={1} />
+    )).not.toThrow();
   });
 
   test("should hoist MockComponent props", () => {
@@ -31,6 +33,8 @@ describe("withEditable", () => {
   });
 
   test("should match snapshot", () => {
-    expect(mount(<MockComponentWithEditable testProp={1} />)).toMatchSnapshot();
+    expect(
+      mount(<MockComponentWithEditable value={undefined} testProp={1} />)
+    ).toMatchSnapshot();
   });
 });

@@ -8,10 +8,8 @@ exports[`withEditable should match snapshot 1`] = `
     <MockComponent
       onCancel={[Function]}
       onChange={[Function]}
-      onDelete={[Function]}
+      onCommit={[Function]}
       onStart={[Function]}
-      onSubmit={[Function]}
-      onUpdate={[Function]}
       status="PRESENTING"
       testProp={1}
     />

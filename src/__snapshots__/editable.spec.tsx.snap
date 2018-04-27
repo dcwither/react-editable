@@ -4,10 +4,8 @@ exports[`Editable smoke tests should render MockComponent 1`] = `
 <MockComponent
   onCancel={[Function]}
   onChange={[Function]}
-  onDelete={[Function]}
+  onCommit={[Function]}
   onStart={[Function]}
-  onSubmit={[Function]}
-  onUpdate={[Function]}
   status="PRESENTING"
 />
 `;

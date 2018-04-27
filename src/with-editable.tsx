@@ -7,29 +7,23 @@ import Editable, {
 } from "./editable";
 import omit from "./omit";
 
-export type TOuterProps<TValue> = Partial<
-  EditablePropsWithoutChildren<TValue>
+export type TOuterProps<TCommitType, TValue> = EditablePropsWithoutChildren<
+  TCommitType,
+  TValue
 > & { [x: string]: any };
 
-export default function withEditable<TValue extends Object>(
-  Component: React.ComponentType<TInnerProps<TValue>>
-) {
-  const ComponentWithEditable: React.SFC<TOuterProps<TValue>> = ({
+export default function withEditable<
+  TCommitType extends string,
+  TValue = undefined
+>(Component: React.ComponentType<TInnerProps<TCommitType, TValue>>) {
+  const ComponentWithEditable: React.SFC<TOuterProps<TCommitType, TValue>> = ({
     onCancel,
-    onDelete,
-    onSubmit,
-    onUpdate,
+    onCommit,
     value,
     ...passthroughProps
   }) => {
     return (
-      <Editable
-        onCancel={onCancel}
-        onDelete={onDelete}
-        onSubmit={onSubmit}
-        onUpdate={onUpdate}
-        value={value}
-      >
+      <Editable onCancel={onCancel} onCommit={onCommit} value={value}>
         {editableProps => (
           <Component {...passthroughProps} {...editableProps} />
         )}
@@ -43,23 +37,21 @@ export default function withEditable<TValue extends Object>(
 
   ComponentWithEditable.propTypes = {
     onCancel: PropTypes.func,
-    onDelete: PropTypes.func,
-    onSubmit: PropTypes.func,
-    onUpdate: PropTypes.func,
+    onCommit: PropTypes.func,
     value: PropTypes.any,
     ...omit(Component.propTypes, [
       "onCancel",
       "onDelete",
       "onSubmit",
-      "onUpdate",
+      "onCommit",
       "value",
       "status"
     ])
   };
 
-  hoistNonReactStatics<TOuterProps<TValue>, TInnerProps<TValue>>(
-    ComponentWithEditable,
-    Component
-  );
+  hoistNonReactStatics<
+    TOuterProps<TCommitType, TValue>,
+    TInnerProps<TCommitType, TValue>
+  >(ComponentWithEditable, Component);
   return ComponentWithEditable;
 }

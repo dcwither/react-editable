@@ -55,12 +55,12 @@ function createComponentWithStateAndTriggerEvent({
 describe("Editable", () => {
   describe("smoke tests", () => {
     test("shouldn't fatal", () => {
-      expect(() => <Editable />).not.toThrow();
+      expect(() => <Editable value={undefined} />).not.toThrow();
     });
 
     test("should render MockComponent", () => {
       expect(
-        shallow(<Editable children={MockComponentWrapper} />)
+        shallow(<Editable value={undefined} children={MockComponentWrapper} />)
       ).toMatchSnapshot();
     });
   });
