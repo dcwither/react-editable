@@ -8,13 +8,13 @@ import makeCancelable, { CancelablePromise } from "./make-cancelable";
 export { Status as EditableState };
 export const EditableStateType = PropTypes.oneOf(Object.keys(Status));
 
-export type EditablePropsWithoutChildren<TCommitType, TValue> = {
+export type EditablePropsWithoutChildren<TValue, TCommitType> = {
   onCancel?: (value: TValue) => void;
   onCommit?: (message: TCommitType, value: TValue) => any;
   value: TValue;
 };
 
-export type TInnerProps<TCommitType, TValue> = {
+export type TInnerProps<TValue, TCommitType> = {
   onCancel: (value: TValue) => void;
   onChange: (value: TValue) => void;
   onCommit?: (message: TCommitType, value: TValue) => Promise<any>;
@@ -23,15 +23,15 @@ export type TInnerProps<TCommitType, TValue> = {
   value: TValue;
 };
 
-type EditableChild<TCommitType, TValue> = (
-  props: TInnerProps<TCommitType, TValue>
+type EditableChild<TValue, TCommitType> = (
+  props: TInnerProps<TValue, TCommitType>
 ) => React.ReactNode;
 
-export type EditableProps<
-  TCommitType extends string,
-  TValue
-> = EditablePropsWithoutChildren<TCommitType, TValue> & {
-  children?: EditableChild<TCommitType, TValue>;
+export type EditableProps<TValue, TCommitType> = EditablePropsWithoutChildren<
+  TValue,
+  TCommitType
+> & {
+  children?: EditableChild<TValue, TCommitType>;
 };
 
 type EditableState<TValue> = {
@@ -39,8 +39,8 @@ type EditableState<TValue> = {
   value?: TValue;
 };
 
-function getValue<TCommitType extends string, TValue>(
-  props: EditableProps<TCommitType, TValue>,
+function getValue<TValue, TCommitType>(
+  props: EditableProps<TValue, TCommitType>,
   state: EditableState<TValue>
 ): TValue {
   return state.status === Status.PRESENTING
@@ -49,10 +49,10 @@ function getValue<TCommitType extends string, TValue>(
 }
 
 export default class Editable<
-  TCommitType extends string,
-  TValue
+  TValue,
+  TCommitType = string
 > extends React.Component<
-  EditableProps<TCommitType, TValue>,
+  EditableProps<TValue, TCommitType>,
   EditableState<TValue>
 > {
   static displayName = "editable";
@@ -146,7 +146,7 @@ export default class Editable<
 
   render() {
     const { status } = this.state;
-    const children = this.props.children as EditableChild<TCommitType, TValue>;
+    const children = this.props.children as EditableChild<TValue, TCommitType>;
 
     return children({
       onCancel: this.handleCancel,

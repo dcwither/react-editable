@@ -216,37 +216,38 @@ describe("Editable", () => {
       ).toThrow();
     });
 
-    test(`should transition to PRESENTING when promise resolves`, () => {
+    test(`should transition to PRESENTING when promise resolves`, async () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.resolve() },
         initialState: EDITING_STATE,
         event: "onCommit",
         eventArgs: [COMMIT_PARAM]
       });
-      promise.then(() => {
-        expect(wrapper.find(MockComponent).props()).toMatchObject({
-          status: EditableState.PRESENTING,
-          value: PROPS_VALUE
-        });
+
+      await promise;
+
+      expect(wrapper.find(MockComponent).props()).toMatchObject({
+        status: EditableState.PRESENTING,
+        value: PROPS_VALUE
       });
     });
 
-    test(`should transition to PRESENTING when promise rejects`, () => {
+    test(`should transition to PRESENTING when promise rejects`, async () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
         event: "onCommit",
         eventArgs: [COMMIT_PARAM]
       });
-      promise.then(() => {
-        expect(wrapper.find(MockComponent).props()).toMatchObject({
-          status: EditableState.EDITING,
-          value: STATE_VALUE
-        });
+
+      await promise;
+      expect(wrapper.find(MockComponent).props()).toMatchObject({
+        status: EditableState.EDITING,
+        value: STATE_VALUE
       });
     });
 
-    test("rejected promise shouldn't reach setState when unmounted", () => {
+    test("rejected promise shouldn't reach setState when unmounted", async () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.reject("failure reason") },
         initialState: EDITING_STATE,
@@ -257,11 +258,11 @@ describe("Editable", () => {
       jest.spyOn(instance, "setState");
       wrapper.unmount();
 
-      promise.then(() => expect(instance.setState).not.toHaveBeenCalled());
-      return promise;
+      await promise;
+      expect(instance.setState).not.toHaveBeenCalled();
     });
 
-    test("resolved promise shouldn't reach setState when unmounted", () => {
+    test("resolved promise shouldn't reach setState when unmounted", async () => {
       const { wrapper, promise } = createComponentWithStateAndTriggerEvent({
         initialProps: { onCommit: () => Promise.resolve() },
         initialState: EDITING_STATE,
@@ -272,8 +273,8 @@ describe("Editable", () => {
       jest.spyOn(instance, "setState");
       wrapper.unmount();
 
-      promise.then(() => expect(instance.setState).not.toHaveBeenCalled());
-      return promise;
+      await promise;
+      expect(instance.setState).not.toHaveBeenCalled();
     });
   });
 });

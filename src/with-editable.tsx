@@ -7,16 +7,15 @@ import Editable, {
 } from "./editable";
 import omit from "./omit";
 
-export type TOuterProps<TCommitType, TValue> = EditablePropsWithoutChildren<
-  TCommitType,
-  TValue
+export type TOuterProps<TValue, TCommitType> = EditablePropsWithoutChildren<
+  TValue,
+  TCommitType
 > & { [x: string]: any };
 
-export default function withEditable<
-  TCommitType extends string,
-  TValue = undefined
->(Component: React.ComponentType<TInnerProps<TCommitType, TValue>>) {
-  const ComponentWithEditable: React.SFC<TOuterProps<TCommitType, TValue>> = ({
+export default function withEditable<TValue, TCommitType = string>(
+  Component: React.ComponentType<TInnerProps<TValue, TCommitType>>
+) {
+  const ComponentWithEditable: React.SFC<TOuterProps<TValue, TCommitType>> = ({
     onCancel,
     onCommit,
     value,
@@ -50,8 +49,8 @@ export default function withEditable<
   };
 
   hoistNonReactStatics<
-    TOuterProps<TCommitType, TValue>,
-    TInnerProps<TCommitType, TValue>
+    TOuterProps<TValue, TCommitType>,
+    TInnerProps<TValue, TCommitType>
   >(ComponentWithEditable, Component);
   return ComponentWithEditable;
 }
