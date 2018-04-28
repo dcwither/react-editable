@@ -3,7 +3,8 @@ export {
   EditableChild,
   EditableProps,
   EditableState,
-  EditableStatus
+  EditableStatus,
+  EditableStateType
 } from "./editable";
 
 export {

@@ -1,55 +1,50 @@
 {
-    "parser": "babel-eslint",
-    "env": {
-        "browser": true,
-        "node": true,
-        "es6": true,
-        "jest": true
-    },
-    "ecmaFeatures": {
-        "modules": true
-    },
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
-    "rules": {
-        "array-bracket-spacing": [2, "never"],
-        "brace-style": [2, "1tbs"],
-        "camelcase": [1, {"properties": "never"}],
-        "comma-dangle": [2, "always-multiline"],
-        "comma-style": [2, "last"],
-        "complexity": [1, 12],
-        "consistent-return": 0,
-        "func-names": 0,
-        "guard-for-in": 2,
-        "indent": [2, 2, {"SwitchCase": 1}],
-        "keyword-spacing": [2, {"before": true, "after": true}],
-        "max-len": [0, 120, 4],
-        "new-cap": [2, {"newIsCap": true, "capIsNew": false}],
-        "no-bitwise": 2,
-        "no-eq-null": 2,
-        "no-extra-parens": 0,
-        "no-floating-decimal": 2,
-        "no-inner-declarations": [2, "both"],
-        "no-lonely-if": 2,
-        "no-multiple-empty-lines": [2, {"max": 3}],
-        "no-self-compare": 2,
-        "no-underscore-dangle": 0,
-        "no-unused-expressions": 0,
-        "no-unused-vars": 2,
-        "no-use-before-define": 0,
-        "no-void": 2,
-        "quotes": [2, "single"],
-        "semi": [2, "always"],
-        "space-before-blocks": [2, "always"],
-        "space-in-parens": [2, "never"],
-        "strict": [0],
-        "valid-jsdoc": 2,
-        "wrap-iife": [2, "any"],
-        "yoda": [1, "never"]
-    },
-    "plugins": [
-        "react"
-    ],
-    "globals": {
-
-    }
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "rules": {
+    "array-bracket-spacing": [2, "never"],
+    "brace-style": [2, "1tbs"],
+    "camelcase": [1, { "properties": "never" }],
+    "comma-style": [2, "last"],
+    "complexity": [1, 12],
+    "consistent-return": 0,
+    "func-names": 0,
+    "guard-for-in": 2,
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "keyword-spacing": [2, { "before": true, "after": true }],
+    "max-len": [0, 120, 4],
+    "new-cap": [2, { "newIsCap": true, "capIsNew": false }],
+    "no-bitwise": 2,
+    "no-eq-null": 2,
+    "no-extra-parens": 0,
+    "no-floating-decimal": 2,
+    "no-inner-declarations": [2, "both"],
+    "no-lonely-if": 2,
+    "no-multiple-empty-lines": [2, { "max": 3 }],
+    "no-self-compare": 2,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": 0,
+    "no-unused-vars": 2,
+    "no-use-before-define": 0,
+    "no-void": 2,
+    "quotes": [2, "double"],
+    "semi": [2, "always"],
+    "space-before-blocks": [2, "always"],
+    "space-in-parens": [2, "never"],
+    "strict": [0],
+    "valid-jsdoc": 2,
+    "wrap-iife": [2, "any"],
+    "yoda": [1, "never"]
+  },
+  "plugins": ["react"],
+  "globals": {}
 }

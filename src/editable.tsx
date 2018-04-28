@@ -55,7 +55,7 @@ export default class Editable<
   EditableProps<TValue, TCommitType>,
   EditableState<TValue>
 > {
-  static displayName = "editable";
+  static displayName = "Editable";
 
   static propTypes = {
     onCommit: PropTypes.func,
