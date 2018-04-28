@@ -77,7 +77,7 @@ export default class QuestionForm extends React.Component {
           status={status}
           value={view(bodyLens, value)}
           fullWidth
-          multiLine
+          multiline
         />
         <h3>Author</h3>
         <Input

@@ -1,6 +1,6 @@
+import Button from "material-ui/Button";
 import Promise from "bluebird";
 import PropTypes from "prop-types";
-import RaisedButton from "material-ui/RaisedButton";
 import React from "react";
 import { action } from "@storybook/addon-actions";
 import { omit } from "lodash/fp";
@@ -32,7 +32,6 @@ function withState(Component, usePromises) {
 
     handleCommit = (message, value) => {
       action(message)(value);
-      return this.maybeDelayThenSetState({ value });
       switch (message) {
         case "CREATE":
         case "UPDATE":
@@ -42,6 +41,8 @@ function withState(Component, usePromises) {
             value: undefined,
             isDeleted: true
           });
+        default:
+          throw new Error("bad message");
       }
     };
 
@@ -61,7 +62,7 @@ function withState(Component, usePromises) {
       if (isDeleted) {
         return (
           <div>
-            <RaisedButton
+            <Button
               onClick={this.handleReset}
               primary
               label="Item Deleted - Reset"

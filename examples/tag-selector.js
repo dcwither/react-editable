@@ -1,7 +1,34 @@
+import { addIndex, map } from "ramda";
+
 import Chip from "material-ui/Chip";
+import { MenuItem } from "material-ui";
 import PropTypes from "prop-types";
 import React from "react";
-import { slice } from "ramda";
+import Select from "material-ui/Select";
+
+const TAG_OPTIONS = [
+  "ajax",
+  "angular",
+  "angularjs",
+  "canvas",
+  "css",
+  "d3",
+  "dom",
+  "express",
+  "forms",
+  "html",
+  "html5",
+  "java",
+  "jquery",
+  "json",
+  "mobx",
+  "node",
+  "reactjs",
+  "redux",
+  "regex",
+  "semantic-markup",
+  "typescript"
+];
 
 export default class TagSelector extends React.Component {
   static propTypes = {
@@ -9,24 +36,27 @@ export default class TagSelector extends React.Component {
     onChange: PropTypes.func.isRequired
   };
 
-  handleDelete(idx) {
-    const { tags, onChange } = this.props;
-    onChange([...slice(0, idx, tags), ...slice(idx + 1, Infinity, tags)]);
-  }
+  handleChange = evt => {
+    this.props.onChange(evt.target.value);
+  };
 
   render() {
+    const { tags } = this.props;
     return (
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {this.props.tags.map((tag, idx) => (
-          <Chip
-            style={{ margin: 4 }}
-            key={idx}
-            onRequestDelete={() => this.handleDelete(idx)}
-          >
-            {tag}
-          </Chip>
+      <Select
+        multiple
+        value={tags}
+        onChange={this.handleChange}
+        renderValue={addIndex(map)((tag, idx) => (
+          <Chip style={{ marginRight: 4 }} key={idx} label={tag} />
         ))}
-      </div>
+      >
+        {TAG_OPTIONS.map((tag, idx) => (
+          <MenuItem key={idx} value={tag}>
+            {tag}
+          </MenuItem>
+        ))}
+      </Select>
     );
   }
 }
