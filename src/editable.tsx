@@ -107,8 +107,8 @@ export default class Editable<
       this.state.status !== Status.COMMITTING,
       "React Editable cannot commit while commiting"
     );
-    this.setState((state, props) =>
-      transition(state.status, Action.COMMIT, getValue(props, state))
+    this.setState(state =>
+      transition(state.status, Action.COMMIT, getValue(this.props, this.state))
     );
 
     if (typeof onCommit === "function") {

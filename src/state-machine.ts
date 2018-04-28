@@ -32,19 +32,28 @@ function reset<TValue>(): State<TValue> {
   };
 }
 
-export const transitions = {
+export const transitions: {
+  [status: string]: {
+    [action: string]: <TValue>(value: TValue) => State<TValue>;
+  };
+} = {
   PRESENTING: {
     START: edit,
     CHANGE: edit,
-    COMMIT: value => ({ status: Status.COMMITTING, value })
+    COMMIT: <TValue>(value: TValue): State<TValue> => ({
+      status: Status.COMMITTING,
+      value
+    })
   },
   EDITING: {
     CANCEL: reset,
     CHANGE: edit,
-    COMMIT: () => ({ status: Status.COMMITTING })
+    COMMIT: <TValue>(): State<TValue> => ({
+      status: Status.COMMITTING
+    })
   },
   COMMITTING: {
-    FAIL: () => ({ status: Status.EDITING }),
+    FAIL: <TValue>(): State<TValue> => ({ status: Status.EDITING }),
     SUCCESS: reset
   }
 };

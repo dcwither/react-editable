@@ -3,7 +3,11 @@ import transition, { Action, Status } from "./state-machine";
 const FAKE_ACTION = "FAKE_ACTION";
 
 describe("StateMachine", () => {
-  function stateWillTransitionTo(state, actionStatePairs) {
+  function stateWillTransitionTo(
+    state: Status,
+    // intentionally accept arbitrary type to ensure we handle js cases well
+    actionStatePairs: [any, Status][]
+  ) {
     describe(`${state}`, () => {
       test("META: should check all actions", () => {
         expect(actionStatePairs.map(([action]) => action)).toEqual(

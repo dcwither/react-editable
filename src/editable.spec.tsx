@@ -1,12 +1,12 @@
-import Editable, { EditableState } from "./editable";
+import Editable, { EditableStatus, TInnerProps } from "./editable";
 
 import * as React from "react";
 import { shallow } from "enzyme";
 import MockComponent from "./__mocks__/mock-component";
 
-const MockComponentWrapper = editableProps => (
-  <MockComponent {...editableProps} />
-);
+const MockComponentWrapper = <TValue, TCommitType>(
+  editableProps: TInnerProps<TValue, TCommitType>
+) => <MockComponent {...editableProps} />;
 
 const PROPS_VALUE = "propsValue";
 const STATE_VALUE = "stateValue";
@@ -14,7 +14,7 @@ const NEW_VALUE = "newValue";
 const COMMIT_PARAM = "commit";
 
 const EDITING_STATE = {
-  status: EditableState.EDITING,
+  status: EditableStatus.EDITING,
   value: STATE_VALUE
 };
 
@@ -43,7 +43,7 @@ function createComponentWithStateAndTriggerEvent({
     [event](...eventArgs);
 
   if (maybePromise && maybePromise.then) {
-    maybePromise.then(result => {
+    maybePromise.then((result: any) => {
       wrapper.update();
       return result;
     });
@@ -73,7 +73,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.EDITING,
+        status: EditableStatus.EDITING,
         value: PROPS_VALUE
       });
     });
@@ -85,7 +85,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.EDITING,
+        status: EditableStatus.EDITING,
         value: NEW_VALUE
       });
     });
@@ -102,7 +102,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.PRESENTING,
+        status: EditableStatus.PRESENTING,
         value: PROPS_VALUE
       });
 
@@ -118,7 +118,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.EDITING,
+        status: EditableStatus.EDITING,
         value: STATE_VALUE
       });
     });
@@ -131,7 +131,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.EDITING,
+        status: EditableStatus.EDITING,
         value: NEW_VALUE
       });
     });
@@ -143,7 +143,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.PRESENTING,
+        status: EditableStatus.PRESENTING,
         value: PROPS_VALUE
       });
     });
@@ -166,7 +166,7 @@ describe("Editable", () => {
         eventArgs: [COMMIT_PARAM]
       });
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.PRESENTING,
+        status: EditableStatus.PRESENTING,
         value: PROPS_VALUE
       });
     });
@@ -180,7 +180,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.PRESENTING,
+        status: EditableStatus.PRESENTING,
         value: PROPS_VALUE
       });
     });
@@ -195,7 +195,7 @@ describe("Editable", () => {
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.COMMITTING,
+        status: EditableStatus.COMMITTING,
         value: STATE_VALUE
       });
       expect(commitSpy).toHaveBeenCalledWith(COMMIT_PARAM, STATE_VALUE);
@@ -207,7 +207,7 @@ describe("Editable", () => {
       expect(() =>
         createComponentWithStateAndTriggerEvent({
           initialState: {
-            status: EditableState.COMMITTING,
+            status: EditableStatus.COMMITTING,
             value: STATE_VALUE
           },
           event: "onCommit",
@@ -227,7 +227,7 @@ describe("Editable", () => {
       await promise;
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.PRESENTING,
+        status: EditableStatus.PRESENTING,
         value: PROPS_VALUE
       });
     });
@@ -242,7 +242,7 @@ describe("Editable", () => {
 
       await promise;
       expect(wrapper.find(MockComponent).props()).toMatchObject({
-        status: EditableState.EDITING,
+        status: EditableStatus.EDITING,
         value: STATE_VALUE
       });
     });

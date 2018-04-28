@@ -14,7 +14,7 @@ export type TOuterProps<TValue, TCommitType> = EditablePropsWithoutChildren<
   TCommitType
 > & { [x: string]: any };
 
-export default function withEditable<TValue, TCommitType = string>(
+export default function withEditable<TValue = undefined, TCommitType = string>(
   Component: React.ComponentType<TInnerProps<TValue, TCommitType>>
 ) {
   const ComponentWithEditable: React.SFC<TOuterProps<TValue, TCommitType>> = ({
