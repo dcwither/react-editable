@@ -1,4 +1,4 @@
-import { EditableStatus, EditableStateType } from "../src";
+import { EditableStateType, EditableStatus } from "../src";
 
 import PropTypes from "prop-types";
 import React from "react";
@@ -17,13 +17,14 @@ export default class Input extends React.Component {
   };
 
   render() {
-    const { title, status, value } = this.props;
+    const { title, status, value, onChange, ...rest } = this.props;
     return (
       <TextField
         disabled={status === EditableStatus.COMMITTING}
         floatingLabelText={title}
         onChange={this.handleChange}
         value={value}
+        {...rest}
       />
     );
   }

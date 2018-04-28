@@ -1,11 +1,13 @@
+import { lensPath, lensProp, set, view } from "ramda";
+
+import { EditableStateType } from "../src";
 import Input from "./input";
 import PropTypes from "prop-types";
 import React from "react";
-import { EditableStateType } from "../src";
-import { view, set, lensPath, lensProp } from "ramda";
+import TagSelector from "./tag-selector";
 
 // flip to put the current value ahead of the change
-// const tagsLens = lensProp("tags");
+const tagsLens = lensProp("tags");
 const titleLens = lensProp("title");
 const bodyLens = lensProp("body");
 const firstNameLens = lensPath(["author", "firstName"]);
@@ -47,6 +49,7 @@ export default class QuestionForm extends React.Component {
     return this.props.onChange(set(lens, newFieldValue, this.props.value));
   };
 
+  handleChangeTags = this.handleChange(tagsLens);
   handleChangeTitle = this.handleChange(titleLens);
   handleChangeBody = this.handleChange(bodyLens);
   handleChangeFirstName = this.handleChange(firstNameLens);
@@ -57,17 +60,24 @@ export default class QuestionForm extends React.Component {
     return (
       <div className="form">
         <h3>Your Question</h3>
+        <TagSelector
+          tags={view(tagsLens, value)}
+          onChange={this.handleChangeTags}
+        />
         <Input
           title="Title"
           onChange={this.handleChangeTitle}
           status={status}
           value={view(titleLens, value)}
+          fullWidth
         />
         <Input
           title="Body"
           onChange={this.handleChangeBody}
           status={status}
           value={view(bodyLens, value)}
+          fullWidth
+          multiLine
         />
         <h3>Author</h3>
         <Input
@@ -75,12 +85,14 @@ export default class QuestionForm extends React.Component {
           onChange={this.handleChangeFirstName}
           status={status}
           value={view(firstNameLens, value)}
+          fullWidth
         />
         <Input
           title="LastName"
           onChange={this.handleChangeLastName}
           status={status}
           value={view(lastNameLens, value)}
+          fullWidth
         />
       </div>
     );

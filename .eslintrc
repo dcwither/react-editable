@@ -33,7 +33,7 @@
     "no-self-compare": 2,
     "no-underscore-dangle": 0,
     "no-unused-expressions": 0,
-    "no-unused-vars": 2,
+    "no-unused-vars": [2, { "ignoreRestSiblings": true }],
     "no-use-before-define": 0,
     "no-void": 2,
     "quotes": [2, "double"],
