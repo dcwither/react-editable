@@ -5,6 +5,7 @@ import Input from "./input";
 import PropTypes from "prop-types";
 import React from "react";
 import TagSelector from "./tag-selector";
+import Typography from "material-ui/Typography";
 
 // flip to put the current value ahead of the change
 const tagsLens = lensProp("tags");
@@ -18,18 +19,16 @@ export default class QuestionForm extends React.Component {
     onChange: PropTypes.func.isRequired,
     status: EditableStateType.isRequired,
     title: PropTypes.string,
-    value: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-        title: PropTypes.string.isRequired,
-        body: PropTypes.string.isRequired,
-        author: PropTypes.shape({
-          firstName: PropTypes.string.isRequired,
-          lastName: PropTypes.string.isRequired
-        })
+    value: PropTypes.shape({
+      id: PropTypes.string,
+      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+      title: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+      author: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired
       })
-    )
+    })
   };
 
   static defaultProps = {
@@ -59,7 +58,7 @@ export default class QuestionForm extends React.Component {
     const { value, status } = this.props;
     return (
       <div className="form">
-        <h3>Your Question</h3>
+        <Typography variant="headline">Your Question</Typography>
         <TagSelector
           tags={view(tagsLens, value)}
           onChange={this.handleChangeTags}
@@ -79,7 +78,7 @@ export default class QuestionForm extends React.Component {
           fullWidth
           multiline
         />
-        <h3>Author</h3>
+        <Typography variant="title">Author</Typography>
         <Input
           title="First Name"
           onChange={this.handleChangeFirstName}

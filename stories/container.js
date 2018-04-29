@@ -1,3 +1,4 @@
+import CssBaseline from "material-ui/CssBaseline";
 import Paper from "material-ui/Paper";
 import PropTypes from "prop-types";
 import React from "react";

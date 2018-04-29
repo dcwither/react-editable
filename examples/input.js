@@ -6,7 +6,7 @@ import TextField from "material-ui/TextField";
 
 export default class Input extends React.Component {
   static propTypes = {
-    title: TextField.propTypes.floatingLabelText,
+    title: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     status: EditableStateType.isRequired,
     value: PropTypes.string.isRequired
@@ -21,7 +21,7 @@ export default class Input extends React.Component {
     return (
       <TextField
         disabled={status === EditableStatus.COMMITTING}
-        floatingLabelText={title}
+        label={title}
         onChange={this.handleChange}
         value={value}
         {...rest}
