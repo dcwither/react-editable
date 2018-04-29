@@ -1,5 +1,12 @@
-.form > div,
-.form > h1,
-.form > h2 {
+.fields > div,
+.fields > h1,
+.fields > h2 {
   margin-bottom: 1rem;
+}
+.fields {
+  margin-bottom: 1em;
+}
+
+.buttons button {
+  margin-right: 1em;
 }

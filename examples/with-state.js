@@ -64,10 +64,12 @@ function withState(Component, usePromises) {
           <div>
             <Button
               onClick={this.handleReset}
-              primary
-              label="Item Deleted - Reset"
+              color="primary"
+              variant="raised"
               style={{ margin: "2em" }}
-            />
+            >
+              Item Deleted - Reset
+            </Button>
           </div>
         );
       } else {
