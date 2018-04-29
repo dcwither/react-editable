@@ -7,8 +7,8 @@ module.exports = (baseConfig, env) => {
       loader: require.resolve("ts-loader")
     },
     {
-      test: /\.scss$/,
-      loaders: ["style-loader", "css-loader", "sass-loader"],
+      test: /\.css$/,
+      loaders: ["style-loader", "css-loader"],
       include: path.resolve(__dirname, "../")
     },
     {
