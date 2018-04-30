@@ -1,0 +1,74 @@
+<svg width="670pt" height="252pt" viewBox="0.00 0.00 670.06 252.02" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 1170px;">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 248.0194)">
+<title>finite_state_machine</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-248.0194 666.0595,-248.0194 666.0595,4 -4,4"></polygon>
+<!-- PRESENTING -->
+<g id="node1" class="node">
+<title>PRESENTING</title>
+<ellipse fill="none" stroke="#000000" cx="114.6404" cy="-74.0404" rx="70.0787" ry="70.0787"></ellipse>
+<ellipse fill="none" stroke="#000000" cx="114.6404" cy="-74.0404" rx="74.0809" ry="74.0809"></ellipse>
+<text text-anchor="middle" x="114.6404" y="-69.8404" font-family="Times,serif" font-size="14.00" fill="#000000">PRESENTING</text>
+</g>
+<!-- EDITING -->
+<g id="node3" class="node">
+<title>EDITING</title>
+<ellipse fill="none" stroke="#000000" cx="381.0065" cy="-159.0404" rx="50.3586" ry="50.3586"></ellipse>
+<text text-anchor="middle" x="381.0065" y="-154.8404" font-family="Times,serif" font-size="14.00" fill="#000000">EDITING</text>
+</g>
+<!-- PRESENTING&#45;&gt;EDITING -->
+<g id="edge2" class="edge">
+<title>PRESENTING-&gt;EDITING</title>
+<path fill="none" stroke="#000000" d="M185.3223,-96.5957C228.4651,-110.363 282.9242,-127.7414 323.4305,-140.6674"></path>
+<polygon fill="#000000" stroke="#000000" points="322.5606,-144.0636 333.1513,-143.7694 324.6886,-137.3949 322.5606,-144.0636"></polygon>
+<text text-anchor="middle" x="259.7542" y="-140.2404" font-family="Times,serif" font-size="14.00" fill="#000000">START,CHANGE</text>
+</g>
+<!-- COMMITING -->
+<g id="node4" class="node">
+<title>COMMITING</title>
+<ellipse fill="none" stroke="#000000" cx="594.1716" cy="-90.0404" rx="67.776" ry="67.776"></ellipse>
+<text text-anchor="middle" x="594.1716" y="-85.8404" font-family="Times,serif" font-size="14.00" fill="#000000">COMMITING</text>
+</g>
+<!-- PRESENTING&#45;&gt;COMMITING -->
+<g id="edge3" class="edge">
+<title>PRESENTING-&gt;COMMITING</title>
+<path fill="none" stroke="#000000" d="M188.8409,-75.932C252.9962,-77.631 348.2192,-80.3042 431.1855,-83.2404 458.7921,-84.2175 489.0225,-85.4371 515.8697,-86.5727"></path>
+<polygon fill="#000000" stroke="#000000" points="515.8411,-90.0746 525.9809,-87.0031 516.1389,-83.0809 515.8411,-90.0746"></polygon>
+<text text-anchor="middle" x="381.0065" y="-88.2404" font-family="Times,serif" font-size="14.00" fill="#000000">COMMIT</text>
+</g>
+<!-- PRESENTING&#45;&gt;COMMITING -->
+<g id="edge6" class="edge">
+<title>PRESENTING-&gt;COMMITING</title>
+<path fill="none" stroke="#000000" d="M198.3501,-64.2963C262.2443,-58.3343 352.4036,-53.0975 431.1855,-60.2404 463.271,-63.1495 498.4782,-69.2171 527.9343,-75.1226"></path>
+<polygon fill="#000000" stroke="#000000" points="197.947,-60.8188 188.3268,-65.2576 198.6153,-67.7868 197.947,-60.8188"></polygon>
+<text text-anchor="middle" x="381.0065" y="-65.2404" font-family="Times,serif" font-size="14.00" fill="#000000">SUCCESS</text>
+</g>
+<!-- secret_node -->
+<!-- secret_node&#45;&gt;PRESENTING -->
+<g id="edge1" class="edge">
+<title>secret_node-&gt;PRESENTING</title>
+<path fill="none" stroke="#000000" stroke-width="2" d="M3.7586,-74.0404C7.7997,-74.0404 17.7264,-74.0404 30.07,-74.0404"></path>
+<polygon fill="#000000" stroke="#000000" stroke-width="2" points="30.4212,-77.5405 40.4212,-74.0404 30.4211,-70.5405 30.4212,-77.5405"></polygon>
+</g>
+<!-- EDITING&#45;&gt;EDITING -->
+<g id="edge4" class="edge">
+<title>EDITING-&gt;EDITING</title>
+<path fill="none" stroke="#000000" d="M363.2218,-206.1999C364.3908,-218.206 370.319,-227.2194 381.0065,-227.2194 388.5211,-227.2194 393.6829,-222.7633 396.4917,-215.944"></path>
+<polygon fill="#000000" stroke="#000000" points="399.9008,-216.7365 398.7911,-206.1999 393.0879,-215.1287 399.9008,-216.7365"></polygon>
+<text text-anchor="middle" x="381.0065" y="-231.4194" font-family="Times,serif" font-size="14.00" fill="#000000">CHANGE</text>
+</g>
+<!-- EDITING&#45;&gt;COMMITING -->
+<g id="edge5" class="edge">
+<title>EDITING-&gt;COMMITING</title>
+<path fill="none" stroke="#000000" d="M430.8111,-152.5655C454.6652,-148.6336 483.3898,-142.6701 508.2837,-134.0404 513.8612,-132.107 519.5304,-129.8722 525.1604,-127.4557"></path>
+<polygon fill="#000000" stroke="#000000" points="526.8796,-130.5208 534.5751,-123.2385 524.018,-124.1324 526.8796,-130.5208"></polygon>
+<text text-anchor="middle" x="478.7346" y="-153.2404" font-family="Times,serif" font-size="14.00" fill="#000000">COMMIT</text>
+</g>
+<!-- COMMITING&#45;&gt;EDITING -->
+<g id="edge7" class="edge">
+<title>COMMITING-&gt;EDITING</title>
+<path fill="none" stroke="#000000" d="M526.1598,-94.7846C501.3101,-98.0966 473.3789,-103.7146 449.1855,-113.2404 442.5266,-115.8623 435.8583,-119.2164 429.4401,-122.9149"></path>
+<polygon fill="#000000" stroke="#000000" points="427.588,-119.9448 420.8674,-128.1353 431.2288,-125.9235 427.588,-119.9448"></polygon>
+<text text-anchor="middle" x="478.7346" y="-117.2404" font-family="Times,serif" font-size="14.00" fill="#000000">FAILURE</text>
+</g>
+</g>
+</svg>

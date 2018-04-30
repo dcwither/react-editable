@@ -4,7 +4,7 @@ exports[`withEditable should match snapshot 1`] = `
 <WithEditable(MockComponent)
   testProp={1}
 >
-  <editable>
+  <Editable>
     <MockComponent
       onCancel={[Function]}
       onChange={[Function]}
@@ -13,6 +13,6 @@ exports[`withEditable should match snapshot 1`] = `
       status="PRESENTING"
       testProp={1}
     />
-  </editable>
+  </Editable>
 </WithEditable(MockComponent)>
 `;

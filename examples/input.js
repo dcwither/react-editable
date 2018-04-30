@@ -1,4 +1,4 @@
-import { EditableStateType, EditableStatus } from "../src";
+import { EditableStatus, EditableStatusType } from "../src";
 
 import PropTypes from "prop-types";
 import React from "react";
@@ -8,7 +8,7 @@ export default class Input extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    status: EditableStateType.isRequired,
+    status: EditableStatusType.isRequired,
     value: PropTypes.string.isRequired
   };
 

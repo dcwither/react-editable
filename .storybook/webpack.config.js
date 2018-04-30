@@ -12,7 +12,7 @@ module.exports = (baseConfig, env) => {
       include: path.resolve(__dirname, "../")
     },
     {
-      test: /\.md$/,
+      test: /\.(md|svg)$/,
       use: "raw-loader"
     }
   );

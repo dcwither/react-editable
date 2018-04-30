@@ -19,15 +19,15 @@ Then open [`localhost:6006`](http://localhost:6006) in a browser
 
 ```js
 import withEditable, {
-  EditableState,
-  EditableStateType
+  EditableStatus,
+  EditableStatusType
 } from "react-editable-decorator";
 
 @withEditable
 class Input extends React.Component {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
-    status: EditableStateType.isRequired,
+    status: EditableStatusType.isRequired,
     value: PropTypes.string.isRequired
   };
 
@@ -40,7 +40,7 @@ class Input extends React.Component {
     return (
       <input
         className="input"
-        disabled={status === EditableState.COMMITTING}
+        disabled={status === EditableStatus.COMMITTING}
         onChange={this.handleChange}
         value={value}
       />
@@ -48,6 +48,10 @@ class Input extends React.Component {
   }
 }
 ```
+
+## State Transitions
+
+![State Transitions](docs/state-machine.svg)
 
 ## Properties
 

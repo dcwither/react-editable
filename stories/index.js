@@ -1,12 +1,13 @@
 import Container from "./container";
 import EditableReadme from "../README.md";
+import QuestionForm from "../examples/question-form";
+import QuestionsWithForm from "../examples/questions-with-form";
 import React from "react";
 import { compose } from "ramda";
 import { storiesOf } from "@storybook/react";
 import { withEditable } from "../src";
 import withReadme from "storybook-readme/with-readme";
 import withState from "../examples/with-state";
-import QuestionForm from "../examples/question-form";
 
 const composeWithState = compose(withState(true), withEditable);
 
@@ -15,5 +16,21 @@ storiesOf("ReactEditable", module)
   .addDecorator(Container)
   .add("Question Form", () => {
     const FormContainer = composeWithState(QuestionForm);
-    return <FormContainer />;
+    return (
+      <FormContainer
+        value={{
+          tags: ["react", "redux"],
+          title: "How do I connect a component to react redux",
+          body:
+            "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+          author: {
+            firstName: "Alice",
+            lastName: "B"
+          }
+        }}
+      />
+    );
+  })
+  .add("Question Form List", () => {
+    return <QuestionsWithForm />;
   });

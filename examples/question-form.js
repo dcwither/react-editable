@@ -1,12 +1,13 @@
 import { lensPath, lensProp, set, view } from "ramda";
 
 import { Button } from "material-ui";
-import { EditableStateType } from "../src";
+import { EditableStatusType } from "../src";
 import Input from "./input";
 import PropTypes from "prop-types";
 import React from "react";
 import TagSelector from "./tag-selector";
 import Typography from "material-ui/Typography";
+import { emptyQuestion } from "./constants";
 
 const tagsLens = lensProp("tags");
 const titleLens = lensProp("title");
@@ -19,7 +20,7 @@ export default class QuestionForm extends React.Component {
     onChange: PropTypes.func.isRequired,
     onCommit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    status: EditableStateType.isRequired,
+    status: EditableStatusType.isRequired,
     title: PropTypes.string,
     value: PropTypes.shape({
       id: PropTypes.string,
@@ -33,18 +34,7 @@ export default class QuestionForm extends React.Component {
     })
   };
 
-  static defaultProps = {
-    value: {
-      tags: ["react", "redux"],
-      title: "How do I connect a component to react redux",
-      body:
-        "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
-      author: {
-        firstName: "Alice",
-        lastName: "B"
-      }
-    }
-  };
+  static defaultProps = emptyQuestion;
 
   handleChange = lens => newFieldValue => {
     return this.props.onChange(set(lens, newFieldValue, this.props.value));
@@ -62,6 +52,8 @@ export default class QuestionForm extends React.Component {
 
   render() {
     const { value, status, onCancel } = this.props;
+    console.log("form", value);
+
     return (
       <div className="form">
         <div className="fields">

@@ -4,7 +4,7 @@ export {
   EditableProps,
   EditableState,
   EditableStatus,
-  EditableStateType
+  EditableStatusType
 } from "./editable";
 
 export {

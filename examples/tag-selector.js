@@ -40,6 +40,8 @@ export default class TagSelector extends React.Component {
 
   render() {
     const { tags } = this.props;
+    console.trace("tags", tags);
+
     return (
       <Select
         fullWidth

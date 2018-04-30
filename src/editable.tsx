@@ -6,7 +6,7 @@ import invariant from "invariant";
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
 
 export { Status as EditableStatus };
-export const EditableStateType = PropTypes.oneOf(Object.keys(Status));
+export const EditableStatusType = PropTypes.oneOf(Object.keys(Status));
 
 export type EditablePropsWithoutChildren<TValue, TCommitType> = {
   onCancel?: (value: TValue) => void;
