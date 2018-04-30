@@ -52,7 +52,6 @@ export default class QuestionForm extends React.Component {
 
   render() {
     const { value, status, onCancel } = this.props;
-    console.log("form", value);
 
     return (
       <div className="form">
