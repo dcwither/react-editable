@@ -12,8 +12,8 @@ module.exports = (baseConfig, env) => {
       include: path.resolve(__dirname, "../")
     },
     {
-      test: /\.(md|svg)$/,
-      use: "raw-loader"
+      test: /\.svg$/,
+      use: "file-loader"
     }
   );
   baseConfig.resolve.extensions.push(".ts", ".tsx");
