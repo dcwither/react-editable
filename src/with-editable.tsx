@@ -41,9 +41,8 @@ export default function withEditable<TValue = undefined, TCommitType = string>(
     onCommit: PropTypes.func,
     value: PropTypes.any,
     ...omit(Component.propTypes, [
+      "onChange",
       "onCancel",
-      "onDelete",
-      "onSubmit",
       "onCommit",
       "value",
       "status"
