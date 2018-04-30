@@ -1,5 +1,3 @@
-import { addIndex, map } from "ramda";
-
 import Chip from "material-ui/Chip";
 import { MenuItem } from "material-ui";
 import PropTypes from "prop-types";
@@ -44,12 +42,17 @@ export default class TagSelector extends React.Component {
     const { tags } = this.props;
     return (
       <Select
+        fullWidth
         multiple
         value={tags}
         onChange={this.handleChange}
-        renderValue={addIndex(map)((tag, idx) => (
-          <Chip style={{ marginRight: 4 }} key={idx} label={tag} />
-        ))}
+        renderValue={selected => (
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {selected.map((tag, idx) => (
+              <Chip style={{ margin: 2 }} key={idx} label={tag} />
+            ))}
+          </div>
+        )}
       >
         {TAG_OPTIONS.map((tag, idx) => (
           <MenuItem key={idx} value={tag}>
