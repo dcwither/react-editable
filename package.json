@@ -12,23 +12,21 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": [
-    "react-component",
-    "react"
-  ],
+  "keywords": ["react-component", "react"],
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc -project .",
     "prepublishOnly": "npm run clean && npm run build",
     "deploy-storybook": "storybook-to-ghpages",
-    "test-only": "jest --config jest.config.json --verbose",
-    "test": "npm run test-only --",
-    "test-watch": "npm run test-only -- --watch",
-    "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "tslint": "tslint src/**/*.{ts,tsx}",
+    "eslint": "eslint stories/**/*.{js,jsx} examples/**/*.{js,jsx}",
+    "lint": "npm run tslint && npm run eslint",
+    "test": "jest --config jest.config.json --verbose",
+    "test-watch": "npm run test -- --watch",
+    "test:coverage":
+      "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -83,6 +81,9 @@
     "ts-jest": "^22.4.4",
     "ts-loader": "^3.5.0",
     "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "tslint-eslint-rules": "^5.1.0",
+    "tslint-react": "^3.5.1",
     "typescript": "^2.8.3",
     "weak": "^1.0.1"
   },
