@@ -1,9 +1,9 @@
+import hoistNonReactStatics from "hoist-non-react-statics";
 import PropTypes from "prop-types";
 import React from "react";
-import hoistNonReactStatics from "hoist-non-react-statics";
 import Editable, {
-  TInnerProps,
-  EditablePropsWithoutChildren
+  EditablePropsWithoutChildren,
+  TInnerProps
 } from "./editable";
 import omit from "./omit";
 

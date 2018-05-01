@@ -1,7 +1,7 @@
 import withEditable from "./with-editable";
 
-import * as React from "react";
 import { mount } from "enzyme";
+import * as React from "react";
 import MockComponent from "./__mocks__/mock-component";
 
 const MockComponentWithEditable = withEditable(MockComponent);
@@ -12,7 +12,7 @@ describe("withEditable", () => {
       "WithEditable(MockComponent)"
     );
 
-    let ComponentWithName: React.ComponentType<any> = () => null;
+    const ComponentWithName: React.ComponentType<any> = () => null;
     expect(withEditable(ComponentWithName).displayName).toBe(
       "WithEditable(ComponentWithName)"
     );

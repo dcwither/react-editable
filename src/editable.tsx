@@ -1,27 +1,27 @@
 import transition, { Action, Status } from "./state-machine";
 
+import invariant from "invariant";
 import PropTypes from "prop-types";
 import React from "react";
-import invariant from "invariant";
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
 
 export { Status as EditableStatus };
 export const EditableStatusType = PropTypes.oneOf(Object.keys(Status));
 
-export type EditablePropsWithoutChildren<TValue, TCommitType> = {
+export interface EditablePropsWithoutChildren<TValue, TCommitType> {
   onCancel?: (value: TValue) => void;
   onCommit?: (message: TCommitType, value: TValue) => any;
   value: TValue;
-};
+}
 
-export type TInnerProps<TValue, TCommitType> = {
+export interface TInnerProps<TValue, TCommitType> {
   onCancel: (value: TValue) => void;
   onChange: (value: TValue) => void;
   onCommit: (message: TCommitType, value: TValue) => Promise<any>;
   onStart: () => void;
   status: Status;
   value: TValue;
-};
+}
 
 export type EditableChild<TValue, TCommitType> = (
   props: TInnerProps<TValue, TCommitType>
@@ -34,10 +34,10 @@ export type EditableProps<TValue, TCommitType> = EditablePropsWithoutChildren<
   children?: EditableChild<TValue, TCommitType>;
 };
 
-export type EditableState<TValue> = {
+export interface EditableState<TValue> {
   status: Status;
   value?: TValue;
-};
+}
 
 function getValue<TValue, TCommitType>(
   props: EditableProps<TValue, TCommitType>,
@@ -55,40 +55,40 @@ export default class Editable<
   EditableProps<TValue, TCommitType>,
   EditableState<TValue>
 > {
-  static displayName = "Editable";
+  public static displayName = "Editable";
 
-  static propTypes = {
+  public static propTypes = {
     onCommit: PropTypes.func,
     value: PropTypes.any,
     children: PropTypes.func
   };
 
-  static defaultProps = {
+  public static defaultProps = {
     children: () => null
   };
 
-  state: EditableState<TValue> = {
+  public state: EditableState<TValue> = {
     status: Status.PRESENTING,
     value: undefined
   };
 
-  commitPromise: CancelablePromise<any> | undefined;
+  public commitPromise: CancelablePromise<any> | undefined;
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     this.commitPromise && this.commitPromise.cancel();
   }
 
-  handleStart = () => {
+  public handleStart = () => {
     this.setState(state =>
       transition(state.status, Action.START, this.props.value)
     );
   };
 
-  handleChange = (nextValue: TValue) => {
+  public handleChange = (nextValue: TValue) => {
     this.setState(state => transition(state.status, Action.CHANGE, nextValue));
   };
 
-  handleCancel = () => {
+  public handleCancel = () => {
     const {
       props: { onCancel },
       state: { status, value }
@@ -101,7 +101,7 @@ export default class Editable<
     this.setState(state => transition(state.status, Action.CANCEL));
   };
 
-  handleCommit = (message: TCommitType): Promise<any> => {
+  public handleCommit = (message: TCommitType): Promise<any> => {
     const { onCommit } = this.props;
     invariant(
       this.state.status !== Status.COMMITTING,
@@ -139,7 +139,7 @@ export default class Editable<
     });
   };
 
-  render() {
+  public render() {
     const { status } = this.state;
     const children = this.props.children as EditableChild<TValue, TCommitType>;
 

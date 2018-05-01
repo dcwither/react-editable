@@ -1,8 +1,9 @@
+import * as React from "react";
+
 import Editable, { EditableStatus, TInnerProps } from "./editable";
 
-import * as React from "react";
-import { shallow } from "enzyme";
 import MockComponent from "./__mocks__/mock-component";
+import { shallow } from "enzyme";
 
 const MockComponentWrapper = <TValue, TCommitType>(
   editableProps: TInnerProps<TValue, TCommitType>
@@ -94,11 +95,11 @@ describe("Editable", () => {
       const commitSpy = jest.fn();
 
       const { wrapper } = createComponentWithStateAndTriggerEvent({
+        event: "onCommit",
+        eventArgs: [COMMIT_PARAM],
         initialProps: {
           onCommit: commitSpy
-        },
-        event: "onCommit",
-        eventArgs: [COMMIT_PARAM]
+        }
       });
 
       expect(wrapper.find(MockComponent).props()).toMatchObject({
