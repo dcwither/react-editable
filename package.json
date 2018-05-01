@@ -12,15 +12,11 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": [
-    "react-component",
-    "react"
-  ],
+  "keywords": ["react-component", "react"],
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
+    "precommit": "lint-staged",
     "clean": "rimraf dist",
     "build": "tsc -project .",
     "prepublishOnly": "npm run clean && npm run build",
@@ -28,9 +24,14 @@
     "lint": "tslint {src,examples,stories}/**/*.{ts,tsx,js,jsx}",
     "test": "jest --config jest.config.json --verbose",
     "test-watch": "npm run test -- --watch",
-    "test:coverage": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:ci":
+      "npm run test -- --ci --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,json,tsx,css,md}": ["prettier --write", "git add"],
+    "*.{js,jsx,ts,tsx}": ["tslint"]
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.3",
@@ -61,10 +62,13 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
     "file-loader": "^1.1.11",
+    "husky": "^0.14.3",
     "immutability-helper": "^2.7.0",
     "jest": "^22.4.3",
+    "lint-staged": "^7.0.5",
     "material-ui": "^1.0.0-beta.44",
     "nodemon": "^1.17.3",
+    "prettier": "^1.12.1",
     "prop-types": "^15.6.1",
     "ramda": "^0.25.0",
     "raw-loader": "^0.5.1",
