@@ -30,8 +30,8 @@
     "build-storybook": "build-storybook"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,json,tsx,css,md}": ["prettier --write", "git add"],
-    "*.{js,jsx,ts,tsx}": ["tslint"]
+    "*.{js,jsx,ts,tsx}": ["tslint --fix", "git add"],
+    "*.{js,jsx,ts,json,tsx,css,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.3",
