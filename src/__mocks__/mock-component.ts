@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
 import * as React from "react";
 
-const MockComponent: React.SFC<any> = function() {
-  return null;
-};
+import PropTypes from "prop-types";
+
+const MockComponent: React.SFC<any> = () => null;
 
 MockComponent.displayName = "MockComponent";
 MockComponent.propTypes = {

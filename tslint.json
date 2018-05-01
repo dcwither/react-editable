@@ -7,6 +7,8 @@
     "tslint-config-prettier"
   ],
   "jsRules": {},
-  "rules": {},
+  "rules": {
+    "no-implicit-dependencies": [true, "dev"]
+  },
   "rulesDirectory": []
 }
