@@ -1,4 +1,4 @@
-import { map, omit, pipe, prop, sortBy, values } from "ramda";
+import { map, omit, pipe, prop, reverse, sortBy, values } from "ramda";
 
 import { Editable } from "../src";
 import QuestionForm from "./question-form";
@@ -10,8 +10,30 @@ export default class QuestionsWithForm extends React.Component {
   static propTypes = {};
 
   state = {
-    questions: [],
-    nextId: 1
+    questions: [
+      {
+        id: 1,
+        tags: ["react", "redux"],
+        title: "How do I connect a component to react redux",
+        body:
+          "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+        author: {
+          firstName: "Alice",
+          lastName: "A"
+        }
+      },
+      {
+        id: 0,
+        tags: ["javascript"],
+        title: "I have a bug",
+        body: "I installed package x and now my code doesn't work.",
+        author: {
+          firstName: "Bob",
+          lastName: "B"
+        }
+      }
+    ],
+    nextId: 2
   };
 
   handleCommit = (message, value) => {
@@ -44,6 +66,7 @@ export default class QuestionsWithForm extends React.Component {
   renderQuestions = pipe(
     values,
     sortBy(prop("id")),
+    reverse,
     map(question => (
       <Editable value={question} onCommit={this.handleCommit}>
         {editableProps => <QuestionForm {...editableProps} />}
@@ -57,7 +80,9 @@ export default class QuestionsWithForm extends React.Component {
         <Editable value={emptyQuestion} onCommit={this.handleCommit}>
           {editableProps => <QuestionForm {...editableProps} />}
         </Editable>
-        {this.renderQuestions(this.state.questions)}
+        <div className="asked-questions">
+          {this.renderQuestions(this.state.questions)}
+        </div>
       </div>
     );
   }
