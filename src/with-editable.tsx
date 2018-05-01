@@ -2,27 +2,24 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 import PropTypes from "prop-types";
 import React from "react";
 import Editable, {
-  EditablePropsWithoutChildren,
-  TInnerProps
+  EditableChildProps,
+  EditablePropsWithoutChildren
 } from "./editable";
 import omit from "./omit";
 
-export { TInnerProps };
+export { EditableChildProps };
 
-export type TOuterProps<TValue, TCommitType> = EditablePropsWithoutChildren<
+export type WithEditableProps<
   TValue,
   TCommitType
-> & { [x: string]: any };
+> = EditablePropsWithoutChildren<TValue, TCommitType> & { [x: string]: any };
 
 export default function withEditable<TValue = undefined, TCommitType = string>(
-  Component: React.ComponentType<TInnerProps<TValue, TCommitType>>
+  Component: React.ComponentType<EditableChildProps<TValue, TCommitType>>
 ) {
-  const ComponentWithEditable: React.SFC<TOuterProps<TValue, TCommitType>> = ({
-    onCancel,
-    onCommit,
-    value,
-    ...passthroughProps
-  }) => {
+  const ComponentWithEditable: React.SFC<
+    WithEditableProps<TValue, TCommitType>
+  > = ({ onCancel, onCommit, value, ...passthroughProps }) => {
     return (
       <Editable onCancel={onCancel} onCommit={onCommit} value={value}>
         {editableProps => (
@@ -50,8 +47,8 @@ export default function withEditable<TValue = undefined, TCommitType = string>(
   };
 
   hoistNonReactStatics<
-    TOuterProps<TValue, TCommitType>,
-    TInnerProps<TValue, TCommitType>
+    WithEditableProps<TValue, TCommitType>,
+    EditableChildProps<TValue, TCommitType>
   >(ComponentWithEditable, Component);
   return ComponentWithEditable;
 }

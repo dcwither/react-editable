@@ -14,7 +14,7 @@ export interface EditablePropsWithoutChildren<TValue, TCommitType> {
   value: TValue;
 }
 
-export interface TInnerProps<TValue, TCommitType> {
+export interface EditableChildProps<TValue, TCommitType> {
   onCancel: (value: TValue) => void;
   onChange: (value: TValue) => void;
   onCommit: (message: TCommitType, value: TValue) => Promise<any>;
@@ -24,7 +24,7 @@ export interface TInnerProps<TValue, TCommitType> {
 }
 
 export type EditableChild<TValue, TCommitType> = (
-  props: TInnerProps<TValue, TCommitType>
+  props: EditableChildProps<TValue, TCommitType>
 ) => React.ReactNode;
 
 export type EditableProps<TValue, TCommitType> = EditablePropsWithoutChildren<
@@ -58,9 +58,9 @@ export default class Editable<
   public static displayName = "Editable";
 
   public static propTypes = {
+    children: PropTypes.func,
     onCommit: PropTypes.func,
-    value: PropTypes.any,
-    children: PropTypes.func
+    value: PropTypes.any
   };
 
   public static defaultProps = {
@@ -75,7 +75,9 @@ export default class Editable<
   public commitPromise: CancelablePromise<any> | undefined;
 
   public componentWillUnmount() {
-    this.commitPromise && this.commitPromise.cancel();
+    if (this.commitPromise) {
+      this.commitPromise.cancel();
+    }
   }
 
   public handleStart = () => {
@@ -89,10 +91,8 @@ export default class Editable<
   };
 
   public handleCancel = () => {
-    const {
-      props: { onCancel },
-      state: { status, value }
-    } = this;
+    const { onCancel } = this.props;
+    const { status, value } = this.state;
 
     if (typeof onCancel === "function" && status === Status.EDITING) {
       onCancel(value as TValue);
@@ -146,8 +146,8 @@ export default class Editable<
     return children({
       onCancel: this.handleCancel,
       onChange: this.handleChange,
-      onStart: this.handleStart,
       onCommit: this.handleCommit,
+      onStart: this.handleStart,
       status,
       value: getValue(this.props, this.state)
     });
