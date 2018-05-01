@@ -1,7 +1,8 @@
+import { Button, IconButton } from "material-ui";
 import { EditableStatus, EditableStatusType } from "../src";
 import { isNil, lensPath, lensProp, set, view } from "ramda";
 
-import { Button } from "material-ui";
+import Icon from "material-ui/Icon";
 import Input from "./input";
 import PropTypes from "prop-types";
 import React from "react";
@@ -17,9 +18,10 @@ const lastNameLens = lensPath(["author", "lastName"]);
 
 export default class QuestionForm extends React.Component {
   static propTypes = {
+    onCancel: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onCommit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    onStart: PropTypes.func.isRequired,
     status: EditableStatusType.isRequired,
     title: PropTypes.string,
     value: PropTypes.shape({
@@ -51,15 +53,28 @@ export default class QuestionForm extends React.Component {
   handleUpdate = () => this.props.onCommit("UPDATE");
   handleDelete = () => this.props.onCommit("DELETE");
 
-  renderSubmitButton() {
+  renderButtons() {
     const {
-      value: { id }
+      value: { id },
+      onCancel
     } = this.props;
     if (id) {
       return (
-        <Button variant="raised" color="primary" onClick={this.handleUpdate}>
-          Update
-        </Button>
+        <React.Fragment>
+          <Button variant="raised" color="default" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="raised" color="primary" onClick={this.handleUpdate}>
+            Update
+          </Button>
+          <Button
+            variant="raised"
+            color="secondary"
+            onClick={this.handleDelete}
+          >
+            Delete
+          </Button>
+        </React.Fragment>
       );
     } else {
       return (
@@ -71,7 +86,7 @@ export default class QuestionForm extends React.Component {
   }
 
   renderEditing() {
-    const { value, status, onCancel } = this.props;
+    const { value, status } = this.props;
 
     return (
       <div className="form">
@@ -105,35 +120,28 @@ export default class QuestionForm extends React.Component {
             fullWidth
           />
           <Input
-            title="LastName"
+            title="Last Name"
             onChange={this.handleChangeLastName}
             status={status}
             value={view(lastNameLens, value)}
             fullWidth
           />
         </div>
-        <div className="buttons">
-          <Button variant="raised" color="default" onClick={onCancel}>
-            Cancel
-          </Button>
-          {this.renderSubmitButton()}
-          <Button
-            variant="raised"
-            color="secondary"
-            onClick={this.handleDelete}
-          >
-            Delete
-          </Button>
-        </div>
+        <div className="buttons">{this.renderButtons()}</div>
       </div>
     );
   }
 
   renderPresenting() {
-    const { value } = this.props;
+    const { value, onStart } = this.props;
     return (
       <div className="question">
-        <Typography variant="title">{view(titleLens, value)}</Typography>
+        <Typography variant="title">
+          {view(titleLens, value)}
+          <IconButton onClick={onStart}>
+            <Icon>mode_edit</Icon>
+          </IconButton>
+        </Typography>
         <Typography variant="subheading">
           {view(tagsLens, value).join(", ")}
         </Typography>
