@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import Editable, { EditableStatus, TInnerProps } from "./editable";
+import Editable, { EditableChildProps, EditableStatus } from "./editable";
 
 import { shallow } from "enzyme";
 import MockComponent from "./__mocks__/mock-component";
 
 const MockComponentWrapper = <TValue, TCommitType>(
-  editableProps: TInnerProps<TValue, TCommitType>
+  editableProps: EditableChildProps<TValue, TCommitType>
 ) => <MockComponent {...editableProps} />;
 
 const PROPS_VALUE = "propsValue";

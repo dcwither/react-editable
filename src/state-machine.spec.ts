@@ -6,7 +6,7 @@ describe("StateMachine", () => {
   function stateWillTransitionTo(
     state: Status,
     // intentionally accept arbitrary type to ensure we handle js cases well
-    actionStatePairs: [any, Status][]
+    actionStatePairs: Array<[any, Status]>
   ) {
     describe(`${state}`, () => {
       test("META: should check all actions", () => {

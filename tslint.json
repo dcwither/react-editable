@@ -9,7 +9,9 @@
   "jsRules": {},
   "rules": {
     "no-implicit-dependencies": [true, "dev"],
-    "interface-name": [true, "never-prefix"]
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
+    "interface-over-type-literal": false
   },
   "rulesDirectory": []
 }
