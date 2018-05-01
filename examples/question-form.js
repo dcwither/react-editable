@@ -25,14 +25,14 @@ export default class QuestionForm extends React.Component {
     status: EditableStatusType.isRequired,
     title: PropTypes.string,
     value: PropTypes.shape({
-      id: PropTypes.number,
-      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
       author: PropTypes.shape({
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired
-      })
+      }),
+      body: PropTypes.string.isRequired,
+      id: PropTypes.number,
+      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+      title: PropTypes.string.isRequired
     })
   };
 

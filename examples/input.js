@@ -6,9 +6,9 @@ import TextField from "material-ui/TextField";
 
 export default class Input extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     status: EditableStatusType.isRequired,
+    title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired
   };
 

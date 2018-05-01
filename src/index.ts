@@ -9,6 +9,6 @@ export {
 
 export {
   default as withEditable,
-  TInnerProps,
-  TOuterProps
+  EditableChildProps,
+  WithEditableProps
 } from "./with-editable";

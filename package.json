@@ -12,21 +12,23 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": ["react-component", "react"],
+  "keywords": [
+    "react-component",
+    "react"
+  ],
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc -project .",
     "prepublishOnly": "npm run clean && npm run build",
     "deploy-storybook": "storybook-to-ghpages",
-    "tslint": "tslint src/**/*.{ts,tsx}",
-    "eslint": "eslint stories/**/*.{js,jsx} examples/**/*.{js,jsx}",
-    "lint": "npm run tslint && npm run eslint",
+    "lint": "tslint {src,examples,stories}/**/*.{ts,tsx,js,jsx}",
     "test": "jest --config jest.config.json --verbose",
     "test-watch": "npm run test -- --watch",
-    "test:coverage":
-      "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:coverage": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -45,7 +47,6 @@
     "@types/recompose": "^0.26.1",
     "babel-cli": "^6.6.4",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
     "babel-polyfill": "^6.7.4",
@@ -59,9 +60,6 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
-    "eslint": "^4.9.0",
-    "eslint-plugin-babel": "^5.1.0",
-    "eslint-plugin-react": "^7.7.0",
     "file-loader": "^1.1.11",
     "immutability-helper": "^2.7.0",
     "jest": "^22.4.3",

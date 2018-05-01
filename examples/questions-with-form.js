@@ -10,30 +10,30 @@ export default class QuestionsWithForm extends React.Component {
   static propTypes = {};
 
   state = {
+    nextId: 2,
     questions: [
       {
-        id: 1,
-        tags: ["react", "redux"],
-        title: "How do I connect a component to react redux",
-        body:
-          "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
         author: {
           firstName: "Alice",
           lastName: "A"
-        }
+        },
+        body:
+          "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+        id: 1,
+        tags: ["react", "redux"],
+        title: "How do I connect a component to react redux"
       },
       {
-        id: 0,
-        tags: ["javascript"],
-        title: "I have a bug",
-        body: "I installed package x and now my code doesn't work.",
         author: {
           firstName: "Bob",
           lastName: "B"
-        }
+        },
+        body: "I installed package x and now my code doesn't work.",
+        id: 0,
+        tags: ["javascript"],
+        title: "I have a bug"
       }
-    ],
-    nextId: 2
+    ]
   };
 
   handleCommit = (message, value) => {

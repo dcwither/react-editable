@@ -18,8 +18,8 @@ function withState(Component, usePromises) {
     };
 
     state = {
-      value: this.props.initialValue,
-      isDeleted: false
+      isDeleted: false,
+      value: this.props.initialValue
     };
 
     maybeDelayThenSetState(nextState) {
@@ -38,8 +38,8 @@ function withState(Component, usePromises) {
           return this.maybeDelayThenSetState({ value });
         case "DELETE":
           return this.maybeDelayThenSetState({
-            value: undefined,
-            isDeleted: true
+            isDeleted: true,
+            value: undefined
           });
         default:
           throw new Error("bad message");
@@ -48,8 +48,8 @@ function withState(Component, usePromises) {
 
     handleReset = () => {
       this.setState({
-        value: this.props.initialValue,
-        isDeleted: false
+        isDeleted: false,
+        value: this.props.initialValue
       });
     };
 

@@ -30,8 +30,8 @@ const TAG_OPTIONS = [
 
 export default class TagSelector extends React.Component {
   static propTypes = {
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired
   };
 
   handleChange = evt => {
