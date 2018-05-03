@@ -24,7 +24,7 @@
     "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run clean && npm run build",
-    "release": "np",
+    "release": "np --no-cleanup",
     "start": "start-storybook -p 6006",
     "test-watch": "npm run test -- --watch",
     "test:ci":
