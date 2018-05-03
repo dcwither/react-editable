@@ -16,19 +16,20 @@
   "main": "dist/index.js",
   "files": ["dist"],
   "scripts": {
-    "precommit": "lint-staged",
-    "clean": "rimraf dist",
+    "build-storybook": "build-storybook",
     "build": "tsc -project .",
-    "prepublishOnly": "npm run clean && npm run build",
+    "clean": "rimraf dist",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
     "lint-file": "tslint",
-    "test": "jest --config jest.config.json --verbose",
+    "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
+    "precommit": "lint-staged",
+    "prepublishOnly": "npm run clean && npm run build",
+    "release": "np",
+    "start": "start-storybook -p 6006",
     "test-watch": "npm run test -- --watch",
     "test:ci":
       "npm run test -- --ci --coverage && cat ./coverage/lcov.info | coveralls",
-    "start": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "jest --config jest.config.json --verbose"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": ["tslint --fix", "git add"],
@@ -69,6 +70,7 @@
     "lint-staged": "^7.0.5",
     "material-ui": "^1.0.0-beta.44",
     "nodemon": "^1.17.3",
+    "np": "^2.20.1",
     "prettier": "^1.12.1",
     "prop-types": "^15.6.1",
     "ramda": "^0.25.0",
