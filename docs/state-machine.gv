@@ -1,0 +1,13 @@
+digraph finite_state_machine {
+  rankdir=LR;
+  node [shape = circle];
+  secret_node [style=invis, shape=point];
+  secret_node -> PRESENTING [style=bold];
+  PRESENTING -> EDITING [ label = "START,CHANGE"  ];
+  PRESENTING -> COMMITING [ label = "COMMIT"  ];
+  PRESENTING -> EDITING [ label = "CANCEL"  dir = back];
+  EDITING -> EDITING [ label = "CHANGE"  ];
+  EDITING -> COMMITING [ label = "COMMIT"  ];
+  PRESENTING -> COMMITING [ label = "SUCCESS"  dir = back];
+  COMMITING -> EDITING [ label = "FAILURE"  ];
+}

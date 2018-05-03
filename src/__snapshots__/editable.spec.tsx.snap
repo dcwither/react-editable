@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Editable smoke tests should render MockComponent 1`] = `
+<MockComponent
+  onCancel={[Function]}
+  onChange={[Function]}
+  onCommit={[Function]}
+  onStart={[Function]}
+  status="PRESENTING"
+/>
+`;

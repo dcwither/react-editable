@@ -12,41 +12,44 @@
     "url": "https://github.com/dcwither/react-editable-decorator/issues"
   },
   "homepage": "https://github.com/dcwither/react-editable-decorator",
-  "keywords": [
-    "react-component",
-    "react"
-  ],
+  "keywords": ["react-component", "react"],
   "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "jest": {
-    "setupFiles": [
-      "raf/polyfill",
-      "./test/_setup.js"
-    ]
-  },
+  "files": ["dist"],
   "scripts": {
-    "prepare": "babel --plugins transform-es2015-modules-umd src --out-dir ./dist",
+    "precommit": "lint-staged",
+    "clean": "rimraf dist",
+    "build": "tsc -project .",
+    "prepublishOnly": "npm run clean && npm run build",
     "deploy-storybook": "storybook-to-ghpages",
-    "lint": "eslint ./src ./test ./stories ./examples",
-    "lintfix": "eslint ./src ./test ./stories ./examples --fix",
-    "test-only": "jest",
-    "test": "npm run lint && npm run test-only",
-    "test-watch": "npm run test-only -- --watch",
-    "test:coverage": "npm run test-only -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
+    "lint-file": "tslint",
+    "test": "jest --config jest.config.json --verbose",
+    "test-watch": "npm run test -- --watch",
+    "test:ci":
+      "npm run test -- --ci --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["tslint --fix", "git add"],
+    "*.{js,jsx,ts,json,tsx,css,md}": ["prettier --write", "git add"]
+  },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.2.13",
-    "@storybook/addon-links": "^3.2.13",
-    "@storybook/react": "^3.2.13",
-    "@storybook/storybook-deployer": "^2.0.0",
+    "@storybook/addon-actions": "^3.4.3",
+    "@storybook/addon-links": "^3.4.3",
+    "@storybook/react": "^3.4.3",
+    "@storybook/storybook-deployer": "^2.3.0",
+    "@types/enzyme": "^3.1.10",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
+    "@types/invariant": "^2.2.29",
+    "@types/jest": "^22.2.3",
+    "@types/prop-types": "^15.5.2",
+    "@types/ramda": "^0.25.24",
+    "@types/react": "^16.3.13",
+    "@types/recompose": "^0.26.1",
     "babel-cli": "^6.6.4",
-    "babel-core": "^6.7.4",
-    "babel-eslint": "^8.0.1",
-    "babel-jest": "^21.2.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.3",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
     "babel-polyfill": "^6.7.4",
     "babel-preset-env": "^1.6.1",
@@ -55,25 +58,36 @@
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.0",
     "coveralls": "^3.0.0",
-    "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.2",
-    "eslint": "^4.9.0",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-react": "^7.4.0",
-    "immutability-helper": "^2.3.1",
-    "jest": "^21.2.1",
-    "lodash": "^4.17.4",
-    "material-ui": "^0.19.1",
-    "node-sass": "^4.5.3",
-    "nodemon": "^1.9.1",
-    "prop-types": "^15.6.0",
+    "css-loader": "^0.28.11",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
+    "file-loader": "^1.1.11",
+    "husky": "^0.14.3",
+    "immutability-helper": "^2.7.0",
+    "jest": "^22.4.3",
+    "lint-staged": "^7.0.5",
+    "material-ui": "^1.0.0-beta.44",
+    "nodemon": "^1.17.3",
+    "prettier": "^1.12.1",
+    "prop-types": "^15.6.1",
+    "ramda": "^0.25.0",
     "raw-loader": "^0.5.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0",
-    "sass-loader": "^6.0.6",
-    "storybook-readme": "^3.1.0-beta2",
-    "uninstall": "0.0.0"
+    "react": "^16.3.2",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
+    "react-dom": "^16.3.2",
+    "react-test-renderer": "^16.3.2",
+    "recompose": "^0.27.0",
+    "rimraf": "^2.6.2",
+    "storybook-readme": "^3.3.0",
+    "style-loader": "^0.21.0",
+    "ts-jest": "^22.4.4",
+    "ts-loader": "^3.5.0",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "tslint-eslint-rules": "^5.1.0",
+    "tslint-react": "^3.5.1",
+    "typescript": "^2.8.3"
   },
   "peerDependencies": {
     "prop-types": "^15.5.0",
@@ -81,7 +95,7 @@
     "react-dom": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
-    "hoist-non-react-statics": "^2.3.1",
-    "invariant": "^2.2.2"
+    "hoist-non-react-statics": "^2.5.0",
+    "invariant": "^2.2.4"
   }
 }

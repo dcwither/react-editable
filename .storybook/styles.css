@@ -1,0 +1,24 @@
+.fields > div,
+.fields > h1,
+.fields > h2 {
+  margin-bottom: 1rem;
+}
+
+.fields {
+  margin-bottom: 1rem;
+}
+
+.asked-questions {
+  margin-top: 3rem;
+}
+
+.buttons button {
+  margin-right: 1rem;
+}
+
+.question > div,
+.question > h2,
+.question > h3,
+.question > p {
+  margin-bottom: 1rem;
+}
