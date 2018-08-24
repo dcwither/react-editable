@@ -11,8 +11,18 @@ export default class QuestionsWithForm extends React.Component {
 
   state = {
     nextId: 2,
-    questions: [
-      {
+    questions: {
+      0: {
+        author: {
+          firstName: "Bob",
+          lastName: "B"
+        },
+        body: "I installed package x and now my code doesn't work.",
+        id: 0,
+        tags: ["javascript"],
+        title: "I have a bug"
+      },
+      1: {
         author: {
           firstName: "Alice",
           lastName: "A"
@@ -22,18 +32,8 @@ export default class QuestionsWithForm extends React.Component {
         id: 1,
         tags: ["react", "redux"],
         title: "How do I connect a component to react redux"
-      },
-      {
-        author: {
-          firstName: "Bob",
-          lastName: "B"
-        },
-        body: "I installed package x and now my code doesn't work.",
-        id: 0,
-        tags: ["javascript"],
-        title: "I have a bug"
       }
-    ]
+    }
   };
 
   handleCommit = (message, value) => {
@@ -56,7 +56,7 @@ export default class QuestionsWithForm extends React.Component {
         }));
       case "DELETE":
         return this.setState(prevState => ({
-          questions: omit(prevState.questions, value.id)
+          questions: omit([value.id], prevState.questions)
         }));
       default:
         throw new Error("bad message");
@@ -68,7 +68,7 @@ export default class QuestionsWithForm extends React.Component {
     sortBy(prop("id")),
     reverse,
     map(question => (
-      <Editable value={question} onCommit={this.handleCommit}>
+      <Editable key={question.id} value={question} onCommit={this.handleCommit}>
         {editableProps => <QuestionForm {...editableProps} />}
       </Editable>
     ))

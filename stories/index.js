@@ -18,13 +18,14 @@ storiesOf("ReactEditable", module)
     const FormContainer = composeWithState(QuestionForm);
     return (
       <FormContainer
-        value={{
+        initialValue={{
           author: {
             firstName: "Alice",
             lastName: "B"
           },
           body:
             "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+          id: 1,
           tags: ["react", "redux"],
           title: "How do I connect a component to react redux"
         }}
