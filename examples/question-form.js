@@ -58,7 +58,7 @@ export default class QuestionForm extends React.Component {
       value: { id },
       onCancel
     } = this.props;
-    if (id) {
+    if (!isNil(id)) {
       return (
         <React.Fragment>
           <Button variant="raised" color="default" onClick={onCancel}>
