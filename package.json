@@ -54,7 +54,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/invariant": "^2.2.29",
     "@types/jest": "^22.2.3",
-    "@types/prop-types": "^15.5.2",
+    "@types/prop-types": "^15.7.3",
     "@types/ramda": "^0.25.24",
     "@types/react": "^16.9.17",
     "@types/recompose": "^0.26.1",
