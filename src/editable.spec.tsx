@@ -57,7 +57,9 @@ function createComponentWithStateAndTriggerEvent({
 describe("Editable", () => {
   describe("smoke tests", () => {
     test("shouldn't fatal", () => {
-      expect(() => shallow(<Editable value={undefined} />)).not.toThrow();
+      expect(() =>
+        shallow(<Editable value={undefined}>{() => null}</Editable>)
+      ).not.toThrow();
     });
 
     test("should render MockComponent", () => {

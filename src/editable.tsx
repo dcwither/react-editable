@@ -31,7 +31,7 @@ export type EditableProps<TValue, TCommitType> = EditablePropsWithoutChildren<
   TValue,
   TCommitType
 > & {
-  children?: EditableChild<TValue, TCommitType>;
+  children: EditableChild<TValue, TCommitType>;
 };
 
 export interface EditableState<TValue> {
@@ -61,10 +61,6 @@ export default class Editable<
     children: PropTypes.func,
     onCommit: PropTypes.func,
     value: PropTypes.any
-  };
-
-  public static defaultProps = {
-    children: () => null
   };
 
   public state: EditableState<TValue> = {
