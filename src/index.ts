@@ -1,9 +1,8 @@
+export { default as Editable, EditableProps } from "./editable-context";
+
 export {
-  default as Editable,
-  EditableChild,
-  EditableProps,
+  default as useEditable,
+  EditableState,
   EditableStatus,
   EditableStatusType
-} from "./editable";
-
-export { default as useEditable, EditableState } from "./use-editable";
+} from "./use-editable";

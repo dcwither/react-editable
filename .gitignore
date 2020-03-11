@@ -10,3 +10,4 @@ dist
 react-editable-decorator*.tgz
 storybook-static
 coverage
+.vscode
