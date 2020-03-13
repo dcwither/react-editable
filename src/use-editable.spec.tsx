@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react-hooks";
 import useEditable from "./use-editable";
 
 describe("useEditable", () => {
-  it("will have the value as the initial state", () => {
+  it("will have be PRESENTING on initialization", () => {
     const { result } = renderHook(() =>
       useEditable({ value: "INITIAL_VALUE" })
     );
@@ -57,7 +57,7 @@ describe("useEditable", () => {
     `);
   });
 
-  it("should reset state onCancel", () => {
+  it("should return to PRESENTING onCancel", () => {
     const onCancel = jest.fn();
     const { result } = renderHook(() =>
       useEditable({ value: "INITIAL_VALUE", onCancel })
@@ -110,7 +110,7 @@ describe("useEditable", () => {
   });
 
   describe("when onCommit returns a Promise", () => {
-    it("should call onCommit with NEW_VALUE onCommit and reset state after promise resolves", async () => {
+    it("should call onCommit with NEW_VALUE onCommit and return to PRESENTING after promise resolves", async () => {
       const promise = Promise.resolve();
       const onCommit = jest.fn(() => promise);
       const { result } = renderHook(() =>
@@ -138,15 +138,18 @@ describe("useEditable", () => {
         await promise;
       });
       expect(result.current).toMatchInlineSnapshot(`
-Object {
-  "onCancel": [Function],
-  "onChange": [Function],
-  "onCommit": [Function],
-  "onStart": [Function],
-  "status": "PRESENTING",
-  "value": "INITIAL_VALUE",
-}
-`);
+        Object {
+          "onCancel": [Function],
+          "onChange": [Function],
+          "onCommit": [Function],
+          "onStart": [Function],
+          "status": "PRESENTING",
+          "value": "INITIAL_VALUE",
+        }
+      `);
     });
+    it.todo("should throw error when onCommit is called while COMMITTING");
+    it.todo("should return to editing on promise failure");
+    it.todo("should cancel the update on unmount");
   });
 });
