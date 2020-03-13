@@ -18,7 +18,7 @@ export type State<TValue> = {
   value?: TValue;
 };
 
-function edit<TValue>(value: TValue): State<TValue> {
+function edit<TValue>(value?: TValue): State<TValue> {
   return {
     status: Status.EDITING,
     value
@@ -34,13 +34,13 @@ function reset<TValue>(): State<TValue> {
 
 export const transitions: {
   [status: string]: {
-    [action: string]: <TValue>(value: TValue) => State<TValue>;
+    [action: string]: <TValue>(value?: TValue) => State<TValue>;
   };
 } = {
   PRESENTING: {
     START: edit,
     CHANGE: edit,
-    COMMIT: <TValue>(value: TValue): State<TValue> => ({
+    COMMIT: <TValue>(value?: TValue): State<TValue> => ({
       status: Status.COMMITTING,
       value
     })
@@ -48,12 +48,16 @@ export const transitions: {
   EDITING: {
     CANCEL: reset,
     CHANGE: edit,
-    COMMIT: <TValue>(): State<TValue> => ({
-      status: Status.COMMITTING
+    COMMIT: <TValue>(value?: TValue): State<TValue> => ({
+      status: Status.COMMITTING,
+      value
     })
   },
   COMMITTING: {
-    FAIL: <TValue>(): State<TValue> => ({ status: Status.EDITING }),
+    FAIL: <TValue>(value?: TValue): State<TValue> => ({
+      status: Status.EDITING,
+      value
+    }),
     SUCCESS: reset
   }
 };
@@ -65,5 +69,5 @@ export default function transition<TValue>(
 ): State<TValue> {
   return transitions[status][action]
     ? transitions[status][action](value)
-    : { status };
+    : { status, value };
 }
