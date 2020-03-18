@@ -17,7 +17,7 @@ export interface EditableArgs<TValue, TCommitType> {
 export interface EditableResponse<TValue, TCommitType> {
   onCancel: () => void;
   onChange: (value: TValue) => void;
-  onCommit: (message: TCommitType, value: TValue) => Promise<any>;
+  onCommit: (message: TCommitType) => Promise<any>;
   onStart: () => void;
   status: Status;
   value: TValue;
