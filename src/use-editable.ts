@@ -102,11 +102,23 @@ export default function useEditable<TValue, TCommitType = string>({
         commitPromise.current = makeCancelable(maybeCommitPromise);
         return commitPromise.current
           .then(() => {
-            setState(prevState => transition(prevState.status, Action.SUCCESS));
+            setState(prevState =>
+              transition(
+                prevState.status,
+                Action.SUCCESS,
+                getValue(inputValue, prevState)
+              )
+            );
           })
           .catch(response => {
             if (!response || !response.isCanceled) {
-              setState(prevState => transition(prevState.status, Action.FAIL));
+              setState(prevState =>
+                transition(
+                  prevState.status,
+                  Action.FAIL,
+                  getValue(inputValue, prevState)
+                )
+              );
             }
           })
           .then(() => (commitPromise.current = undefined));
