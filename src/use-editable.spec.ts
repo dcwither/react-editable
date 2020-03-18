@@ -92,7 +92,7 @@ describe("useEditable", () => {
         result.current.onChange("NEW_VALUE");
       });
       act(() => {
-        result.current.onCommit("SUBMIT", result.current.value);
+        result.current.onCommit("SUBMIT");
       });
 
       expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
@@ -120,7 +120,7 @@ describe("useEditable", () => {
         result.current.onChange("NEW_VALUE");
       });
       act(() => {
-        result.current.onCommit("SUBMIT", result.current.value);
+        result.current.onCommit("SUBMIT");
       });
 
       expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
@@ -159,12 +159,12 @@ describe("useEditable", () => {
         result.current.onChange("NEW_VALUE");
       });
       act(() => {
-        result.current.onCommit("SUBMIT", result.current.value);
+        result.current.onCommit("SUBMIT");
       });
 
       expect(() =>
         act(() => {
-          result.current.onCommit("SUBMIT", result.current.value);
+          result.current.onCommit("SUBMIT");
         })
       ).toThrowErrorMatchingInlineSnapshot(
         `"React Editable cannot commit while commiting"`
@@ -183,7 +183,7 @@ describe("useEditable", () => {
         result.current.onChange("NEW_VALUE");
       });
       act(() => {
-        result.current.onCommit("SUBMIT", result.current.value);
+        result.current.onCommit("SUBMIT");
       });
 
       expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
@@ -222,7 +222,7 @@ describe("useEditable", () => {
         result.current.onChange("NEW_VALUE");
       });
       act(() => {
-        result.current.onCommit("SUBMIT", result.current.value);
+        result.current.onCommit("SUBMIT");
       });
 
       expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
