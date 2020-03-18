@@ -148,8 +148,109 @@ describe("useEditable", () => {
         }
       `);
     });
-    it.todo("should throw error when onCommit is called while COMMITTING");
-    it.todo("should return to editing on promise failure");
-    it.todo("should cancel the update on unmount");
+    it("should throw error when onCommit is called while COMMITTING", async () => {
+      // Something goes here
+      const promise = Promise.resolve();
+      const onCommit = jest.fn(() => promise);
+      const { result } = renderHook(() =>
+        useEditable({ value: "INITIAL_VALUE", onCommit })
+      );
+      act(() => {
+        result.current.onChange("NEW_VALUE");
+      });
+      act(() => {
+        result.current.onCommit("SUBMIT", result.current.value);
+      });
+
+      expect(() =>
+        act(() => {
+          result.current.onCommit("SUBMIT", result.current.value);
+        })
+      ).toThrowErrorMatchingInlineSnapshot(
+        `"React Editable cannot commit while commiting"`
+      );
+      await act(async () => {
+        await promise;
+      });
+    });
+    it("should return to editing on promise failure", async () => {
+      const promise = Promise.reject();
+      const onCommit = jest.fn(() => promise);
+      const { result } = renderHook(() =>
+        useEditable({ value: "INITIAL_VALUE", onCommit })
+      );
+      act(() => {
+        result.current.onChange("NEW_VALUE");
+      });
+      act(() => {
+        result.current.onCommit("SUBMIT", result.current.value);
+      });
+
+      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(result.current).toMatchInlineSnapshot(`
+        Object {
+          "onCancel": [Function],
+          "onChange": [Function],
+          "onCommit": [Function],
+          "onStart": [Function],
+          "status": "COMMITTING",
+          "value": "NEW_VALUE",
+        }
+      `);
+      await act(async () => {
+        await promise.catch(() => null);
+      });
+      expect(result.current).toMatchInlineSnapshot(`
+        Object {
+          "onCancel": [Function],
+          "onChange": [Function],
+          "onCommit": [Function],
+          "onStart": [Function],
+          "status": "EDITING",
+          "value": "NEW_VALUE",
+        }
+      `);
+    });
+    it("should cancel the update on unmount", async () => {
+      // Something goes here
+      const promise = Promise.resolve();
+      const onCommit = jest.fn(() => promise);
+      const { result, unmount } = renderHook(() =>
+        useEditable({ value: "INITIAL_VALUE", onCommit })
+      );
+      act(() => {
+        result.current.onChange("NEW_VALUE");
+      });
+      act(() => {
+        result.current.onCommit("SUBMIT", result.current.value);
+      });
+
+      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(result.current).toMatchInlineSnapshot(`
+        Object {
+          "onCancel": [Function],
+          "onChange": [Function],
+          "onCommit": [Function],
+          "onStart": [Function],
+          "status": "COMMITTING",
+          "value": "NEW_VALUE",
+        }
+      `);
+      unmount();
+      await act(async () => {
+        await promise;
+      });
+      // Result remains in commiting state despite promise being competed
+      expect(result.current).toMatchInlineSnapshot(`
+        Object {
+          "onCancel": [Function],
+          "onChange": [Function],
+          "onCommit": [Function],
+          "onStart": [Function],
+          "status": "COMMITTING",
+          "value": "NEW_VALUE",
+        }
+      `);
+    });
   });
 });
