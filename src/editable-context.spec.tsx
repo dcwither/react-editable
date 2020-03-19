@@ -1,5 +1,11 @@
 // tslint:disable jsx-no-lambda
-import { fireEvent, getByTestId, render } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  getByTestId,
+  getByText,
+  render
+} from "@testing-library/react";
 import React from "react";
 import { Editable, useEditableContext } from "./editable-context";
 
@@ -70,5 +76,82 @@ describe("Editable Context", () => {
         />
       </div>
     `);
+  });
+
+  describe("synchronous commits", () => {
+    it("triggers the commit when clicking Submit", () => {
+      const handleCommit = jest.fn();
+      const { container } = render(
+        <Editable value="INITIAL_VALUE" onCommit={handleCommit}>
+          <TestHarness />
+        </Editable>
+      );
+
+      fireEvent.change(getByTestId(container, "input"), {
+        target: { value: "NEW_VALUE" }
+      });
+      fireEvent.click(getByText(container, /Submit/));
+      expect(handleCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(getByTestId(container, "form")).toMatchInlineSnapshot(`
+        <div
+          data-testid="form"
+        >
+          <p>
+            PRESENTING
+          </p>
+          <input
+            data-testid="input"
+            value="INITIAL_VALUE"
+          />
+        </div>
+      `);
+    });
+  });
+
+  describe("asynchronous commits", () => {
+    it("it transitions to COMMITING then PRESENTING when onCommit returns a promise", async () => {
+      const promise = Promise.resolve();
+      const handleCommit = jest.fn(() => promise);
+      const { container } = render(
+        <Editable value="INITIAL_VALUE" onCommit={handleCommit}>
+          <TestHarness />
+        </Editable>
+      );
+
+      fireEvent.change(getByTestId(container, "input"), {
+        target: { value: "NEW_VALUE" }
+      });
+      fireEvent.click(getByText(container, /Submit/));
+      expect(handleCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(getByTestId(container, "form")).toMatchInlineSnapshot(`
+        <div
+          data-testid="form"
+        >
+          <p>
+            COMMITTING
+          </p>
+          <input
+            data-testid="input"
+            value="NEW_VALUE"
+          />
+        </div>
+      `);
+      await act(async () => {
+        await promise;
+      });
+      expect(getByTestId(container, "form")).toMatchInlineSnapshot(`
+        <div
+          data-testid="form"
+        >
+          <p>
+            PRESENTING
+          </p>
+          <input
+            data-testid="input"
+            value="INITIAL_VALUE"
+          />
+        </div>
+      `);
+    });
   });
 });
