@@ -1,4 +1,4 @@
-export { default as Editable, EditableProps } from "./editable-context";
+export { Editable, EditableProps } from "./editable-context";
 
 export {
   default as useEditable,
