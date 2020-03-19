@@ -58,9 +58,9 @@ describe("useEditable", () => {
   });
 
   it("should return to PRESENTING onCancel", () => {
-    const onCancel = jest.fn();
+    const handleCancel = jest.fn();
     const { result } = renderHook(() =>
-      useEditable({ value: "INITIAL_VALUE", onCancel })
+      useEditable({ value: "INITIAL_VALUE", onCancel: handleCancel })
     );
     act(() => {
       result.current.onChange("NEW_VALUE");
@@ -69,7 +69,7 @@ describe("useEditable", () => {
       result.current.onCancel();
     });
 
-    expect(onCancel).toHaveBeenCalledWith("NEW_VALUE");
+    expect(handleCancel).toHaveBeenCalledWith("NEW_VALUE");
     expect(result.current).toMatchInlineSnapshot(`
       Object {
         "onCancel": [Function],
@@ -84,9 +84,9 @@ describe("useEditable", () => {
 
   describe("when onCommit is synchronous", () => {
     it("should call onCommit with NEW_VALUE onCommit and reset state", () => {
-      const onCommit = jest.fn();
+      const handleCommit = jest.fn();
       const { result } = renderHook(() =>
-        useEditable({ value: "INITIAL_VALUE", onCommit })
+        useEditable({ value: "INITIAL_VALUE", onCommit: handleCommit })
       );
       act(() => {
         result.current.onChange("NEW_VALUE");
@@ -95,7 +95,7 @@ describe("useEditable", () => {
         result.current.onCommit("SUBMIT");
       });
 
-      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(handleCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
       expect(result.current).toMatchInlineSnapshot(`
         Object {
           "onCancel": [Function],
@@ -112,9 +112,9 @@ describe("useEditable", () => {
   describe("when onCommit returns a Promise", () => {
     it("should call onCommit with NEW_VALUE onCommit and return to PRESENTING after promise resolves", async () => {
       const promise = Promise.resolve();
-      const onCommit = jest.fn(() => promise);
+      const handeCommit = jest.fn(() => promise);
       const { result } = renderHook(() =>
-        useEditable({ value: "INITIAL_VALUE", onCommit })
+        useEditable({ value: "INITIAL_VALUE", onCommit: handeCommit })
       );
       act(() => {
         result.current.onChange("NEW_VALUE");
@@ -123,7 +123,7 @@ describe("useEditable", () => {
         result.current.onCommit("SUBMIT");
       });
 
-      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(handeCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
       expect(result.current).toMatchInlineSnapshot(`
         Object {
           "onCancel": [Function],
@@ -151,9 +151,9 @@ describe("useEditable", () => {
     it("should throw error when onCommit is called while COMMITTING", async () => {
       // Something goes here
       const promise = Promise.resolve();
-      const onCommit = jest.fn(() => promise);
+      const handleCommit = jest.fn(() => promise);
       const { result } = renderHook(() =>
-        useEditable({ value: "INITIAL_VALUE", onCommit })
+        useEditable({ value: "INITIAL_VALUE", onCommit: handleCommit })
       );
       act(() => {
         result.current.onChange("NEW_VALUE");
@@ -175,9 +175,9 @@ describe("useEditable", () => {
     });
     it("should return to editing on promise failure", async () => {
       const promise = Promise.reject();
-      const onCommit = jest.fn(() => promise);
+      const handleCommit = jest.fn(() => promise);
       const { result } = renderHook(() =>
-        useEditable({ value: "INITIAL_VALUE", onCommit })
+        useEditable({ value: "INITIAL_VALUE", onCommit: handleCommit })
       );
       act(() => {
         result.current.onChange("NEW_VALUE");
@@ -186,7 +186,7 @@ describe("useEditable", () => {
         result.current.onCommit("SUBMIT");
       });
 
-      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(handleCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
       expect(result.current).toMatchInlineSnapshot(`
         Object {
           "onCancel": [Function],
@@ -214,9 +214,9 @@ describe("useEditable", () => {
     it("should cancel the update on unmount", async () => {
       // Something goes here
       const promise = Promise.resolve();
-      const onCommit = jest.fn(() => promise);
+      const handleCommit = jest.fn(() => promise);
       const { result, unmount } = renderHook(() =>
-        useEditable({ value: "INITIAL_VALUE", onCommit })
+        useEditable({ value: "INITIAL_VALUE", onCommit: handleCommit })
       );
       act(() => {
         result.current.onChange("NEW_VALUE");
@@ -225,7 +225,7 @@ describe("useEditable", () => {
         result.current.onCommit("SUBMIT");
       });
 
-      expect(onCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
+      expect(handleCommit).toHaveBeenCalledWith("SUBMIT", "NEW_VALUE");
       expect(result.current).toMatchInlineSnapshot(`
         Object {
           "onCancel": [Function],
