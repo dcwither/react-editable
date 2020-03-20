@@ -104,7 +104,6 @@
     "react-dom": "^16.8.0"
   },
   "dependencies": {
-    "hoist-non-react-statics": "^2.5.0",
     "invariant": "^2.2.4"
   }
 }
