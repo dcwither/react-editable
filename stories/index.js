@@ -28,9 +28,7 @@ storiesOf("ReactEditable", module)
         onCommit={console.log}
         onCancel={console.log}
       >
-        <EditableContextConsumer>
-          {editableProps => <QuestionForm {...editableProps} />}
-        </EditableContextConsumer>
+        <QuestionForm />
       </Editable>
     );
   })
