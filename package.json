@@ -21,19 +21,18 @@
     "dist"
   ],
   "scripts": {
-    "build-storybook": "build-storybook",
-    "build": "tsc -project .",
-    "clean": "rimraf dist",
-    "deploy-storybook": "storybook-to-ghpages",
-    "lint-file": "tslint",
+    "build:dist": "npm run tsc -project .",
+    "build:storybook": "build-storybook",
+    "clean:dist": "rimraf dist",
+    "deploy:storybook": "storybook-to-ghpages",
     "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
     "precommit": "lint-staged",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean:dist && npm run build:dist",
     "release": "np --no-cleanup",
     "start": "start-storybook -p 6006",
-    "test-watch": "npm run test -- --watch",
+    "test": "jest --config jest.config.json --verbose",
     "test:ci": "npm run test -- --ci --coverage && cat ./coverage/lcov.info | coveralls",
-    "test": "jest --config jest.config.json --verbose"
+    "test:watch": "npm run test -- --watch"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
