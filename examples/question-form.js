@@ -1,11 +1,11 @@
 import { Button, IconButton } from "material-ui";
-import { EditableStatus, EditableStatusType } from "../src";
+import { EditableStatus, EditableStatusType, useEditableContext } from "../src";
 import { isNil, lensPath, lensProp, set, view } from "ramda";
 
 import Icon from "material-ui/Icon";
 import Input from "./input";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useCallback } from "react";
 import TagSelector from "./tag-selector";
 import Typography from "material-ui/Typography";
 import { emptyQuestion } from "./constants";
@@ -16,124 +16,72 @@ const bodyLens = lensProp("body");
 const firstNameLens = lensPath(["author", "firstName"]);
 const lastNameLens = lensPath(["author", "lastName"]);
 
-export default class QuestionForm extends React.Component {
-  static propTypes = {
-    onCancel: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onCommit: PropTypes.func.isRequired,
-    onStart: PropTypes.func.isRequired,
-    status: EditableStatusType.isRequired,
-    title: PropTypes.string,
-    value: PropTypes.shape({
-      author: PropTypes.shape({
-        firstName: PropTypes.string.isRequired,
-        lastName: PropTypes.string.isRequired
-      }),
-      body: PropTypes.string.isRequired,
-      id: PropTypes.number,
-      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-      title: PropTypes.string.isRequired
-    })
-  };
+const Buttons = ({ onCancel, onUpdate, onDelete, onCreate, id }) => {
+  if (!isNil(id)) {
+    return (
+      <React.Fragment>
+        <Button variant="raised" color="default" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button variant="raised" color="primary" onClick={onUpdate}>
+          Update
+        </Button>
+        <Button variant="raised" color="secondary" onClick={onDelete}>
+          Delete
+        </Button>
+      </React.Fragment>
+    );
+  } else {
+    return (
+      <Button variant="raised" color="primary" onClick={onCreate}>
+        Create
+      </Button>
+    );
+  }
+};
 
-  static defaultProps = emptyQuestion;
+export default function QuestionForm() {
+  const {
+    onCancel,
+    onChange,
+    onCommit,
+    onStart,
+    status,
+    title,
+    value
+  } = useEditableContext();
 
-  handleChange = lens => newFieldValue => {
-    return this.props.onChange(set(lens, newFieldValue, this.props.value));
+  const handleChange = lens => newFieldValue => {
+    return onChange(set(lens, newFieldValue, value));
   };
 
   // precompute change handlers to avoid changing props passed to inputs
-  handleChangeTags = this.handleChange(tagsLens);
-  handleChangeTitle = this.handleChange(titleLens);
-  handleChangeBody = this.handleChange(bodyLens);
-  handleChangeFirstName = this.handleChange(firstNameLens);
-  handleChangeLastName = this.handleChange(lastNameLens);
+  const handleChangeTags = useCallback(handleChange(tagsLens), [
+    onChange,
+    value
+  ]);
+  const handleChangeTitle = useCallback(handleChange(titleLens), [
+    onChange,
+    value
+  ]);
+  const handleChangeBody = useCallback(handleChange(bodyLens), [
+    onChange,
+    value
+  ]);
+  const handleChangeFirstName = useCallback(handleChange(firstNameLens), [
+    onChange,
+    value
+  ]);
+  const handleChangeLastName = useCallback(handleChange(lastNameLens), [
+    onChange,
+    value
+  ]);
 
-  handleCreate = () => this.props.onCommit("CREATE");
-  handleUpdate = () => this.props.onCommit("UPDATE");
-  handleDelete = () => this.props.onCommit("DELETE");
+  const handleCreate = useCallback(() => onCommit("CREATE"), [onCommit]);
+  const handleUpdate = useCallback(() => onCommit("UPDATE"), [onCommit]);
+  const handleDelete = useCallback(() => onCommit("DELETE"), [onCommit]);
 
-  renderButtons() {
-    const {
-      value: { id },
-      onCancel
-    } = this.props;
-    if (!isNil(id)) {
-      return (
-        <React.Fragment>
-          <Button variant="raised" color="default" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button variant="raised" color="primary" onClick={this.handleUpdate}>
-            Update
-          </Button>
-          <Button
-            variant="raised"
-            color="secondary"
-            onClick={this.handleDelete}
-          >
-            Delete
-          </Button>
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <Button variant="raised" color="primary" onClick={this.handleCreate}>
-          Create
-        </Button>
-      );
-    }
-  }
-
-  renderEditing() {
-    const { value, status } = this.props;
-
-    return (
-      <div className="form">
-        <div className="fields">
-          <Typography variant="headline">Your Question</Typography>
-          <TagSelector
-            tags={view(tagsLens, value)}
-            onChange={this.handleChangeTags}
-          />
-          <Input
-            title="Title"
-            onChange={this.handleChangeTitle}
-            status={status}
-            value={view(titleLens, value)}
-            fullWidth
-          />
-          <Input
-            title="Body"
-            onChange={this.handleChangeBody}
-            status={status}
-            value={view(bodyLens, value)}
-            fullWidth
-            multiline
-          />
-          <Typography variant="title">Author</Typography>
-          <Input
-            title="First Name"
-            onChange={this.handleChangeFirstName}
-            status={status}
-            value={view(firstNameLens, value)}
-            fullWidth
-          />
-          <Input
-            title="Last Name"
-            onChange={this.handleChangeLastName}
-            status={status}
-            value={view(lastNameLens, value)}
-            fullWidth
-          />
-        </div>
-        <div className="buttons">{this.renderButtons()}</div>
-      </div>
-    );
-  }
-
-  renderPresenting() {
-    const { value, onStart } = this.props;
+  if (status === EditableStatus.PRESENTING && !isNil(value.id)) {
     return (
       <div className="question">
         <Typography variant="title">
@@ -151,17 +99,55 @@ export default class QuestionForm extends React.Component {
         </Typography>
       </div>
     );
-  }
-
-  render() {
-    const {
-      status,
-      value: { id }
-    } = this.props;
-    if (status === EditableStatus.PRESENTING && !isNil(id)) {
-      return this.renderPresenting();
-    } else {
-      return this.renderEditing();
-    }
+  } else {
+    return (
+      <div className="form">
+        <div className="fields">
+          <Typography variant="headline">Your Question</Typography>
+          <TagSelector
+            tags={view(tagsLens, value)}
+            onChange={handleChangeTags}
+          />
+          <Input
+            title="Title"
+            onChange={handleChangeTitle}
+            status={status}
+            value={view(titleLens, value)}
+            fullWidth
+          />
+          <Input
+            title="Body"
+            onChange={handleChangeBody}
+            status={status}
+            value={view(bodyLens, value)}
+            fullWidth
+            multiline
+          />
+          <Typography variant="title">Author</Typography>
+          <Input
+            title="First Name"
+            onChange={handleChangeFirstName}
+            status={status}
+            value={view(firstNameLens, value)}
+            fullWidth
+          />
+          <Input
+            title="Last Name"
+            onChange={handleChangeLastName}
+            status={status}
+            value={view(lastNameLens, value)}
+            fullWidth
+          />
+        </div>
+        <Buttons
+          id={value.id}
+          onCancel={onCancel}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+      </div>
+    );
   }
 }
+
+QuestionForm.defaultProps = emptyQuestion;
