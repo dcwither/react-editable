@@ -1,6 +1,6 @@
 import { map, omit, pipe, prop, reverse, sortBy, values } from "ramda";
 
-import { Editable } from "../src";
+import { Editable, EditableContextConsumer } from "../src";
 import QuestionForm from "./question-form";
 import React from "react";
 import { action } from "@storybook/addon-actions";
@@ -69,7 +69,9 @@ export default class QuestionsWithForm extends React.Component {
     reverse,
     map(question => (
       <Editable key={question.id} value={question} onCommit={this.handleCommit}>
-        {editableProps => <QuestionForm {...editableProps} />}
+        <EditableContextConsumer>
+          {editableProps => <QuestionForm {...editableProps} />}
+        </EditableContextConsumer>
       </Editable>
     ))
   );
@@ -78,7 +80,9 @@ export default class QuestionsWithForm extends React.Component {
     return (
       <div>
         <Editable value={emptyQuestion} onCommit={this.handleCommit}>
-          {editableProps => <QuestionForm {...editableProps} />}
+          <EditableContextConsumer>
+            {editableProps => <QuestionForm {...editableProps} />}
+          </EditableContextConsumer>
         </Editable>
         <div className="asked-questions">
           {this.renderQuestions(this.state.questions)}

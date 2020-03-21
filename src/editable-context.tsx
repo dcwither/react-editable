@@ -16,6 +16,8 @@ const EditableContext = createContext<EditableResponse<any, string>>({
   value: undefined
 });
 
+export const EditableContextConsumer = EditableContext.Consumer;
+
 export type EditableProps<TValue, TCommitType> = EditableArgs<
   TValue,
   TCommitType
