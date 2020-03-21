@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build:dist": "npm run tsc -project .",
+    "build:dist": "tsc -project .",
     "build:storybook": "build-storybook",
     "clean:dist": "rimraf dist",
     "deploy:storybook": "storybook-to-ghpages",
