@@ -82,7 +82,7 @@
     "raw-loader": "^0.5.1",
     "react": "^16.12.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
-    "react-dom": "^16.12.0",
+    "react-dom": "^16.13.0",
     "react-test-renderer": "^16.13.0",
     "rimraf": "^2.6.2",
     "storybook-readme": "^3.3.0",
