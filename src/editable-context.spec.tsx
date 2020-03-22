@@ -1,4 +1,4 @@
-// tslint:disable jsx-no-lambda
+import { Editable, useEditableContext } from "./editable-context";
 import {
   act,
   fireEvent,
@@ -6,8 +6,8 @@ import {
   getByText,
   render
 } from "@testing-library/react";
+
 import React from "react";
-import { Editable, useEditableContext } from "./editable-context";
 
 function TestHarness() {
   const { value, onChange, onCommit, onCancel, status } = useEditableContext<
