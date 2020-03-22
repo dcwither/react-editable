@@ -1,17 +1,17 @@
 {
-  "name": "react-editable-decorator",
+  "name": "@dcwither/react-editable",
   "version": "0.2.0",
   "description": "State wrapper for controlled components managing presenting, editing, committing state transitions.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dcwither/react-editable-decorator.git"
+    "url": "https://github.com/dcwither/react-editable.git"
   },
   "author": "Devin Witherspoon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dcwither/react-editable-decorator/issues"
+    "url": "https://github.com/dcwither/react-editable/issues"
   },
-  "homepage": "https://github.com/dcwither/react-editable-decorator",
+  "homepage": "https://github.com/dcwither/react-editable",
   "keywords": [
     "react-component",
     "react"
