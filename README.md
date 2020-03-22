@@ -3,6 +3,7 @@
 ![typescript](https://aleen42.github.io/badges/src/typescript.svg)
 ![Node.js CI](https://github.com/dcwither/react-editable/workflows/Node.js%20CI/badge.svg)
 [![dependencies Status](https://david-dm.org/dcwither/react-editable/status.svg)](https://david-dm.org/dcwither/react-editable)
+[![codecov](https://codecov.io/gh/dcwither/react-editable/branch/master/graph/badge.svg)](https://codecov.io/gh/dcwither/react-editable)
 
 A component that wraps around a form component to provide an editing state that it maintains. Works with promises returned by the Editable methods.
 
