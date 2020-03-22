@@ -25,7 +25,7 @@
     "build:storybook": "build-storybook",
     "clean:dist": "rimraf dist",
     "deploy:storybook": "storybook-to-ghpages",
-    "lint": "tslint {src,examples,stories}/{**/*,*}.{ts,tsx,js,jsx}",
+    "lint": "eslint --ext=js,jsx,ts,tsx .",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run clean:dist && npm run build:dist",
     "release": "np --no-cleanup",
@@ -36,7 +36,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "tslint --fix",
+      "eslint  --ext=js,jsx,ts,tsx --fix",
       "git add"
     ],
     "*.{js,jsx,ts,json,tsx,css,md}": [
@@ -58,11 +58,18 @@
     "@types/react": "^16.9.17",
     "@types/recompose": "^0.26.1",
     "@types/testing-library__react-hooks": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
     "babel-preset-stage-2": "^6.5.0",
     "bluebird": "^3.5.0",
     "coveralls": "^3.0.0",
     "css-loader": "^0.28.11",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
     "immutability-helper": "^2.7.0",
