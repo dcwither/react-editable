@@ -72,7 +72,7 @@
     "eslint-plugin-react": "^7.19.0",
     "file-loader": "^1.1.11",
     "husky": "^0.14.3",
-    "immutability-helper": "^2.7.0",
+    "immer": "^6.0.2",
     "jest": "^25.1.0",
     "lint-staged": "^7.0.5",
     "material-ui": "^1.0.0-beta.44",

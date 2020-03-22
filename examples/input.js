@@ -17,14 +17,14 @@ export default class Input extends React.Component {
   };
 
   render() {
-    const { title, status, value, onChange, ...rest } = this.props;
+    const { title, status, value, ...rest } = this.props;
     return (
       <TextField
+        {...rest}
         disabled={status === EditableStatus.COMMITTING}
         label={title}
         onChange={this.handleChange}
         value={value}
-        {...rest}
       />
     );
   }
