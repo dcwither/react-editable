@@ -1,10 +1,26 @@
-import { map, omit, pipe, prop, reverse, sortBy, values } from "ramda";
-
 import { Editable } from "../src";
 import QuestionForm from "./question-form";
 import React from "react";
+import produce from "immer";
 import { action } from "@storybook/addon-actions";
 import { emptyQuestion } from "./constants";
+
+const update = produce((draft, action) => {
+  switch (action.type) {
+    case "CREATE":
+      draft.questions[draft.nextId] = { ...action.value, id: draft.nextId };
+      draft.nextId += 1;
+      return;
+    case "UPDATE":
+      draft.questions[action.value.id] = action.value;
+      return;
+    case "DELETE":
+      delete draft.questions[action.value.id];
+      return;
+    default:
+      throw new Error("bad message");
+  }
+});
 
 export default class QuestionsWithForm extends React.Component {
   static propTypes = {};
@@ -12,24 +28,24 @@ export default class QuestionsWithForm extends React.Component {
   state = {
     nextId: 2,
     questions: {
-      0: {
+      1: {
         author: {
           firstName: "Bob",
           lastName: "B"
         },
         body: "I installed package x and now my code doesn't work.",
-        id: 0,
+        id: 1,
         tags: ["javascript"],
         title: "I have a bug"
       },
-      1: {
+      0: {
         author: {
           firstName: "Alice",
           lastName: "A"
         },
         body:
           "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
-        id: 1,
+        id: 0,
         tags: ["react", "redux"],
         title: "How do I connect a component to react redux"
       }
@@ -38,41 +54,8 @@ export default class QuestionsWithForm extends React.Component {
 
   handleCommit = (message, value) => {
     action(message)(value);
-    switch (message) {
-      case "CREATE":
-        return this.setState(prevState => ({
-          nextId: prevState.nextId + 1,
-          questions: {
-            ...prevState.questions,
-            [prevState.nextId]: {
-              ...value,
-              id: prevState.nextId
-            }
-          }
-        }));
-      case "UPDATE":
-        return this.setState(prevState => ({
-          questions: { ...prevState.questions, [value.id]: value }
-        }));
-      case "DELETE":
-        return this.setState(prevState => ({
-          questions: omit([value.id], prevState.questions)
-        }));
-      default:
-        throw new Error("bad message");
-    }
+    this.setState(update(this.state, { type: message, value }));
   };
-
-  renderQuestions = pipe(
-    values,
-    sortBy(prop("id")),
-    reverse,
-    map(question => (
-      <Editable key={question.id} value={question} onCommit={this.handleCommit}>
-        <QuestionForm />
-      </Editable>
-    ))
-  );
 
   render() {
     return (
@@ -81,7 +64,17 @@ export default class QuestionsWithForm extends React.Component {
           <QuestionForm />
         </Editable>
         <div className="asked-questions">
-          {this.renderQuestions(this.state.questions)}
+          {Object.values(this.state.questions)
+            .sort(({ id: id1 }, { id: id2 }) => id2 - id1)
+            .map(question => (
+              <Editable
+                key={question.id}
+                value={question}
+                onCommit={this.handleCommit}
+              >
+                <QuestionForm />
+              </Editable>
+            ))}
         </div>
       </div>
     );
