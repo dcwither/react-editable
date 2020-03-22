@@ -1,8 +1,8 @@
-import Chip from "material-ui/Chip";
-import { MenuItem } from "material-ui";
+import Chip from "@material-ui/core/Chip";
+import { MenuItem } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
-import Select from "material-ui/Select";
+import Select from "@material-ui/core/Select";
 
 const TAG_OPTIONS = [
   "ajax",

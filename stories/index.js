@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Button from "material-ui/Button";
+import Button from "@material-ui/core/Button";
 import Container from "./container";
 import { Editable } from "../src";
 import EditableReadme from "../README.md";
@@ -48,7 +48,7 @@ function TestHarness({ initialValue, async }) {
     <Button
       onClick={handleReset}
       color="primary"
-      variant="raised"
+      variant="contained"
       style={{ margin: "2em" }}
     >
       Item Deleted - Reset

@@ -1,11 +1,11 @@
-import { Button, IconButton } from "material-ui";
+import { Button, IconButton } from "@material-ui/core";
 import { EditableStatus, useEditableContext } from "../src";
 import React, { useCallback } from "react";
 
-import Icon from "material-ui/Icon";
+import Icon from "@material-ui/core/Icon";
 import Input from "./input";
 import TagSelector from "./tag-selector";
-import Typography from "material-ui/Typography";
+import Typography from "@material-ui/core/Typography";
 import { emptyQuestion } from "./constants";
 import produce from "immer";
 
@@ -13,20 +13,20 @@ const Buttons = ({ onCancel, onUpdate, onDelete, onCreate, id }) => {
   if (Number.isInteger(id)) {
     return (
       <div className="buttons">
-        <Button variant="raised" color="default" onClick={onCancel}>
+        <Button variant="contained" color="default" onClick={onCancel}>
           Cancel
         </Button>
-        <Button variant="raised" color="primary" onClick={onUpdate}>
+        <Button variant="contained" color="primary" onClick={onUpdate}>
           Update
         </Button>
-        <Button variant="raised" color="secondary" onClick={onDelete}>
+        <Button variant="contained" color="secondary" onClick={onDelete}>
           Delete
         </Button>
       </div>
     );
   } else {
     return (
-      <Button variant="raised" color="primary" onClick={onCreate}>
+      <Button variant="contained" color="primary" onClick={onCreate}>
         Create
       </Button>
     );
@@ -97,13 +97,13 @@ export default function QuestionForm() {
   if (status === EditableStatus.PRESENTING && Number.isInteger(value.id)) {
     return (
       <div className="question">
-        <Typography variant="title">
+        <Typography variant="h5" component="h2">
           {value.title}
           <IconButton onClick={onStart}>
             <Icon>mode_edit</Icon>
           </IconButton>
         </Typography>
-        <Typography variant="subheading">{value.tags.join(", ")}</Typography>
+        <Typography variant="body1">{value.tags.join(", ")}</Typography>
         <Typography variant="body1">{value.body}</Typography>
         <Typography variant="body1">
           - {value.author.firstName} {value.author.lastName}
@@ -114,7 +114,9 @@ export default function QuestionForm() {
     return (
       <div className="form">
         <div className="fields">
-          <Typography variant="headline">Your Question</Typography>
+          <Typography variant="h5" component="h2">
+            Your Question
+          </Typography>
           <TagSelector tags={value.tags} onChange={handleChangeTags} />
           <Input
             title="Title"
