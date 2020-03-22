@@ -1,4 +1,9 @@
-# React Editable [![Build Status](https://travis-ci.org/dcwither/react-editable-decorator.svg?branch=master)](https://travis-ci.org/dcwither/react-editable-decorator) [![Coverage Status](https://coveralls.io/repos/github/dcwither/react-editable-decorator/badge.svg?branch=master)](https://coveralls.io/github/dcwither/react-editable-decorator?branch=master) [![dependencies Status](https://david-dm.org/dcwither/react-editable-decorator/status.svg)](https://david-dm.org/dcwither/react-editable-decorator)
+# React Editable
+
+![typescript](https://aleen42.github.io/badges/src/typescript.svg)
+![Node.js CI](https://github.com/dcwither/react-editable-decorator/workflows/Node.js%20CI/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/dcwither/react-editable-decorator/badge.svg?branch=master)](https://coveralls.io/github/dcwither/react-editable-decorator?branch=master)
+[![dependencies Status](https://david-dm.org/dcwither/react-editable-decorator/status.svg)](https://david-dm.org/dcwither/react-editable-decorator)
 
 A component that wraps around a form component to provide an editing state that it maintains. Works with promises returned by the Editable methods.
 
@@ -22,63 +27,52 @@ Then open [`localhost:6006`](http://localhost:6006) in a browser
 ## Usage
 
 ```js
-import PropTypes from 'prop-types';
-import React from 'react';
-import {
-  withEditable
-  Editable
-  EditableStatus,
-  EditableStatusType
-} from "react-editable-decorator";
+import React from "react";
+import { Editable, useEditableContext } from "@dcwither/react-editable";
 
-class Input extends React.Component {
-  static propTypes = {
-    onCommit: PropTypes.func.isRequired
-    onChange: PropTypes.func.isRequired,
-    status: EditableStatusType.isRequired,
-    value: PropTypes.string.isRequired
-  };
-
+function Input() {
+  const { value, onCommit, onChange, status } = useEditableContext();
   handleCommit = () => {
-    this.props.onCommit('SUBMIT');
-  }
+    onCommit("SUBMIT");
+  };
 
   handleChange = evt => {
-    this.props.onChange(evt.target.value);
+    onChange(evt.target.value);
   };
 
-  render() {
-    const { status, value } = this.props;
-    return (
-      <div>
-        <input
-          className="input"
-          disabled={status === EditableStatus.COMMITTING}
-          onChange={this.handleChange}
-          value={value}
-        />
-        <button onClick={this.handleCommit}>Submit</button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <input
+        className="input"
+        disabled={status === EditableStatus.COMMITTING}
+        onChange={handleChange}
+        value={value}
+      />
+      <button onClick={handleCommit}>Submit</button>
+    </div>
+  );
 }
 
 // Either wrap in the Editable Component with render props
-<Editable onCommit={onCommit}>
-  {({onChange, onCommit}) => {
-    <Input onChange={onChange} onCommit={onCommit} />
-  }}
-</Editable>
+<Editable onCommit={handleCommit}>
+  <Input />
+</Editable>;
 
-// Or compose with the HOC
-const EditableInput = withEditable(Input);
+// Or control the flow of your editable props directly with:
+const { value, onChange, onCommit } = useEditable({
+  value,
+  onChange,
+  onCommit
+});
 ```
 
 ## State Transitions
 
 ![State Transitions](docs/state-machine.svg)
 
-## Properties
+## Arguments
+
+### `Editable`, `useEditable`
 
 | Property   | Type                  | Required | Description                                                   |
 | ---------- | --------------------- | -------- | ------------------------------------------------------------- |
@@ -86,7 +80,17 @@ const EditableInput = withEditable(Input);
 | `onCommit` | func(message, value)  | No       | Callback for commit changes                                   |
 | `value`    | child.propTypes.value | No       | Unedited value to be passed through to child while presenting |
 
-## Child Properties
+### `useEditableContext`, `EditableContextConsumer`
+
+**None**
+
+## return value
+
+### `Editable`
+
+**None**
+
+### `useEditable`, `useEditableContext`, `EditableContextConsumer`
 
 | Property   | Type                                     | Description                                                                                    |
 | ---------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------- |
