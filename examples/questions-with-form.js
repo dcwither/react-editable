@@ -1,9 +1,9 @@
 import { Editable } from "../src";
 import QuestionForm from "./question-form";
 import React from "react";
-import produce from "immer";
 import { action } from "@storybook/addon-actions";
 import { emptyQuestion } from "./constants";
+import produce from "immer";
 
 const update = produce((draft, action) => {
   switch (action.type) {

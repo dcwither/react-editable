@@ -1,13 +1,13 @@
 import { Button, IconButton } from "material-ui";
 import { EditableStatus, useEditableContext } from "../src";
-import produce from "immer";
+import React, { useCallback } from "react";
 
 import Icon from "material-ui/Icon";
 import Input from "./input";
-import React, { useCallback } from "react";
 import TagSelector from "./tag-selector";
 import Typography from "material-ui/Typography";
 import { emptyQuestion } from "./constants";
+import produce from "immer";
 
 const Buttons = ({ onCancel, onUpdate, onDelete, onCreate, id }) => {
   if (Number.isInteger(id)) {

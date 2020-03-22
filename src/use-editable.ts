@@ -1,9 +1,9 @@
-import transition, { Action, Status } from "./state-machine";
-
-import invariant from "invariant";
-import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
+import transition, { Action, Status } from "./state-machine";
+import { useEffect, useRef, useState } from "react";
+
+import PropTypes from "prop-types";
+import invariant from "invariant";
 
 export { Status as EditableStatus };
 export const EditableStatusType = PropTypes.oneOf(Object.keys(Status));
