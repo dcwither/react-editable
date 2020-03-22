@@ -1,9 +1,8 @@
 # React Editable
 
 ![typescript](https://aleen42.github.io/badges/src/typescript.svg)
-![Node.js CI](https://github.com/dcwither/react-editable-decorator/workflows/Node.js%20CI/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/dcwither/react-editable-decorator/badge.svg?branch=master)](https://coveralls.io/github/dcwither/react-editable-decorator?branch=master)
-[![dependencies Status](https://david-dm.org/dcwither/react-editable-decorator/status.svg)](https://david-dm.org/dcwither/react-editable-decorator)
+![Node.js CI](https://github.com/dcwither/react-editable/workflows/Node.js%20CI/badge.svg)
+[![dependencies Status](https://david-dm.org/dcwither/react-editable/status.svg)](https://david-dm.org/dcwither/react-editable)
 
 A component that wraps around a form component to provide an editing state that it maintains. Works with promises returned by the Editable methods.
 
@@ -15,7 +14,7 @@ React Editable factors out the concerns of temporary state and whether to mainta
 
 ## Demo & Examples
 
-Live demo: https://dcwither.github.io/react-editable-decorator/
+Live demo: https://dcwither.github.io/react-editable/
 
 ```
 npm install
