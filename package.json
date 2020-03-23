@@ -36,12 +36,13 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "npm test"
+      "pre-push": "npm test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint  --ext=js,jsx,ts,tsx --fix",
+      "eslint --ext=js,jsx,ts,tsx --fix",
       "git add"
     ],
     "*.{js,jsx,ts,json,tsx,css,md}": [
@@ -50,6 +51,9 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/prompt-cli": "^8.3.5",
     "@material-ui/core": "^4.9.7",
     "@storybook/addon-actions": "^3.4.3",
     "@storybook/addon-links": "^3.4.3",
