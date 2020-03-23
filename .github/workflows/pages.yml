@@ -12,10 +12,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install and Build 🔧
-        run: |
-          npm ci
-          npm run build:storybook
+      - name: Install Dependencies ⬆️
+        run: npm ci
+
+      - name: Build Storybook 🔧
+        run: npm run build:storybook
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
