@@ -1,7 +1,7 @@
 export declare enum Status {
     PRESENTING = "PRESENTING",
     EDITING = "EDITING",
-    COMMITTING = "COMMITTING",
+    COMMITTING = "COMMITTING"
 }
 export declare enum Action {
     CANCEL = "CANCEL",
@@ -9,7 +9,7 @@ export declare enum Action {
     COMMIT = "COMMIT",
     FAIL = "FAIL",
     START = "START",
-    SUCCESS = "SUCCESS",
+    SUCCESS = "SUCCESS"
 }
 export declare type State<TValue> = {
     status: Status;
@@ -17,7 +17,7 @@ export declare type State<TValue> = {
 };
 export declare const transitions: {
     [status: string]: {
-        [action: string]: <TValue>(value: TValue) => State<TValue>;
+        [action: string]: <TValue>(value?: TValue) => State<TValue>;
     };
 };
 export default function transition<TValue>(status: Status, action: Action, value?: TValue): State<TValue>;
