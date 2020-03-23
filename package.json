@@ -33,6 +33,12 @@
     "test:ci": "npm run test -- --ci --coverage && cat ./coverage/lcov.info | codecov",
     "test:watch": "npm run test -- --watch"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint  --ext=js,jsx,ts,tsx --fix",
@@ -67,7 +73,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "file-loader": "^1.1.11",
-    "husky": "^0.14.3",
+    "husky": "^4.2.3",
     "immer": "^6.0.2",
     "jest": "^25.1.0",
     "lint-staged": "^7.0.5",
