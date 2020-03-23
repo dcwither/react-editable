@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Dependencies 🔧
+      - name: Install Dependencies ⬆️
         run: npm ci
 
       - name: Run CI Tests ✅
@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Dependencies 🔧
+      - name: Install Dependencies ⬆️
         run: npm ci
 
       - name: Build Dist 🔧
@@ -64,7 +64,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Dependencies 🔧
+      - name: Install Dependencies ⬆️
         run: npm ci
 
       - name: Lint Commit Messages 👕
