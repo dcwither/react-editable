@@ -1,6 +1,6 @@
 {
   "name": "@dcwither/react-editable",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "State wrapper for controlled components managing presenting, editing, committing state transitions.",
   "repository": {
     "type": "git",
