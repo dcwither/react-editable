@@ -16,8 +16,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run test:ci
+
+      - name: Install Dependencies 🔧
+        run: npm ci
+
+      - name: Run CI Tests ✅
+        run: npm run test:ci
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CI: true
@@ -35,8 +39,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build:dist
+
+      - name: Install Dependencies 🔧
+        run: npm ci
+
+      - name: Build Dist 🔧
+        run: npm run build:dist
+      - name: Build Storybook 🔧
+        run: npm run build:storybook
 
   lint:
     runs-on: ubuntu-latest
@@ -47,9 +57,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run lint
+
+      - name: Install Dependencies 🔧
+        run: npm ci
+
+      - name: Lint Commit Messages 👕
+        uses: wagoid/commitlint-github-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint Javascript 👕
+        run: npm run lint
