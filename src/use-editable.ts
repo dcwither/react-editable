@@ -1,6 +1,6 @@
 import makeCancelable, { CancelablePromise } from "./make-cancelable";
 import transition, { Action, Status } from "./state-machine";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import PropTypes from "prop-types";
 import invariant from "invariant";
@@ -137,12 +137,15 @@ export default function useEditable<TValue, TCommitType = string>({
     [inputValue, onCommit, state]
   );
 
-  return {
-    onCancel: handleCancel,
-    onChange: handleChange,
-    onCommit: handleCommit,
-    onStart: handleStart,
-    status: state.status,
-    value: getValue(inputValue, state)
-  };
+  return useMemo(
+    () => ({
+      onCancel: handleCancel,
+      onChange: handleChange,
+      onCommit: handleCommit,
+      onStart: handleStart,
+      status: state.status,
+      value: getValue(inputValue, state)
+    }),
+    [handleCancel, handleChange, handleCommit, handleStart, inputValue, state]
+  );
 }
