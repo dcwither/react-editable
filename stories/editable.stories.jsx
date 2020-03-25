@@ -3,13 +3,10 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Container from "./container";
 import { Editable } from "../src";
-import EditableReadme from "../README.md";
 import Promise from "bluebird";
 import QuestionForm from "../examples/question-form";
 import QuestionsWithForm from "../examples/questions-with-form";
 import { action } from "@storybook/addon-actions";
-import { storiesOf } from "@storybook/react";
-import withReadme from "storybook-readme/with-readme";
 
 function TestHarness({ initialValue, async }) {
   const [value, setValue] = useState(initialValue);
@@ -59,45 +56,50 @@ function TestHarness({ initialValue, async }) {
     </Editable>
   );
 }
-// eslint-disable-next-line no-undef
-storiesOf("ReactEditable", module)
-  .addDecorator(withReadme(EditableReadme))
-  .addDecorator(Container)
-  .add("Question Form", () => {
-    return (
-      <TestHarness
-        initialValue={{
-          author: {
-            firstName: "Alice",
-            lastName: "B"
-          },
-          body:
-            "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
-          id: 1,
-          tags: ["react", "redux"],
-          title: "How do I connect a component to react redux"
-        }}
-      />
-    );
-  })
-  .add("Question Form Async", () => {
-    return (
-      <TestHarness
-        initialValue={{
-          author: {
-            firstName: "Alice",
-            lastName: "B"
-          },
-          body:
-            "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
-          id: 1,
-          tags: ["react", "redux"],
-          title: "How do I connect a component to react redux"
-        }}
-        async
-      />
-    );
-  })
-  .add("Question Form List", () => {
-    return <QuestionsWithForm />;
-  });
+
+export default {
+  title: "ReactEditable",
+  component: Editable,
+  decorators: [Container]
+};
+
+export const _QuestionForm = () => {
+  return (
+    <TestHarness
+      initialValue={{
+        author: {
+          firstName: "Alice",
+          lastName: "B"
+        },
+        body:
+          "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+        id: 1,
+        tags: ["react", "redux"],
+        title: "How do I connect a component to react redux"
+      }}
+    />
+  );
+};
+
+export const QuestionFormAsync = () => {
+  return (
+    <TestHarness
+      initialValue={{
+        author: {
+          firstName: "Alice",
+          lastName: "B"
+        },
+        body:
+          "I've been doing x, y, and z and it hasn't been working. [Reference](http://example.com) says I should do w but I'm not sure how...",
+        id: 1,
+        tags: ["react", "redux"],
+        title: "How do I connect a component to react redux"
+      }}
+      async
+    />
+  );
+};
+
+export const QuestionFormList = () => {
+  return <QuestionsWithForm />;
+};
