@@ -117,7 +117,6 @@ export default function QuestionForm() {
           <Typography variant="h5" component="h2">
             Your Question
           </Typography>
-          <TagSelector tags={value.tags} onChange={handleChangeTags} />
           <Input
             title="Title"
             onChange={handleChangeTitle}
@@ -125,6 +124,7 @@ export default function QuestionForm() {
             value={value.title}
             fullWidth
           />
+          <TagSelector tags={value.tags} onChange={handleChangeTags} />
           <Input
             title="Body"
             onChange={handleChangeBody}
@@ -133,7 +133,9 @@ export default function QuestionForm() {
             fullWidth
             multiline
           />
-          <Typography variant="title">Author</Typography>
+          <Typography variant="h6" component="h3">
+            Author
+          </Typography>
           <Input
             title="First Name"
             onChange={handleChangeFirstName}

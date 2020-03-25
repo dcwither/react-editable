@@ -28,6 +28,7 @@
     "esModuleInterop": true
   },
   "exclude": [
+    "dist/",
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/__mocks__/**",
