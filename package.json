@@ -26,7 +26,6 @@
     "clean:dist": "rimraf dist",
     "clean:storybook": "rimraf storybook-static",
     "lint": "eslint --ext=js,jsx,ts,tsx .",
-    "precommit": "lint-staged",
     "prepublishOnly": "npm run clean:dist && npm run build:dist",
     "release": "np --no-cleanup",
     "start": "start-storybook -p 6006",
