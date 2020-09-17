@@ -89,7 +89,7 @@
     "jest": "^25.1.0",
     "lint-staged": "^10.0.9",
     "np": "^2.20.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.1.2",
     "prop-types": "^15.6.1",
     "raw-loader": "^0.5.1",
     "react": "^16.12.0",
