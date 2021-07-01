@@ -84,7 +84,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "file-loader": "^1.1.11",
-    "husky": "^4.2.3",
+    "husky": "^7.0.0",
     "immer": "^6.0.2",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.9",
